@@ -21,7 +21,7 @@ def main_turn():
 
         # create and update event
         try:
-            player_name = manager.get_turn_player_name()
+            player_name = manager.game.get_turn_player_name()
             event = PlayerPlacementEvent.create(player_name=player_name, row=row, col=col)
             manager.update(event)
         except Exception as e:

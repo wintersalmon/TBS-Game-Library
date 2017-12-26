@@ -25,6 +25,10 @@ class PlayerPlacementEvent(Event):
 
         game.board.tiles[self._row][self._col] = self._player_name
 
+        game.turn_count += 1
+        if game.board.has_bingo():
+            game.status = False
+
     @classmethod
     def create(cls, **kwargs):
         # verify kwargs
