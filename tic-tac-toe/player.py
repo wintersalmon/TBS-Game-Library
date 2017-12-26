@@ -1,7 +1,6 @@
 class Player(object):
-    def __init__(self, name, marker):
+    def __init__(self, name):
         self.name = name
-        self.marker = marker
 
     def __repr__(self):
         return 'Player({})'.format(self.name)
