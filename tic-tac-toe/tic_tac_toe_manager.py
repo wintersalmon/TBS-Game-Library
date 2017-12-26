@@ -9,6 +9,9 @@ class TicTacToeManager(object):
         self.events = list()
         self.player_names = (player_one, player_two)
 
+    def get_turn_player_name(self):
+        return self.player_names[len(self.events) % 2]
+
     def update(self, event):
         try:
             event.update(self.game)
@@ -16,6 +19,11 @@ class TicTacToeManager(object):
             raise e
         else:
             self.events.append(event)
+            self.update_status()
+
+    def update_status(self):
+        if self.game.board.has_bingo():
+            self.game.status = False
 
     def draw(self):
         status_msg = 'RUNNING' if self.game.status else 'STOPPED'

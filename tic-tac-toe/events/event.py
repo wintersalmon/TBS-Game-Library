@@ -3,7 +3,7 @@ class Event(object):
         raise NotImplementedError
 
     @classmethod
-    def create(cls, game, **kwargs):
+    def create(cls, **kwargs):
         raise NotImplementedError
 
     @classmethod
