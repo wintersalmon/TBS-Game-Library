@@ -18,10 +18,13 @@ class PlayerPlacementEvent(Event):
         self._col = col
 
     def update(self, game):
-        prev_marker = game.board.tiles[self._row][self._col]
+        try:
+            prev_marker = game.board.tiles[self._row][self._col]
+        except IndexError as e:
+            raise ValueError('position out of range: {}, {}'.format(self._row, self._col))
 
         if prev_marker is not None:
-            raise ValueError('marker already exist')
+            raise ValueError('position already occupied: {}'.format(prev_marker))
 
         game.board.tiles[self._row][self._col] = self._player_name
 

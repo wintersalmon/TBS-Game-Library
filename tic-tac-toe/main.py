@@ -3,32 +3,32 @@ from tic_tac_toe_manager import TicTacToeManager
 
 
 def main_turn():
-    manager = TicTacToeManager(player_one='tom', player_two='jerry', rows=3, cols=3)
-    while manager.game.status:
-        # input user command
+    manager = TicTacToeManager.create(player_one='tom', player_two='jerry', rows=3, cols=3)
+
+    while manager.is_running():
         try:
-            row, col = input('row, col: ').split()
-            row, col = int(row), int(col)
+            event = read_user_event(manager.game.get_turn_player_name())
+            manager.update(event)
         except ValueError as e:
             print(e)
-            continue
-        else:
-            # exit if input is (0, 0)
-            if row == 0 and col == 0:
-                exit(0)
-            else:
-                row, col = row - 1, col - 1
-
-        # create and update event
-        try:
-            player_name = manager.game.get_turn_player_name()
-            event = PlayerPlacementEvent.create(player_name=player_name, row=row, col=col)
-            manager.update(event)
-        except Exception as e:
+        except EOFError as e:
             print(e)
-            continue
+            exit()
         else:
             manager.draw()
+
+
+def read_user_event(turn_player_name):
+    row, col = input('row, col: ').split()
+    row, col = int(row), int(col)
+
+    if row == 0 and col == 0:
+        raise EOFError
+
+    row, col = row - 1, col - 1
+    event = PlayerPlacementEvent.create(player_name=turn_player_name, row=row, col=col)
+
+    return event
 
 
 if __name__ == '__main__':
