@@ -1,17 +1,17 @@
 from errors import InvalidPositionError, InvalidUserInputError, EndOfInputError
 from events import PlayerPlacementEvent
-from othello import Othello
+from othello_manager import OthelloManager
 
 
 def main():
-    othello = Othello(player_one='tom', player_two='jerry')
+    othello = OthelloManager.create(player_one='tom', player_two='jerry')
 
     while othello:
-        draw(othello)
+        draw(othello.game)
         try:
             row, col = get_user_input_or_raise_error()
             event = PlayerPlacementEvent.create(row=row, col=col)
-            event.update(othello)
+            othello.update(event)
 
         except InvalidUserInputError as e:
             print(e.__class__.__name__, e)
