@@ -1,5 +1,5 @@
-from tic_tac_toe.events.placement_event import PlayerPlacementEvent
-from tic_tac_toe.tic_tac_toe_manager import TicTacToeManager
+from tic_tac_toe.placement_event import PlayerPlacementEvent
+from tic_tac_toe.manager import TicTacToeManager
 
 
 def main():
