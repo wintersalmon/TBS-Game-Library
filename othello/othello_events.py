@@ -2,6 +2,13 @@ class Event(object):
     def update(self, game):
         raise NotImplementedError
 
+    def encode(self):
+        raise NotImplementedError
+
+    @classmethod
+    def decode(cls, **kwargs):
+        raise NotImplementedError
+
     @classmethod
     def create(cls, **kwargs):
         raise NotImplementedError
@@ -39,6 +46,17 @@ class PlayerPlacementEvent(Event):
         marker = game.board.SET_MARKERS[self._player]
         game.board.set(self._row, self._col, marker)
         game.turn_count += 1
+
+    def encode(self):
+        return {
+            'row': self._row,
+            'col': self._col,
+            'player': self._player,
+        }
+
+    @classmethod
+    def decode(cls, **kwargs):
+        return cls.create(**kwargs)
 
     @classmethod
     def create(cls, **kwargs):

@@ -22,7 +22,11 @@ def main():
 
         except EndOfInputError:
             print('End of Input, Exit game ...')
-            exit()
+            break
+
+    en = othello.encode()
+    de = OthelloManager.decode(**en)
+    draw(de.game)
 
 
 def get_user_input_or_raise_error():
