@@ -2,18 +2,6 @@ from othello.errors import PositionOutOfBoundsError, PositionAlreadyOccupiedErro
     InvalidMarkerTypeError
 
 
-class Tile(object):
-    BLACK = -1
-    INIT = 0
-    WHITE = 1
-
-    def __init__(self):
-        self._value = self.INIT
-
-    def __bool__(self):
-        return self._value is not self.INIT
-
-
 class Board(object):
     def __init__(self, rows, cols, *, init_value=None):
         self.rows = rows
