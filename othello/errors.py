@@ -10,6 +10,10 @@ class InvalidUserInputError(OthelloCustomError):
     pass
 
 
+class InvalidMarkerTypeError(OthelloCustomError):
+    pass
+
+
 class InvalidPositionError(OthelloCustomError):
     pass
 

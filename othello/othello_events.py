@@ -20,7 +20,7 @@ class Event(object):
 
 
 class PlayerPlacementEvent(Event):
-    def __init__(self, row, col):
+    def __init__(self, row, col, player):
         # verify data type
         if not isinstance(row, int):
             raise ValueError('invalid data type row(int)')
@@ -28,16 +28,23 @@ class PlayerPlacementEvent(Event):
         if not isinstance(col, int):
             raise ValueError('invalid data type col(int)')
 
+        if not isinstance(player, int):
+            raise ValueError('invalid data type player(int)')
+
         self._row = row
         self._col = col
+        self._player = player
 
     def update(self, game):
-        game.board.set(self._row, self._col)
+        marker = game.board.SET_MARKERS[self._player]
+        game.board.set(self._row, self._col, marker)
+        game.turn_count += 1
 
     @classmethod
     def create(cls, **kwargs):
         # verify kwargs
         row = cls.get_argument_or_raise_error(kwargs, 'row')
         col = cls.get_argument_or_raise_error(kwargs, 'col')
+        player = cls.get_argument_or_raise_error(kwargs, 'player')
 
-        return cls(row=row, col=col)
+        return cls(row=row, col=col, player=player)

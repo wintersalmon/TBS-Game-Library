@@ -1,4 +1,5 @@
-from errors import PositionOutOfBoundsError, PositionAlreadyOccupiedError, PositionHasNoFlipTargetsError
+from errors import PositionOutOfBoundsError, PositionAlreadyOccupiedError, PositionHasNoFlipTargetsError, \
+    InvalidMarkerTypeError
 
 
 class Tile(object):
@@ -14,29 +15,46 @@ class Tile(object):
 
 
 class Board(object):
+    def __init__(self, rows, cols, *, init_value=None):
+        self.rows = rows
+        self.cols = cols
+        self.init_value = init_value
+        self.tiles = [[self.init_value] * cols for _ in range(rows)]
+
+    def get(self, row, col):
+        return self.tiles[row][col]
+
+    def set(self, row, col, value):
+        self.tiles[row][col] = value
+
+    def is_set(self, row, col):
+        if self.tiles[row][col] is not self.init_value:
+            return True
+        return False
+
+
+class OthelloBoard(Board):
     MARKER_INIT = 0
     MARKER_BLACK = 1
     MARKER_WHITE = 2
     MARKER_FLIP = 3
+    SET_MARKERS = [
+        MARKER_BLACK,
+        MARKER_WHITE,
+    ]
 
     def __init__(self):
-        self.rows = 8
-        self.cols = 8
-        self.tiles = [[self.MARKER_INIT] * self.cols for _ in range(self.rows)]
-        self.markers = [
-            self.MARKER_BLACK,
-            self.MARKER_WHITE
-        ]
-        self.last_used_marker = 0
+        super().__init__(8, 8, init_value=self.MARKER_INIT)
         self.tiles[3][3] = self.MARKER_BLACK
         self.tiles[3][4] = self.MARKER_WHITE
         self.tiles[4][3] = self.MARKER_WHITE
         self.tiles[4][4] = self.MARKER_BLACK
 
-    def get(self, row, col):
-        return self.tiles[row][col]
+    def set(self, row, col, value):
+        # check Marker Type
+        if value not in self.SET_MARKERS:
+            raise InvalidMarkerTypeError('invalid marker type: {}'.format(value))
 
-    def set(self, row, col):
         # check PositionOutOfBoundsError
         try:
             prev_marker = self.tiles[row][col]
@@ -48,13 +66,12 @@ class Board(object):
             raise PositionAlreadyOccupiedError('({}, {})'.format(row, col))
 
         # check PositionHasNoFlipTargetsError
-        next_marker = self.markers[self.last_used_marker]
+        next_marker = value
         flip_targets = self._find_flip_targets(row, col, next_marker)
 
         if flip_targets:  # set tile & flip all target tiles
             self.tiles[row][col] = next_marker
             self._flip_all(flip_targets)
-            self.last_used_marker = (self.last_used_marker + 1) % 2
         else:
             raise PositionHasNoFlipTargetsError('({}, {})'.format(row, col))
 
@@ -139,6 +156,7 @@ class Board(object):
             self._flip(r, c)
 
     def _flip(self, row, col):
-        if self.tiles[row][col] is self.MARKER_INIT:
+        if self.is_set(row, col):
+            self.tiles[row][col] ^= self.MARKER_FLIP
+        else:
             raise ValueError('cannot flip init marker')
-        self.tiles[row][col] ^= self.MARKER_FLIP
