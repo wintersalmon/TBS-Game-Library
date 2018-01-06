@@ -2,7 +2,7 @@ from core.player import Player
 from othello.board import OthelloBoard
 
 
-class Othello(object):
+class OthelloGame(object):
     def __init__(self, player_one, player_two):
         self.players = dict()
         self.players[player_one] = Player(player_one)

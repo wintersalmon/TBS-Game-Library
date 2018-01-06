@@ -4,10 +4,11 @@ from othello.manager import OthelloManager
 
 
 def main():
-    othello = OthelloManager.create(player_one='tom', player_two='jerry')
+    init_data = {'init_data': {'player_one': 'tom', 'player_two': 'jerry'}}
+    othello = OthelloManager.create(**init_data)
 
     while othello:
-        draw(othello.game)
+        othello.draw()
         try:
             row, col = get_user_input_or_raise_error()
             player_num = othello.game.get_turn_player_number()
@@ -26,7 +27,7 @@ def main():
 
     en = othello.encode()
     de = OthelloManager.decode(**en)
-    draw(de.game)
+    de.draw()
 
 
 def get_user_input_or_raise_error():
@@ -42,16 +43,6 @@ def get_user_input_or_raise_error():
     row, col = row - 1, col - 1
 
     return row, col
-
-
-def draw(game):
-    markers = [' ', '●', '○']
-    for row in range(game.board.rows):
-        for col in range(game.board.cols):
-            idx = game.board.tiles[row][col]
-            print('[{}]'.format(markers[idx]), end='')
-        print()
-    print()
 
 
 if __name__ == '__main__':

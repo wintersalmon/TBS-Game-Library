@@ -1,42 +1,108 @@
-from othello.othello import Othello
+from othello.game import OthelloGame
 from othello.event import PlayerPlacementEvent
 
 
-class OthelloManager(object):
-    def __init__(self, game, events):
-        self._init_data = {
-            'player_one': game.player_names[0],
-            'player_two': game.player_names[1],
-        }
-        self.game = game
-        self.events = events
+class CallableMixin(object):
+    def __call__(self, *args, **kwargs):
+        raise NotImplementedError
 
-    def update(self, event):
-        event.update(self.game)
-        self.events.append(event)
+
+class ManagerFunctionHandler(CallableMixin):
+    def __init__(self, manager):
+        self.manager = manager
+
+    def __call__(self, *args, **kwargs):
+        self.function(*args, **kwargs)
+
+    def function(self, *args, **kwargs):
+        raise NotImplementedError
+
+
+class OthelloDrawHandler(ManagerFunctionHandler):
+    def __init__(self, manager):
+        super().__init__(manager)
+
+    def function(self):
+        markers = [' ', '●', '○']
+        for row in range(self.manager.game.board.rows):
+            for col in range(self.manager.game.target.board.cols):
+                idx = self.manager.game.target.board.tiles[row][col]
+                print('[{}]'.format(markers[idx]), end='')
+            print()
+        print()
+
+
+class OthelloUpdateHandler(ManagerFunctionHandler):
+    def __init__(self, manager):
+        super().__init__(manager)
+
+    def function(self, event):
+        try:
+            self.manager.event.update(self.manager.game)
+        except Exception as e:
+            raise e
+        else:
+            self.manager.events.append(event)
+
+
+class Serializable(object):
+    def encode(self):
+        raise NotImplementedError
 
     @classmethod
-    def create(cls, player_one, player_two, *, prev_events=None):
-        othello = Othello(player_one, player_two)
-        events = list()
-        manager = OthelloManager(game=othello, events=events)
-        if prev_events is not None:
-            for event in prev_events:
-                manager.update(event)
-        return manager
+    def decode(cls, **kwargs):
+        raise NotImplementedError
+
+
+class Manager(Serializable):
+    def __init__(self, init_data, game, events, *, draw_handler_class, update_handler_class):
+        self.init_data = init_data
+        self.game = game
+        self.events = events
+        self.draw_handler = draw_handler_class(self)
+        self.update_handler = update_handler_class(self)
 
     def encode(self):
         return {
-            'player_one': self._init_data['player_one'],
-            'player_two': self._init_data['player_two'],
-            'prev_events': [event.encode() for event in self.events],
+            'init_data': self.init_data,
+            'events': [event.encode() for event in self.events],
         }
 
     @classmethod
     def decode(cls, **kwargs):
         decoded_kwargs = {
-            'player_one': kwargs['player_one'],
-            'player_two': kwargs['player_two'],
-            'prev_events': [PlayerPlacementEvent.decode(**e_kwargs) for e_kwargs in kwargs['prev_events']]
+            'init_data': kwargs['init_data'],
+            'events': [PlayerPlacementEvent.decode(**e_kwargs) for e_kwargs in kwargs['events']]
         }
         return cls.create(**decoded_kwargs)
+
+    def update(self, *args, **kwargs):
+        self.update_handler(*args, **kwargs)
+
+    def draw(self, *args, **kwargs):
+        self.draw_handler(*args, **kwargs)
+
+    @classmethod
+    def create(cls, **kwargs):
+        raise NotImplementedError
+
+
+class OthelloManager(Manager):
+    def __init__(self, init_data, game, events):
+        super().__init__(init_data, game, events,
+                         draw_handler_class=OthelloDrawHandler,
+                         update_handler_class=OthelloUpdateHandler)
+
+    @classmethod
+    def create(cls, **kwargs):
+        init_data = kwargs['init_data']
+        events = kwargs['events'] if 'events' in kwargs else None
+        game = OthelloGame(**init_data)
+
+        manager = OthelloManager(init_data=init_data, game=game, events=list())
+
+        if events is not None:
+            for event in events:
+                manager.update(event)
+
+        return manager
