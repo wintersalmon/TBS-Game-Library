@@ -1,6 +1,6 @@
-from errors import InvalidPositionError, InvalidUserInputError, EndOfInputError
-from othello_events import PlayerPlacementEvent
-from othello_manager import OthelloManager
+from othello.errors import InvalidPositionError, InvalidUserInputError, EndOfInputError
+from othello.othello_events import PlayerPlacementEvent
+from othello.othello_manager import OthelloManager
 
 
 def main():

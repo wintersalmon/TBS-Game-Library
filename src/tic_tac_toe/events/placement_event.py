@@ -1,4 +1,4 @@
-from events.event import Event
+from core.event import Event
 
 
 class PlayerPlacementEvent(Event):
@@ -40,3 +40,14 @@ class PlayerPlacementEvent(Event):
         col = cls.get_argument_or_raise_error(kwargs, 'col')
 
         return cls(player_name=player_name, row=row, col=col)
+
+    def encode(self):
+        return {
+            'row': self._row,
+            'col': self._col,
+            'player': self._player_name,
+        }
+
+    @classmethod
+    def decode(cls, **kwargs):
+        return cls.create(**kwargs)

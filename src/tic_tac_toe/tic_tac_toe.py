@@ -1,5 +1,5 @@
-from board import Board
-from player import Player
+from tic_tac_toe.board import TTTBoard
+from core.player import Player
 
 
 class TicTacToe(object):
@@ -8,7 +8,7 @@ class TicTacToe(object):
         self.players[player_one] = Player(player_one)
         self.players[player_two] = Player(player_two)
         self.player_names = (player_one, player_two)
-        self.board = Board(rows=rows, cols=cols)
+        self.board = TTTBoard(rows=rows, cols=cols)
         self.turn_count = 0
         self.status = True
 

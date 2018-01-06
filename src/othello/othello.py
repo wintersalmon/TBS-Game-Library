@@ -1,5 +1,5 @@
-from player import Player
-from othello_board import OthelloBoard
+from core.player import Player
+from othello.othello_board import OthelloBoard
 
 
 class Othello(object):

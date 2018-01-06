@@ -1,5 +1,5 @@
-from othello import Othello
-from othello_events import PlayerPlacementEvent
+from othello.othello import Othello
+from othello.othello_events import PlayerPlacementEvent
 
 
 class OthelloManager(object):

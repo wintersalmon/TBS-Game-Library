@@ -1,6 +1,6 @@
-from tic_tac_toe import TicTacToe
-from tic_tac_toe_draw_handler import TicTacToeDrawHandler
-from tic_tac_toe_event_handler import TicTacToeEventHandler
+from tic_tac_toe.tic_tac_toe import TicTacToe
+from tic_tac_toe.tic_tac_toe_draw_handler import TicTacToeDrawHandler
+from tic_tac_toe.tic_tac_toe_event_handler import TicTacToeEventHandler
 from collections import MutableSequence
 
 

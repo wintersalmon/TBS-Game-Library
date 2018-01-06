@@ -1,4 +1,4 @@
-from errors import PositionOutOfBoundsError, PositionAlreadyOccupiedError, PositionHasNoFlipTargetsError, \
+from othello.errors import PositionOutOfBoundsError, PositionAlreadyOccupiedError, PositionHasNoFlipTargetsError, \
     InvalidMarkerTypeError
 
 

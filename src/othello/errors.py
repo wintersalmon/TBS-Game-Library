@@ -1,4 +1,7 @@
-class OthelloCustomError(Exception):
+from core.error import CustomError
+
+
+class OthelloCustomError(CustomError):
     pass
 
 

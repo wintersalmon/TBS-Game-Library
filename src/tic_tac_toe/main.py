@@ -1,8 +1,8 @@
-from events.placement_event import PlayerPlacementEvent
-from tic_tac_toe_manager import TicTacToeManager
+from tic_tac_toe.events.placement_event import PlayerPlacementEvent
+from tic_tac_toe.tic_tac_toe_manager import TicTacToeManager
 
 
-def main_turn():
+def main():
     manager = TicTacToeManager.create(player_one='tom', player_two='jerry', rows=3, cols=3)
 
     while manager.is_running():
@@ -32,4 +32,4 @@ def read_user_event(turn_player_name):
 
 
 if __name__ == '__main__':
-    main_turn()
+    main()
