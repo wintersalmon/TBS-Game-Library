@@ -1,4 +1,4 @@
-from board import InvalidPositionError
+from errors import InvalidPositionError, InvalidUserInputError, EndOfInputError
 from events import PlayerPlacementEvent
 from othello import Othello
 
@@ -12,21 +12,27 @@ def main():
             row, col = get_user_input_or_raise_error()
             event = PlayerPlacementEvent.create(row=row, col=col)
             event.update(othello)
-        except EOFError as e:
-            print(e)
-            exit()
+
+        except InvalidUserInputError as e:
+            print(e.__class__.__name__, e)
+
         except InvalidPositionError as e:
             print(e.__class__.__name__, e)
-        except ValueError as e:
-            print(e)
+
+        except EndOfInputError:
+            print('End of Input, Exit game ...')
+            exit()
 
 
 def get_user_input_or_raise_error():
-    row, col = input('row, col: ').split()
-    row, col = int(row), int(col)
+    try:
+        row, col = input('row, col: ').split()
+        row, col = int(row), int(col)
+    except ValueError as e:
+        raise InvalidUserInputError(e)
 
     if row == 0 and col == 0:
-        raise EOFError
+        raise EndOfInputError
 
     row, col = row - 1, col - 1
 

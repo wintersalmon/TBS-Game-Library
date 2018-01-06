@@ -1,17 +1,4 @@
-class InvalidPositionError(Exception):
-    pass
-
-
-class PositionOutOfBoundsError(InvalidPositionError):
-    pass
-
-
-class PositionAlreadyOccupiedError(InvalidPositionError):
-    pass
-
-
-class PositionHasNoFlipTargetsError(InvalidPositionError):
-    pass
+from errors import PositionOutOfBoundsError, PositionAlreadyOccupiedError, PositionHasNoFlipTargetsError
 
 
 class Tile(object):
