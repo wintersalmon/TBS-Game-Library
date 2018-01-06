@@ -3,9 +3,7 @@ from core.board import Board
 
 class TTTBoard(Board):
     def __init__(self, rows, cols):
-        self.rows = rows
-        self.cols = cols
-        self.tiles = [[None] * cols for _ in range(rows)]
+        super().__init__(rows, cols)
 
     def __repr__(self):
         lines = list()
