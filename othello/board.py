@@ -27,10 +27,10 @@ class Tile(object):
 
 
 class Board(object):
-    MARKER_BLACK = -1
     MARKER_INIT = 0
-    MARKER_WHITE = 1
-    MARKER_FLIP = -1
+    MARKER_BLACK = 1
+    MARKER_WHITE = 2
+    MARKER_FLIP = 3
 
     def __init__(self):
         self.rows = 8
@@ -154,4 +154,4 @@ class Board(object):
     def _flip(self, row, col):
         if self.tiles[row][col] is self.MARKER_INIT:
             raise ValueError('cannot flip init marker')
-        self.tiles[row][col] *= self.MARKER_FLIP
+        self.tiles[row][col] ^= self.MARKER_FLIP

@@ -34,7 +34,7 @@ def get_user_input_or_raise_error():
 
 
 def draw(game):
-    markers = [' ', '○', '●']
+    markers = [' ', '●', '○']
     for row in range(game.board.rows):
         for col in range(game.board.cols):
             idx = game.board.tiles[row][col]
