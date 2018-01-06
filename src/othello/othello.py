@@ -1,5 +1,5 @@
 from core.player import Player
-from othello.othello_board import OthelloBoard
+from othello.board import OthelloBoard
 
 
 class Othello(object):
