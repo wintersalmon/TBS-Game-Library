@@ -1,33 +1,41 @@
-from tic_tac_toe.tic_tac_toe import TicTacToe
-from tic_tac_toe.draw_handler import TicTacToeDrawHandler
-from tic_tac_toe.event_handler import TicTacToeEventHandler
-from collections import MutableSequence
+from tic_tac_toe.events import PlayerPlacementEvent
+from tic_tac_toe.game import TicTacToeGame
+from tic_tac_toe.handlers import TicTacToeDrawHandler, TicTacToeUpdateHandler
+from core.manager import Manager
 
 
-class TicTacToeManager(object):
-    def __init__(self, game, events):
-        if not isinstance(game, TicTacToe):
-            raise ValueError('invalid type game (TicTacToe)')
+class TicTacToeManager(Manager):
+    def __init__(self, init_data, game, events):
+        super().__init__(init_data, game, events,
+                         draw_handler_class=TicTacToeDrawHandler,
+                         update_handler_class=TicTacToeUpdateHandler)
 
-        if not isinstance(events, MutableSequence):
-            raise ValueError('invalid type events (MutableSequence)')
-
-        self.game = game
-        self.events = events
-        self.event_handler = TicTacToeEventHandler(self.game, self.events)
-        self.draw_handler = TicTacToeDrawHandler(self.game)
-
-    def is_running(self):
+    def __bool__(self):
         return self.game.status
 
-    def update(self, event):
-        self.event_handler.update(event)
-
-    def draw(self):
-        self.draw_handler.draw()
+    def encode(self):
+        return {
+            'init_data': self.init_data,
+            'events': [event.encode() for event in self.events],
+        }
 
     @classmethod
-    def create(cls, player_one, player_two, rows, cols):
-        game = TicTacToe(player_one, player_two, rows, cols)
-        events = list()
-        return cls(game, events)
+    def decode(cls, **kwargs):
+        decoded_kwargs = {
+            'init_data': kwargs['init_data'],
+            'events': [PlayerPlacementEvent.decode(**e_kwargs) for e_kwargs in kwargs['events']]
+        }
+        return cls.create(**decoded_kwargs)
+
+    @classmethod
+    def create(cls, **kwargs):
+        init_data = kwargs['init_data']
+        events = kwargs['events'] if 'events' in kwargs else None
+        game = TicTacToeGame(**init_data)
+
+        manager = TicTacToeManager(init_data=init_data, game=game, events=list())
+        if events is not None:
+            for event in events:
+                manager.update(event)
+
+        return manager

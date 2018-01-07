@@ -2,7 +2,7 @@ from tic_tac_toe.board import TTTBoard
 from core.player import Player
 
 
-class TicTacToe(object):
+class TicTacToeGame(object):
     def __init__(self, player_one, player_two, rows, cols):
         self.players = dict()
         self.players[player_one] = Player(player_one)

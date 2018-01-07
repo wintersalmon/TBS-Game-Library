@@ -45,7 +45,7 @@ class PlayerPlacementEvent(Event):
         return {
             'row': self._row,
             'col': self._col,
-            'player': self._player_name,
+            'player_name': self._player_name,
         }
 
     @classmethod

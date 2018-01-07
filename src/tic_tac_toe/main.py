@@ -1,21 +1,34 @@
-from tic_tac_toe.placement_event import PlayerPlacementEvent
+from tic_tac_toe.events import PlayerPlacementEvent
 from tic_tac_toe.manager import TicTacToeManager
 
 
 def main():
-    manager = TicTacToeManager.create(player_one='tom', player_two='jerry', rows=3, cols=3)
+    settings = {
+        'init_data': {
+            'player_one': 'tom',
+            'player_two': 'jerry',
+            'rows': 3,
+            'cols': 3
+        }
+    }
+    tic_tac_toe = TicTacToeManager.create(**settings)
 
-    while manager.is_running():
+    tic_tac_toe.draw()
+    while tic_tac_toe:
         try:
-            event = read_user_event(manager.game.get_turn_player_name())
-            manager.update(event)
+            event = read_user_event(tic_tac_toe.game.get_turn_player_name())
+            tic_tac_toe.update(event)
         except ValueError as e:
             print(e)
         except EOFError as e:
             print(e)
-            exit()
+            break
         else:
-            manager.draw()
+            tic_tac_toe.draw()
+
+    en = tic_tac_toe.encode()
+    de = TicTacToeManager.decode(**en)
+    de.draw()
 
 
 def read_user_event(turn_player_name):
