@@ -11,22 +11,22 @@ def main():
             'cols': 3
         }
     }
-    tic_tac_toe = TicTacToeManager.create(**settings)
+    tic_tac_toe_manager = TicTacToeManager.create(**settings)
 
-    tic_tac_toe.draw()
-    while tic_tac_toe:
+    tic_tac_toe_manager.draw()
+    while tic_tac_toe_manager:
         try:
-            event = read_user_event(tic_tac_toe.game.get_turn_player_name())
-            tic_tac_toe.update(event)
+            event = read_user_event(tic_tac_toe_manager.game.get_turn_player_name())
+            tic_tac_toe_manager.update(event)
         except ValueError as e:
             print(e)
         except EOFError as e:
             print(e)
             break
         else:
-            tic_tac_toe.draw()
+            tic_tac_toe_manager.draw()
 
-    en = tic_tac_toe.encode()
+    en = tic_tac_toe_manager.encode()
     de = TicTacToeManager.decode(**en)
     de.draw()
 
