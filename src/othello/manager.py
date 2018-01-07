@@ -1,5 +1,5 @@
 from core.manager import Manager
-from othello.event import PlayerPlacementEvent
+from othello.events import PlayerPlacementEvent
 from othello.game import OthelloGame
 from othello.handlers import OthelloDrawHandler, OthelloUpdateHandler
 
