@@ -1,14 +1,19 @@
 from core.manager import Manager
 from othello.events import PlayerPlacementEvent
 from othello.game import OthelloGame
-from othello.handlers import OthelloDrawHandler, OthelloUpdateHandler
 
 
 class OthelloManager(Manager):
     def __init__(self, init_data, game, events):
-        super().__init__(init_data, game, events,
-                         draw_handler_class=OthelloDrawHandler,
-                         update_handler_class=OthelloUpdateHandler)
+        super().__init__(init_data, game, events)
+
+    def update(self, event):
+        try:
+            event.update(self.game)
+        except Exception as e:
+            raise e
+        else:
+            self.events.append(event)
 
     def encode(self):
         return {
