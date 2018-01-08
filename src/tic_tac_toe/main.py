@@ -1,5 +1,6 @@
 from tic_tac_toe.events import PlayerPlacementEvent
 from tic_tac_toe.manager import TicTacToeManager
+from tic_tac_toe.wrappers import TicTacToeCLIWrapper
 
 
 def main():
@@ -12,9 +13,10 @@ def main():
         }
     }
     tic_tac_toe_manager = TicTacToeManager.create(**settings)
+    tic_tac_toe_cli_wrapper = TicTacToeCLIWrapper(tic_tac_toe_manager)
 
-    tic_tac_toe_manager.draw()
-    while tic_tac_toe_manager:
+    tic_tac_toe_cli_wrapper.draw()
+    while tic_tac_toe_cli_wrapper:
         try:
             event = read_user_event(tic_tac_toe_manager.game.get_turn_player_name())
             tic_tac_toe_manager.update(event)
@@ -24,11 +26,12 @@ def main():
             print(e)
             break
         else:
-            tic_tac_toe_manager.draw()
+            tic_tac_toe_cli_wrapper.draw()
 
     en = tic_tac_toe_manager.encode()
     de = TicTacToeManager.decode(**en)
-    de.draw()
+    de_cli = TicTacToeCLIWrapper(de)
+    de_cli.draw()
 
 
 def read_user_event(turn_player_name):

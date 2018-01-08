@@ -1,17 +1,19 @@
+from core.manager import Manager
 from tic_tac_toe.events import PlayerPlacementEvent
 from tic_tac_toe.game import TicTacToeGame
-from tic_tac_toe.handlers import TicTacToeDrawHandler, TicTacToeUpdateHandler
-from core.manager import Manager
 
 
 class TicTacToeManager(Manager):
     def __init__(self, init_data, game, events):
-        super().__init__(init_data, game, events,
-                         draw_handler_class=TicTacToeDrawHandler,
-                         update_handler_class=TicTacToeUpdateHandler)
+        super().__init__(init_data, game, events)
 
-    def __bool__(self):
-        return self.game.status
+    def update(self, event):
+        try:
+            event.update(self.game)
+        except Exception as e:
+            raise e
+        else:
+            self.events.append(event)
 
     def encode(self):
         return {

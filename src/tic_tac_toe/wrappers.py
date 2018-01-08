@@ -1,13 +1,16 @@
-from core.handlers import ManagerFunctionHandler
+from core.wrapper import GameWrapper
 
 
-class TicTacToeDrawHandler(ManagerFunctionHandler):
+class TicTacToeCLIWrapper(GameWrapper):
     TILE_MARKERS = ('O', 'X', ' ')
 
     def __init__(self, manager):
         super().__init__(manager)
 
-    def function(self):
+    def __bool__(self):
+        return self.manager.game.status
+
+    def draw(self):
         status_msg = 'RUNNING' if self.manager.game.status else 'STOPPED'
         print('game status: {}'.format(status_msg))
 
@@ -23,16 +26,3 @@ class TicTacToeDrawHandler(ManagerFunctionHandler):
                 board_fmt += '[' + marker + ']'
             board_fmt += '\n'
         print(board_fmt)
-
-
-class TicTacToeUpdateHandler(ManagerFunctionHandler):
-    def __init__(self, manager):
-        super().__init__(manager)
-
-    def function(self, event):
-        try:
-            event.update(self.manager.game)
-        except Exception as e:
-            raise e
-        else:
-            self.manager.events.append(event)
