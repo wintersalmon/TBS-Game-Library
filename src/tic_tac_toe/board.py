@@ -2,8 +2,8 @@ from core.board import Board
 
 
 class TTTBoard(Board):
-    def __init__(self, tiles=None):
-        super().__init__(3, 3, tiles=tiles)
+    def __init__(self, *, tiles=None):
+        super().__init__(rows=3, cols=3, init_value=None, tiles=tiles)
 
     def encode(self):
         return {

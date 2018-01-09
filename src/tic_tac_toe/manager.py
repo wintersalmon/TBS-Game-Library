@@ -5,8 +5,8 @@ from tic_tac_toe.game import TicTacToeGame
 
 
 class TicTacToeManager(Manager):
-    def __init__(self, init_data, game, events):
-        super().__init__(init_data, game, events)
+    def __init__(self, settings, game, events):
+        super().__init__(settings, game, events)
 
     def update(self, event):
         try:
@@ -18,7 +18,7 @@ class TicTacToeManager(Manager):
 
     def encode(self):
         return {
-            'init_data': self.init_data,
+            'settings': self.settings,
             'game': self.game.encode(),
             'events': [event.encode() for event in self.events],
         }
@@ -26,7 +26,7 @@ class TicTacToeManager(Manager):
     @classmethod
     def decode(cls, **kwargs):
         decoded_kwargs = {
-            'init_data': kwargs['init_data'],
+            'settings': kwargs['settings'],
             'game': TicTacToeGame.decode(**kwargs['game']),
             'events': [PlayerPlacementEvent.decode(**e_kwargs) for e_kwargs in kwargs['events']]
         }
@@ -35,15 +35,8 @@ class TicTacToeManager(Manager):
 
     @classmethod
     def create(cls, **kwargs):
-        init_data = kwargs['init_data']
-
-        data_players = init_data['players']
-
-        players = [Player(p) for p in data_players]
-
+        settings = kwargs
+        players = [Player(p) for p in kwargs['player_names']]
         game = TicTacToeGame(players=players)
-        events = kwargs['events'] if 'events' in kwargs else list()
-
-        manager = TicTacToeManager(init_data=init_data, game=game, events=events)
-
-        return manager
+        events = list()
+        return cls(settings=settings, game=game, events=events)

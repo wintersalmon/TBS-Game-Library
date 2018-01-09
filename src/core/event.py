@@ -1,4 +1,7 @@
-class Event(object):
+from core.utils import Serializable
+
+
+class Event(Serializable):
     def update(self, game):
         raise NotImplementedError
 

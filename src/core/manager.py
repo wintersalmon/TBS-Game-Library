@@ -1,6 +1,9 @@
-class Manager(object):
-    def __init__(self, init_data, game, events):
-        self.init_data = init_data
+from core.utils import Serializable
+
+
+class Manager(Serializable):
+    def __init__(self, settings, game, events):
+        self.settings = settings
         self.game = game
         self.events = events
 

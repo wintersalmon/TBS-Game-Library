@@ -5,9 +5,7 @@ from tic_tac_toe.wrappers import TicTacToeCLIWrapper
 
 def main():
     settings = {
-        'init_data': {
-            'players': ['tom', 'jerry']
-        }
+        'player_names': ['tom', 'jerry']
     }
     tic_tac_toe_manager = TicTacToeManager.create(**settings)
     tic_tac_toe_cli_wrapper = TicTacToeCLIWrapper(tic_tac_toe_manager)

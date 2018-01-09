@@ -32,15 +32,6 @@ class PlayerPlacementEvent(Event):
         if game.board.has_bingo():
             game.status = False
 
-    @classmethod
-    def create(cls, **kwargs):
-        # verify kwargs
-        player_name = cls.get_argument_or_raise_error(kwargs, 'player_name')
-        row = cls.get_argument_or_raise_error(kwargs, 'row')
-        col = cls.get_argument_or_raise_error(kwargs, 'col')
-
-        return cls(player_name=player_name, row=row, col=col)
-
     def encode(self):
         return {
             'row': self._row,
@@ -51,3 +42,12 @@ class PlayerPlacementEvent(Event):
     @classmethod
     def decode(cls, **kwargs):
         return cls.create(**kwargs)
+
+    @classmethod
+    def create(cls, **kwargs):
+        # verify kwargs
+        player_name = cls.get_argument_or_raise_error(kwargs, 'player_name')
+        row = cls.get_argument_or_raise_error(kwargs, 'row')
+        col = cls.get_argument_or_raise_error(kwargs, 'col')
+
+        return cls(player_name=player_name, row=row, col=col)

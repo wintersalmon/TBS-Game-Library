@@ -4,8 +4,8 @@ from othello.game import OthelloGame
 
 
 class OthelloManager(Manager):
-    def __init__(self, init_data, game, events):
-        super().__init__(init_data, game, events)
+    def __init__(self, settings, game, events):
+        super().__init__(settings, game, events)
 
     def update(self, event):
         try:
@@ -17,7 +17,7 @@ class OthelloManager(Manager):
 
     def encode(self):
         return {
-            'init_data': self.init_data,
+            'init_data': self.settings,
             'events': [event.encode() for event in self.events],
         }
 
@@ -35,7 +35,7 @@ class OthelloManager(Manager):
         events = kwargs['events'] if 'events' in kwargs else None
         game = OthelloGame(**init_data)
 
-        manager = OthelloManager(init_data=init_data, game=game, events=list())
+        manager = OthelloManager(settings=init_data, game=game, events=list())
 
         if events is not None:
             for event in events:
