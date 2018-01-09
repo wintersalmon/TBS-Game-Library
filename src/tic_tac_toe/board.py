@@ -2,8 +2,18 @@ from core.board import Board
 
 
 class TTTBoard(Board):
-    def __init__(self, rows, cols):
-        super().__init__(rows, cols)
+    def __init__(self, tiles=None):
+        super().__init__(3, 3, tiles=tiles)
+
+    def encode(self):
+        return {
+            'tiles': self.tiles
+        }
+
+    @classmethod
+    def decode(cls, **kwargs):
+        tiles = kwargs['tiles']
+        return cls(tiles=tiles)
 
     def __repr__(self):
         lines = list()

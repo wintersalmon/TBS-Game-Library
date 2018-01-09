@@ -17,9 +17,9 @@ class TicTacToeCLIWrapper(GameWrapper):
         board_fmt = ''
         for row in self.manager.game.board.tiles:
             for col in row:
-                if col == self.manager.game.player_names[0]:
+                if col == self.manager.game.players[0].name:
                     marker = self.TILE_MARKERS[0]
-                elif col == self.manager.game.player_names[1]:
+                elif col == self.manager.game.players[1].name:
                     marker = self.TILE_MARKERS[1]
                 else:
                     marker = self.TILE_MARKERS[2]
