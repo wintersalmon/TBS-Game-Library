@@ -5,7 +5,9 @@ from othello.wrappers import OthelloCLIWrapper
 
 
 def main():
-    settings = {'init_data': {'player_one': 'tom', 'player_two': 'jerry'}}
+    settings = {
+        'player_names': ['tom', 'jerry']
+    }
     othello_manager = OthelloManager.create(**settings)
     othello_cli_wrapper = OthelloCLIWrapper(othello_manager)
 

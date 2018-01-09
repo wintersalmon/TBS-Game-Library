@@ -14,12 +14,25 @@ class OthelloBoard(Board):
         MARKER_WHITE,
     ]
 
-    def __init__(self):
-        super().__init__(8, 8, init_value=self.MARKER_INIT)
-        self.tiles[3][3] = self.MARKER_BLACK
-        self.tiles[3][4] = self.MARKER_WHITE
-        self.tiles[4][3] = self.MARKER_WHITE
-        self.tiles[4][4] = self.MARKER_BLACK
+    def __init__(self, tiles=None):
+        if tiles is None:
+            super().__init__(8, 8, init_value=self.MARKER_INIT)
+            self.tiles[3][3] = self.MARKER_BLACK
+            self.tiles[3][4] = self.MARKER_WHITE
+            self.tiles[4][3] = self.MARKER_WHITE
+            self.tiles[4][4] = self.MARKER_BLACK
+        else:
+            super().__init__(8, 8, init_value=self.MARKER_INIT, tiles=tiles)
+
+    def encode(self):
+        return {
+            'tiles': self.tiles
+        }
+
+    @classmethod
+    def decode(cls, **kwargs):
+        tiles = kwargs['tiles']
+        return cls(tiles=tiles)
 
     def set(self, row, col, value):
         # check Marker Type
