@@ -25,11 +25,15 @@
     + decode
 
 
-- GameMutableManager(GameManager)
+- GameViewableManager(GameManager)
+    + view
+
+
+- GameMutableManager(GameViewableManager)
     + update
 
 
-- GameReplayManager(GameManager)
+- GameReplayManager(GameViewableManager)
     + max_position
     + get_position
     + set_position
@@ -39,7 +43,6 @@
 
 - GameCLIManager(GameMutableManager)
     + status
-    + draw
 
 
 ### UTIL

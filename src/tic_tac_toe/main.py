@@ -1,16 +1,16 @@
 from tic_tac_toe.events import PlayerPlacementEvent
-from tic_tac_toe.managers import TicTacToeManager
+from tic_tac_toe.managers import TicTacToeManager, TicTacToeMutableManager
 from tic_tac_toe.managers import TicTacToeReplayManager
-from tic_tac_toe.managers import TicTacToeCLIWWrapper
+from tic_tac_toe.managers import TicTacToeCLIManager
 
 
 def main():
     settings = {
         'player_names': ['tom', 'jerry']
     }
-    ttt_manager = TicTacToeCLIWWrapper.create(**settings)
+    ttt_manager = TicTacToeCLIManager.create(**settings)
 
-    ttt_manager.draw()
+    ttt_manager.view()
     while ttt_manager:
         try:
             event = read_user_event(ttt_manager.game.get_turn_player_name())
@@ -21,11 +21,11 @@ def main():
             print(e)
             break
         else:
-            ttt_manager.draw()
+            ttt_manager.view()
 
     encoded_ttt_data = ttt_manager.encode()
-    decoded_ttt_manager = TicTacToeCLIWWrapper.decode(**encoded_ttt_data)
-    decoded_ttt_manager.draw()
+    decoded_ttt_manager = TicTacToeCLIManager.decode(**encoded_ttt_data)
+    decoded_ttt_manager.view()
 
 
 def read_user_event(turn_player_name):
@@ -45,8 +45,7 @@ def replay_main():
     settings = {
         'player_names': ['tom', 'jerry']
     }
-    tic_tac_toe_manager = TicTacToeManager.create(**settings)
-    tic_tac_toe_cli_wrapper = TicTacToeCLIWrapper(tic_tac_toe_manager)
+    tic_tac_toe_manager = TicTacToeMutableManager.create(**settings)
     events = [
         PlayerPlacementEvent.create(player_name='tom', row=1, col=1),
         PlayerPlacementEvent.create(player_name='jerry', row=0, col=0),
@@ -62,47 +61,47 @@ def replay_main():
 
     for event in events:
         tic_tac_toe_manager.update(event)
-        tic_tac_toe_cli_wrapper.draw()
+        tic_tac_toe_manager.view()
 
-    tic_tac_toe_cli_wrapper.draw()
+    tic_tac_toe_manager.view()
     encoded_game_data = tic_tac_toe_manager.encode()
 
     print('INIT')
     tic_tac_toe_replay_manager = TicTacToeReplayManager.decode(**encoded_game_data)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_cli_wrapper.draw()
+    tic_tac_toe_manager.view()
 
     print('BACKWARD')
     while tic_tac_toe_replay_manager.get_position() > 0:
         tic_tac_toe_replay_manager.backward()
         print(tic_tac_toe_replay_manager)
-        tic_tac_toe_cli_wrapper.draw()
+        tic_tac_toe_manager.view()
 
     print('FORWARD')
     while tic_tac_toe_replay_manager.get_position() < tic_tac_toe_replay_manager.get_max_position():
         tic_tac_toe_replay_manager.forward()
         print(tic_tac_toe_replay_manager)
-        tic_tac_toe_cli_wrapper.draw()
+        tic_tac_toe_manager.view()
 
     print('SET 0')
     tic_tac_toe_replay_manager.set_position(0)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_cli_wrapper.draw()
+    tic_tac_toe_manager.view()
 
     print('SET 7')
     tic_tac_toe_replay_manager.set_position(7)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_cli_wrapper.draw()
+    tic_tac_toe_manager.view()
 
     print('SET 4')
     tic_tac_toe_replay_manager.set_position(4)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_cli_wrapper.draw()
+    tic_tac_toe_manager.view()
 
     print('SET 1')
     tic_tac_toe_replay_manager.set_position(1)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_cli_wrapper.draw()
+    tic_tac_toe_manager.view()
 
 
 if __name__ == '__main__':

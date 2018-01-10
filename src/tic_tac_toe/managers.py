@@ -35,20 +35,7 @@ class TicTacToeManager(Manager):
         return cls(settings=settings, game=game, events=events)
 
 
-class TicTacToeMutableManager(TicTacToeManager):
-    def __init__(self, settings, game, events):
-        super().__init__(settings, game, events)
-
-    def update(self, event):
-        try:
-            event.update(self.game)
-        except Exception as e:
-            raise e
-        else:
-            self.events.append(event)
-
-
-class TicTacToeCLIWWrapper(TicTacToeMutableManager):
+class TicTacToeViewableManager(TicTacToeManager):
     TILE_MARKERS = ('O', 'X', ' ')
 
     def __init__(self, settings, game, events):
@@ -57,7 +44,7 @@ class TicTacToeCLIWWrapper(TicTacToeMutableManager):
     def __bool__(self):
         return self.game.status
 
-    def draw(self):
+    def view(self):
         status_msg = 'RUNNING' if self.game.status else 'STOPPED'
         print('game status: {}'.format(status_msg))
 
@@ -75,7 +62,24 @@ class TicTacToeCLIWWrapper(TicTacToeMutableManager):
         print(board_fmt)
 
 
-class TicTacToeReplayManager(TicTacToeManager):
+class TicTacToeMutableManager(TicTacToeViewableManager):
+    def __init__(self, settings, game, events):
+        super().__init__(settings, game, events)
+
+    def update(self, event):
+        try:
+            event.update(self.game)
+        except Exception as e:
+            raise e
+        else:
+            self.events.append(event)
+
+
+class TicTacToeCLIManager(TicTacToeMutableManager):
+    pass
+
+
+class TicTacToeReplayManager(TicTacToeViewableManager):
     def __init__(self, settings, game, events):
         super().__init__(settings, game, events)
         self._max_position = len(self.events)
