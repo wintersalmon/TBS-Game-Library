@@ -17,41 +17,29 @@
     + decode
 
 
-### MANAGER
+### Manager
 - GameManager(Serializable)
-    + update
+    + init
     + create
     + encode
     + decode
 
 
-### Wrappers
-- GameWrapper(object)
-    + init(game_controller)
+- GameMutableManager(GameManager)
+    + update
 
 
-- GameFileWrapper(GameManager)
-    + save
-    + load
-
-
-- GameCLIWrapper(GameManager)
-    + status
-    + draw
-    + (get_user_input)
-
-
-- GameGUIWrapper(GameManager)
-    + status
-    + draw
-    + (get_user_input)
-
-
-- GameReplayWrapper(GameManager)
-    + load
+- GameReplayManager(GameManager)
+    + max_position
+    + get_position
+    + set_position
     + forward
     + backward
-    + move_to
+
+
+- GameCLIManager(GameMutableManager)
+    + status
+    + draw
 
 
 ### UTIL
