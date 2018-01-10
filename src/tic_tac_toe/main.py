@@ -1,6 +1,7 @@
 from tic_tac_toe.events import PlayerPlacementEvent
 from tic_tac_toe.manager import TicTacToeManager
-from tic_tac_toe.wrappers import TicTacToeCLIWrapper, TicTacToeReplayWrapper
+from tic_tac_toe.wrappers import TicTacToeCLIWrapper
+from tic_tac_toe.manager import TicTacToeReplayManager
 
 
 def main():
@@ -66,11 +67,44 @@ def replay_main():
         tic_tac_toe_cli_wrapper.draw()
 
     tic_tac_toe_cli_wrapper.draw()
+    encoded_game_data = tic_tac_toe_manager.encode()
 
-    tic_tac_toe_replay_wrapper = TicTacToeReplayWrapper(tic_tac_toe_manager)
-    while tic_tac_toe_replay_wrapper.get_position() > 0:
-        tic_tac_toe_replay_wrapper.backward()
+    print('INIT')
+    tic_tac_toe_replay_manager = TicTacToeReplayManager.decode(**encoded_game_data)
+    print(tic_tac_toe_replay_manager)
+    tic_tac_toe_cli_wrapper.draw()
+
+    print('BACKWARD')
+    while tic_tac_toe_replay_manager.get_position() > 0:
+        tic_tac_toe_replay_manager.backward()
+        print(tic_tac_toe_replay_manager)
         tic_tac_toe_cli_wrapper.draw()
+
+    print('FORWARD')
+    while tic_tac_toe_replay_manager.get_position() < tic_tac_toe_replay_manager.get_max_position():
+        tic_tac_toe_replay_manager.forward()
+        print(tic_tac_toe_replay_manager)
+        tic_tac_toe_cli_wrapper.draw()
+
+    print('SET 0')
+    tic_tac_toe_replay_manager.set_position(0)
+    print(tic_tac_toe_replay_manager)
+    tic_tac_toe_cli_wrapper.draw()
+
+    print('SET 7')
+    tic_tac_toe_replay_manager.set_position(7)
+    print(tic_tac_toe_replay_manager)
+    tic_tac_toe_cli_wrapper.draw()
+
+    print('SET 4')
+    tic_tac_toe_replay_manager.set_position(4)
+    print(tic_tac_toe_replay_manager)
+    tic_tac_toe_cli_wrapper.draw()
+
+    print('SET 1')
+    tic_tac_toe_replay_manager.set_position(1)
+    print(tic_tac_toe_replay_manager)
+    tic_tac_toe_cli_wrapper.draw()
 
 
 if __name__ == '__main__':

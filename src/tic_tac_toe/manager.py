@@ -1,3 +1,4 @@
+from core.error import CustomError
 from core.manager import Manager
 from core.player import Player
 from tic_tac_toe.events import PlayerPlacementEvent
@@ -40,3 +41,49 @@ class TicTacToeManager(Manager):
         game = TicTacToeGame(players=players)
         events = list()
         return cls(settings=settings, game=game, events=events)
+
+
+class TicTacToeReplayManager(TicTacToeManager):
+    def __init__(self, settings, game, events):
+        super().__init__(settings, game, events)
+        self._max_position = len(self.events)
+        self._cur_position = self._max_position
+
+    def set_position(self, position):
+        if 0 <= position <= self._max_position:
+            pos_difference = position - self._cur_position
+            pos_offset = abs(pos_difference)
+
+            if pos_difference >= 0:
+                move_to_direction = self.forward
+            else:
+                move_to_direction = self.backward
+
+            while pos_offset > 0:
+                move_to_direction()
+                pos_offset -= 1
+
+    def get_max_position(self):
+        return self._max_position
+
+    def get_position(self):
+        return self._cur_position
+
+    def forward(self):
+        if self._cur_position < self._max_position:
+            event = self.events[self._cur_position - 1]
+            event.update(self.game)
+            self._cur_position += 1
+            return True
+        raise CustomError('Impossible to move forward')
+
+    def backward(self):
+        if self._cur_position >= 0:
+            event = self.events[self._cur_position - 1]
+            event.rollback(self.game)
+            self._cur_position -= 1
+            return True
+        raise CustomError('Impossible to move backward')
+
+    def __repr__(self):
+        return '{}/{}'.format(self._cur_position, self._max_position)
