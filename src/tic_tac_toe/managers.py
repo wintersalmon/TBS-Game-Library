@@ -107,7 +107,7 @@ class TicTacToeReplayManager(TicTacToeViewableManager):
 
     def forward(self):
         if self._cur_position < self._max_position:
-            event = self.events[self._cur_position - 1]
+            event = self.events[self._cur_position]
             event.update(self.game)
             self._cur_position += 1
             return True
