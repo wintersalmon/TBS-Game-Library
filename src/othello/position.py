@@ -18,3 +18,6 @@ class Position(ImmutableObject):
     @classmethod
     def decode(cls, **kwargs):
         return cls(**kwargs)
+
+    def __repr__(self):
+        return '{}({},{})'.format(self.__class__.__name__, self.row, self.col)

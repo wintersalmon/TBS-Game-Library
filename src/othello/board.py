@@ -55,7 +55,7 @@ class OthelloBoard(Board):
         if self.is_set(row, col):
             self.tiles[row][col] ^= self.MARKER_FLIP
         else:
-            raise ValueError('cannot flip init marker')
+            raise ValueError('cannot flip init marker ({}, {}: {})'.format(row, col, self.tiles[row][col]))
 
     def flip_all_positions(self, positions):
         for pos in positions:
