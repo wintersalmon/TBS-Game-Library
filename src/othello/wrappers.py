@@ -1,4 +1,4 @@
-from core.wrapper import GameWrapper
+from core.manager import GameWrapper
 
 
 class OthelloCLIWrapper(GameWrapper):

@@ -1,14 +1,14 @@
 from tic_tac_toe.events import PlayerPlacementEvent
 from tic_tac_toe.managers import TicTacToeManager
 from tic_tac_toe.managers import TicTacToeReplayManager
-from tic_tac_toe.managers import TicTacToeCLIWManager
+from tic_tac_toe.managers import TicTacToeCLIWWrapper
 
 
 def main():
     settings = {
         'player_names': ['tom', 'jerry']
     }
-    ttt_manager = TicTacToeCLIWManager.create(**settings)
+    ttt_manager = TicTacToeCLIWWrapper.create(**settings)
 
     ttt_manager.draw()
     while ttt_manager:
@@ -24,7 +24,7 @@ def main():
             ttt_manager.draw()
 
     encoded_ttt_data = ttt_manager.encode()
-    decoded_ttt_manager = TicTacToeCLIWManager.decode(**encoded_ttt_data)
+    decoded_ttt_manager = TicTacToeCLIWWrapper.decode(**encoded_ttt_data)
     decoded_ttt_manager.draw()
 
 

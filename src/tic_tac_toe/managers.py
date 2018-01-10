@@ -48,7 +48,7 @@ class TicTacToeMutableManager(TicTacToeManager):
             self.events.append(event)
 
 
-class TicTacToeCLIWManager(TicTacToeMutableManager):
+class TicTacToeCLIWWrapper(TicTacToeMutableManager):
     TILE_MARKERS = ('O', 'X', ' ')
 
     def __init__(self, settings, game, events):
