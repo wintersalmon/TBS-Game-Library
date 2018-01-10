@@ -1,33 +1,31 @@
 from tic_tac_toe.events import PlayerPlacementEvent
-from tic_tac_toe.manager import TicTacToeManager
-from tic_tac_toe.wrappers import TicTacToeCLIWrapper
-from tic_tac_toe.manager import TicTacToeReplayManager
+from tic_tac_toe.managers import TicTacToeManager
+from tic_tac_toe.managers import TicTacToeReplayManager
+from tic_tac_toe.managers import TicTacToeCLIWManager
 
 
 def main():
     settings = {
         'player_names': ['tom', 'jerry']
     }
-    tic_tac_toe_manager = TicTacToeManager.create(**settings)
-    tic_tac_toe_cli_wrapper = TicTacToeCLIWrapper(tic_tac_toe_manager)
+    ttt_manager = TicTacToeCLIWManager.create(**settings)
 
-    tic_tac_toe_cli_wrapper.draw()
-    while tic_tac_toe_cli_wrapper:
+    ttt_manager.draw()
+    while ttt_manager:
         try:
-            event = read_user_event(tic_tac_toe_manager.game.get_turn_player_name())
-            tic_tac_toe_manager.update(event)
+            event = read_user_event(ttt_manager.game.get_turn_player_name())
+            ttt_manager.update(event)
         except ValueError as e:
             print(e)
         except EOFError as e:
             print(e)
             break
         else:
-            tic_tac_toe_cli_wrapper.draw()
+            ttt_manager.draw()
 
-    en = tic_tac_toe_manager.encode()
-    de = TicTacToeManager.decode(**en)
-    de_cli = TicTacToeCLIWrapper(de)
-    de_cli.draw()
+    encoded_ttt_data = ttt_manager.encode()
+    decoded_ttt_manager = TicTacToeCLIWManager.decode(**encoded_ttt_data)
+    decoded_ttt_manager.draw()
 
 
 def read_user_event(turn_player_name):

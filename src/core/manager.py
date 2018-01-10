@@ -7,9 +7,6 @@ class Manager(Serializable):
         self.game = game
         self.events = events
 
-    def update(self, event):
-        raise NotImplementedError
-
     def encode(self):
         raise NotImplementedError
 

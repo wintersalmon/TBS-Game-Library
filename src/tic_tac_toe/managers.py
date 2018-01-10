@@ -9,14 +9,6 @@ class TicTacToeManager(Manager):
     def __init__(self, settings, game, events):
         super().__init__(settings, game, events)
 
-    def update(self, event):
-        try:
-            event.update(self.game)
-        except Exception as e:
-            raise e
-        else:
-            self.events.append(event)
-
     def encode(self):
         return {
             'settings': self.settings,
@@ -41,6 +33,46 @@ class TicTacToeManager(Manager):
         game = TicTacToeGame(players=players)
         events = list()
         return cls(settings=settings, game=game, events=events)
+
+
+class TicTacToeMutableManager(TicTacToeManager):
+    def __init__(self, settings, game, events):
+        super().__init__(settings, game, events)
+
+    def update(self, event):
+        try:
+            event.update(self.game)
+        except Exception as e:
+            raise e
+        else:
+            self.events.append(event)
+
+
+class TicTacToeCLIWManager(TicTacToeMutableManager):
+    TILE_MARKERS = ('O', 'X', ' ')
+
+    def __init__(self, settings, game, events):
+        super().__init__(settings, game, events)
+
+    def __bool__(self):
+        return self.game.status
+
+    def draw(self):
+        status_msg = 'RUNNING' if self.game.status else 'STOPPED'
+        print('game status: {}'.format(status_msg))
+
+        board_fmt = ''
+        for row in self.game.board.tiles:
+            for col in row:
+                if col == self.game.players[0].name:
+                    marker = self.TILE_MARKERS[0]
+                elif col == self.game.players[1].name:
+                    marker = self.TILE_MARKERS[1]
+                else:
+                    marker = self.TILE_MARKERS[2]
+                board_fmt += '[' + marker + ']'
+            board_fmt += '\n'
+        print(board_fmt)
 
 
 class TicTacToeReplayManager(TicTacToeManager):
