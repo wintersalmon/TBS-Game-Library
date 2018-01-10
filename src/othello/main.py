@@ -1,4 +1,4 @@
-from othello.errors import InvalidPositionError, InvalidUserInputError, EndOfInputError
+from othello.errors import InvalidPositionError, InvalidUserInputError, EndOfInputError, PositionHasNoFlipTargetsError
 from othello.events import PlayerPlacementEvent
 from othello.managers import OthelloCLIManager
 
@@ -13,8 +13,7 @@ def main():
         othello_manager.view()
         try:
             row, col = get_user_input_or_raise_error()
-            player_num = othello_manager.game.get_turn_player_number()
-            event = PlayerPlacementEvent.create(row=row, col=col, player=player_num)
+            event = create_set_event(othello_manager.game, row, col)
             othello_manager.update(event)
 
         except InvalidUserInputError as e:
@@ -45,6 +44,17 @@ def get_user_input_or_raise_error():
     row, col = row - 1, col - 1
 
     return row, col
+
+
+def create_set_event(game, row, col):
+    player_num = game.get_turn_player_number()
+    player_marker = game.board.SET_MARKERS[player_num]
+    flip_positions = game.board.find_flip_positions(row, col, player_marker)
+    event = PlayerPlacementEvent.create(row=row, col=col, marker=player_marker, flip_positions=flip_positions)
+    if flip_positions:
+        return event
+    raise PositionHasNoFlipTargetsError(
+        'invalid position ({}, {}), has not target to flip'.format(row, col, player_marker))
 
 
 if __name__ == '__main__':
