@@ -1,18 +1,16 @@
 from othello.errors import InvalidPositionError, InvalidUserInputError, EndOfInputError
 from othello.events import PlayerPlacementEvent
-from othello.manager import OthelloManager
-from othello.wrappers import OthelloCLIWrapper
+from othello.managers import OthelloCLIManager
 
 
 def main():
     settings = {
         'player_names': ['tom', 'jerry']
     }
-    othello_manager = OthelloManager.create(**settings)
-    othello_cli_wrapper = OthelloCLIWrapper(othello_manager)
+    othello_manager = OthelloCLIManager.create(**settings)
 
-    while othello_cli_wrapper:
-        othello_cli_wrapper.draw()
+    while othello_manager:
+        othello_manager.view()
         try:
             row, col = get_user_input_or_raise_error()
             player_num = othello_manager.game.get_turn_player_number()
@@ -29,10 +27,9 @@ def main():
             print('End of Input, Exit game ...')
             break
 
-    en = othello_manager.encode()
-    de = OthelloManager.decode(**en)
-    de_draw = OthelloCLIWrapper(de)
-    de_draw.draw()
+    encoded_othello_data = othello_manager.encode()
+    decoded_othello_manager = OthelloCLIManager.decode(**encoded_othello_data)
+    decoded_othello_manager.view()
 
 
 def get_user_input_or_raise_error():

@@ -8,14 +8,6 @@ class OthelloManager(Manager):
     def __init__(self, settings, game, events):
         super().__init__(settings, game, events)
 
-    def update(self, event):
-        try:
-            event.update(self.game)
-        except Exception as e:
-            raise e
-        else:
-            self.events.append(event)
-
     def encode(self):
         return {
             'settings': self.settings,
@@ -40,3 +32,35 @@ class OthelloManager(Manager):
         game = OthelloGame(players=players)
         events = list()
         return cls(settings=settings, game=game, events=events)
+
+
+class OthelloViewableManager(OthelloManager):
+    VIEW_MARKERS = [' ', '●', '○']
+
+    def __init__(self, settings, game, events):
+        super().__init__(settings, game, events)
+
+    def view(self):
+        for row in range(self.game.board.rows):
+            for col in range(self.game.board.cols):
+                idx = self.game.board.tiles[row][col]
+                print('[{}]'.format(self.VIEW_MARKERS[idx]), end='')
+            print()
+        print()
+
+
+class OthelloMutableManager(OthelloViewableManager):
+    def __init__(self, settings, game, events):
+        super().__init__(settings, game, events)
+
+    def update(self, event):
+        try:
+            event.update(self.game)
+        except Exception as e:
+            raise e
+        else:
+            self.events.append(event)
+
+
+class OthelloCLIManager(OthelloMutableManager):
+    pass
