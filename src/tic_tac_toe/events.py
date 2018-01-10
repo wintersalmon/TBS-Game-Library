@@ -29,8 +29,13 @@ class PlayerPlacementEvent(Event):
         game.board.tiles[self._row][self._col] = self._player_name
 
         game.turn_count += 1
-        if game.board.has_bingo():
-            game.status = False
+        game.status = not game.board.has_bingo()
+
+    def rollback(self, game):
+        game.board.reset_tile(self._row, self._col)
+
+        game.turn_count -= 1
+        game.status = not game.board.has_bingo()
 
     def encode(self):
         return {

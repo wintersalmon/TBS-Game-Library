@@ -21,6 +21,9 @@ class Board(Serializable):
     def is_set(self, row, col):
         return self.tiles[row][col] is not self.init_value
 
+    def reset_tile(self, row, col):
+        self.tiles[row][col] = self.init_value
+
     def encode(self):
         return {
             'rows': self.rows,

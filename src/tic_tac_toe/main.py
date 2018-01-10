@@ -1,6 +1,6 @@
 from tic_tac_toe.events import PlayerPlacementEvent
 from tic_tac_toe.manager import TicTacToeManager
-from tic_tac_toe.wrappers import TicTacToeCLIWrapper
+from tic_tac_toe.wrappers import TicTacToeCLIWrapper, TicTacToeReplayWrapper
 
 
 def main():
@@ -40,6 +40,37 @@ def read_user_event(turn_player_name):
     event = PlayerPlacementEvent.create(player_name=turn_player_name, row=row, col=col)
 
     return event
+
+
+def replay_main():
+    settings = {
+        'player_names': ['tom', 'jerry']
+    }
+    tic_tac_toe_manager = TicTacToeManager.create(**settings)
+    tic_tac_toe_cli_wrapper = TicTacToeCLIWrapper(tic_tac_toe_manager)
+    events = [
+        PlayerPlacementEvent.create(player_name='tom', row=1, col=1),
+        PlayerPlacementEvent.create(player_name='jerry', row=0, col=0),
+
+        PlayerPlacementEvent.create(player_name='tom', row=0, col=1),
+        PlayerPlacementEvent.create(player_name='jerry', row=1, col=0),
+
+        PlayerPlacementEvent.create(player_name='tom', row=2, col=0),
+        PlayerPlacementEvent.create(player_name='jerry', row=0, col=2),
+
+        PlayerPlacementEvent.create(player_name='tom', row=2, col=1)
+    ]
+
+    for event in events:
+        tic_tac_toe_manager.update(event)
+        tic_tac_toe_cli_wrapper.draw()
+
+    tic_tac_toe_cli_wrapper.draw()
+
+    tic_tac_toe_replay_wrapper = TicTacToeReplayWrapper(tic_tac_toe_manager)
+    while tic_tac_toe_replay_wrapper.get_position() > 0:
+        tic_tac_toe_replay_wrapper.backward()
+        tic_tac_toe_cli_wrapper.draw()
 
 
 if __name__ == '__main__':

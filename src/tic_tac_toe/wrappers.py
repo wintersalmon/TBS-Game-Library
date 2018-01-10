@@ -26,3 +26,25 @@ class TicTacToeCLIWrapper(GameWrapper):
                 board_fmt += '[' + marker + ']'
             board_fmt += '\n'
         print(board_fmt)
+
+
+class TicTacToeReplayWrapper(GameWrapper):
+    def __init__(self, manager):
+        super().__init__(manager)
+        self.max_position = len(self.manager.events)
+        self.position = self.max_position
+
+    def get_position(self):
+        return self.position
+
+    def forward(self):
+        if self.position < self.max_position:
+            self.position += 1
+            event = self.manager.events[self.position]
+            event.update(self.manager.game)
+
+    def backward(self):
+        if self.position > 0:
+            self.position -= 1
+            event = self.manager.events[self.position]
+            event.rollback(self.manager.game)
