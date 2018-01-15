@@ -16,7 +16,7 @@ class Event(Serializable):
         raise NotImplementedError
 
     @classmethod
-    def create(cls, **kwargs):
+    def create(cls, *, game, **kwargs):
         raise NotImplementedError
 
     @classmethod

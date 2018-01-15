@@ -1,6 +1,7 @@
 from collections import Sequence
 
 from core.event import Event
+from othello.errors import PositionHasNoFlipTargetsError
 from othello.position import Position
 
 
@@ -50,14 +51,20 @@ class PlayerPlacementEvent(Event):
             'marker': kwargs['marker'],
             'flip_positions': [Position.decode(**pos) for pos in kwargs['flip_positions']]
         }
-        return cls.create(**decoded_kwargs)
+        return cls(**decoded_kwargs)
 
     @classmethod
-    def create(cls, **kwargs):
+    def create(cls, *, game, **kwargs):
         # verify kwargs
         row = cls.get_argument_or_raise_error(kwargs, 'row')
         col = cls.get_argument_or_raise_error(kwargs, 'col')
-        marker = cls.get_argument_or_raise_error(kwargs, 'marker')
-        flip_positions = cls.get_argument_or_raise_error(kwargs, 'flip_positions')
 
-        return cls(row=row, col=col, marker=marker, flip_positions=flip_positions)
+        player_num = game.get_turn_player_number()
+        player_marker = game.board.SET_MARKERS[player_num]
+        flip_positions = game.board.find_flip_positions(row, col, player_marker)
+
+        if len(flip_positions) == 0:
+            raise PositionHasNoFlipTargetsError(
+                'invalid position ({}, {}), has not target to flip'.format(row, col, player_marker))
+        else:
+            return PlayerPlacementEvent(row=row, col=col, marker=player_marker, flip_positions=flip_positions)

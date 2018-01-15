@@ -13,7 +13,8 @@ def main():
     print(ttt_update_manager)
     while ttt_update_manager:
         try:
-            event = read_user_event(ttt_wrapper.game.get_turn_player_name())
+            row, col = read_user_event()
+            event = PlayerPlacementEvent.create(game=ttt_update_manager.game_wrapper.game, row=row, col=col)
             ttt_update_manager.update(event)
         except ValueError as e:
             print(e)
@@ -28,7 +29,7 @@ def main():
     decoded_ttt_manager.view()
 
 
-def read_user_event(turn_player_name):
+def read_user_event():
     row, col = input('row, col: ').split()
     row, col = int(row), int(col)
 
@@ -36,9 +37,8 @@ def read_user_event(turn_player_name):
         raise EOFError
 
     row, col = row - 1, col - 1
-    event = PlayerPlacementEvent.create(player_name=turn_player_name, row=row, col=col)
 
-    return event
+    return row, col
 
 
 def replay_main():
@@ -47,22 +47,31 @@ def replay_main():
     }
     ttt_wrapper = TicTacToeWrapper.create(**settings)
     ttt_update_manager = TicTacToeUpdateManager(ttt_wrapper)
-    events = [
-        PlayerPlacementEvent.create(player_name='tom', row=1, col=1),
-        PlayerPlacementEvent.create(player_name='jerry', row=0, col=0),
 
-        PlayerPlacementEvent.create(player_name='tom', row=0, col=1),
-        PlayerPlacementEvent.create(player_name='jerry', row=1, col=0),
+    event = PlayerPlacementEvent.create(game=ttt_update_manager.game_wrapper.game, row=1, col=1)
+    ttt_update_manager.update(event)
+    print(ttt_update_manager)
+    event = PlayerPlacementEvent.create(game=ttt_update_manager.game_wrapper.game, row=0, col=0)
+    ttt_update_manager.update(event)
+    print(ttt_update_manager)
 
-        PlayerPlacementEvent.create(player_name='tom', row=2, col=0),
-        PlayerPlacementEvent.create(player_name='jerry', row=0, col=2),
+    event = PlayerPlacementEvent.create(game=ttt_update_manager.game_wrapper.game, row=0, col=1)
+    ttt_update_manager.update(event)
+    print(ttt_update_manager)
+    event = PlayerPlacementEvent.create(game=ttt_update_manager.game_wrapper.game, row=1, col=0)
+    ttt_update_manager.update(event)
+    print(ttt_update_manager)
 
-        PlayerPlacementEvent.create(player_name='tom', row=2, col=1)
-    ]
+    event = PlayerPlacementEvent.create(game=ttt_update_manager.game_wrapper.game, row=2, col=0)
+    ttt_update_manager.update(event)
+    print(ttt_update_manager)
+    event = PlayerPlacementEvent.create(game=ttt_update_manager.game_wrapper.game, row=0, col=2)
+    ttt_update_manager.update(event)
+    print(ttt_update_manager)
 
-    for event in events:
-        ttt_update_manager.update(event)
-        print(ttt_update_manager)
+    event = PlayerPlacementEvent.create(game=ttt_update_manager.game_wrapper.game, row=2, col=1)
+    ttt_update_manager.update(event)
+    print(ttt_update_manager)
 
     encoded_game_data = ttt_wrapper.encode()
 

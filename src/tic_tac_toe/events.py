@@ -46,13 +46,14 @@ class PlayerPlacementEvent(Event):
 
     @classmethod
     def decode(cls, **kwargs):
-        return cls.create(**kwargs)
+        return cls(**kwargs)
 
     @classmethod
-    def create(cls, **kwargs):
+    def create(cls, *, game, **kwargs):
         # verify kwargs
-        player_name = cls.get_argument_or_raise_error(kwargs, 'player_name')
         row = cls.get_argument_or_raise_error(kwargs, 'row')
         col = cls.get_argument_or_raise_error(kwargs, 'col')
+
+        player_name = game.get_turn_player_name()
 
         return cls(player_name=player_name, row=row, col=col)

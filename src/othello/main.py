@@ -15,7 +15,9 @@ def main():
         print(othello_update_manager)
         try:
             row, col = get_user_input_or_raise_error()
-            event = create_set_event(othello_update_manager.game_wrapper.game, row, col)
+            event = PlayerPlacementEvent.create(game=othello_update_manager.game_wrapper.game,
+                                                row=row,
+                                                col=col)
             othello_update_manager.update(event)
 
         except InvalidUserInputError as e:
@@ -48,15 +50,15 @@ def get_user_input_or_raise_error():
     return row, col
 
 
-def create_set_event(game, row, col):
-    player_num = game.get_turn_player_number()
-    player_marker = game.board.SET_MARKERS[player_num]
-    flip_positions = game.board.find_flip_positions(row, col, player_marker)
-    event = PlayerPlacementEvent.create(row=row, col=col, marker=player_marker, flip_positions=flip_positions)
-    if flip_positions:
-        return event
-    raise PositionHasNoFlipTargetsError(
-        'invalid position ({}, {}), has not target to flip'.format(row, col, player_marker))
+# def create_set_event(game, row, col):
+#     player_num = game.get_turn_player_number()
+#     player_marker = game.board.SET_MARKERS[player_num]
+#     flip_positions = game.board.find_flip_positions(row, col, player_marker)
+#     event = PlayerPlacementEvent.create(row=row, col=col, marker=player_marker, flip_positions=flip_positions)
+#     if flip_positions:
+#         return event
+#     raise PositionHasNoFlipTargetsError(
+#         'invalid position ({}, {}), has not target to flip'.format(row, col, player_marker))
 
 
 def replay_main():
@@ -74,19 +76,19 @@ def replay_main():
     # othello_manger.game.board.flip(4, 3)
     # othello_manger.view()
 
-    event = create_set_event(othello_wrapper.game, 4, 2)
+    event = PlayerPlacementEvent.create(game=othello_wrapper.game, row=4, col=2)
     othello_update_manager.update(event)
     print(othello_update_manager)
 
-    event = create_set_event(othello_wrapper.game, 3, 2)
+    event = PlayerPlacementEvent.create(game=othello_wrapper.game, row=3, col=2)
     othello_update_manager.update(event)
     print(othello_update_manager)
 
-    event = create_set_event(othello_wrapper.game, 2, 1)
+    event = PlayerPlacementEvent.create(game=othello_wrapper.game, row=2, col=1)
     othello_update_manager.update(event)
     print(othello_update_manager)
 
-    event = create_set_event(othello_wrapper.game, 3, 1)
+    event = PlayerPlacementEvent.create(game=othello_wrapper.game, row=3, col=1)
     othello_update_manager.update(event)
     print(othello_update_manager)
 
