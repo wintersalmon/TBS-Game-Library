@@ -12,7 +12,7 @@ def main():
     othello_update_manager = OthelloUpdateManager(othello_wrapper)
 
     while othello_update_manager:
-        othello_update_manager.view()
+        print(othello_update_manager)
         try:
             row, col = get_user_input_or_raise_error()
             event = create_set_event(othello_update_manager.game_wrapper.game, row, col)
@@ -30,7 +30,7 @@ def main():
 
     encoded_othello_data = othello_update_manager.game_wrapper.game.encode()
     decoded_othello_wrapper = OthelloWrapper.decode(**encoded_othello_data)
-    decoded_othello_wrapper.view()
+    print(decoded_othello_wrapper)
 
 
 def get_user_input_or_raise_error():
@@ -76,55 +76,49 @@ def replay_main():
 
     event = create_set_event(othello_wrapper.game, 4, 2)
     othello_update_manager.update(event)
-    othello_update_manager.view()
+    print(othello_update_manager)
 
     event = create_set_event(othello_wrapper.game, 3, 2)
     othello_update_manager.update(event)
-    othello_update_manager.view()
+    print(othello_update_manager)
 
     event = create_set_event(othello_wrapper.game, 2, 1)
     othello_update_manager.update(event)
-    othello_update_manager.view()
+    print(othello_update_manager)
 
     event = create_set_event(othello_wrapper.game, 3, 1)
     othello_update_manager.update(event)
-    othello_update_manager.view()
+    print(othello_update_manager)
 
-    othello_update_manager.view()
+    print(othello_update_manager)
     encoded_game_data = othello_wrapper.encode()
 
     print('INIT')
     othello_wrapper = OthelloWrapper.decode(**encoded_game_data)
     replay_manger = OthelloReplayManager(othello_wrapper)
     print(replay_manger)
-    replay_manger.view()
 
     print('BACKWARD')
     while replay_manger.get_position() > 0:
         replay_manger.backward()
         print(replay_manger)
-        replay_manger.view()
 
     print('FORWARD')
     while replay_manger.get_position() < replay_manger.get_max_position():
         replay_manger.forward()
         print(replay_manger)
-        replay_manger.view()
 
     print('SET 0')
     replay_manger.set_position(0)
     print(replay_manger)
-    replay_manger.view()
 
     print('SET 4')
     replay_manger.set_position(4)
     print(replay_manger)
-    replay_manger.view()
 
     print('SET 1')
     replay_manger.set_position(1)
     print(replay_manger)
-    replay_manger.view()
 
 
 if __name__ == '__main__':

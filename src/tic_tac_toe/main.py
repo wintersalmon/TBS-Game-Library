@@ -10,7 +10,7 @@ def main():
     ttt_wrapper = TicTacToeWrapper.create(**settings)
     ttt_update_manager = TicTacToeUpdateManager(ttt_wrapper)
 
-    ttt_update_manager.view()
+    print(ttt_update_manager)
     while ttt_update_manager:
         try:
             event = read_user_event(ttt_wrapper.game.get_turn_player_name())
@@ -21,7 +21,7 @@ def main():
             print(e)
             break
         else:
-            ttt_update_manager.view()
+            print(ttt_update_manager)
 
     encoded_ttt_data = ttt_wrapper.encode()
     decoded_ttt_manager = TicTacToeWrapper.decode(**encoded_ttt_data)
@@ -62,48 +62,40 @@ def replay_main():
 
     for event in events:
         ttt_update_manager.update(event)
-        ttt_update_manager.view()
+        print(ttt_update_manager)
 
-    ttt_update_manager.view()
     encoded_game_data = ttt_wrapper.encode()
 
     print('INIT')
     ttt_wrapper = TicTacToeWrapper.decode(**encoded_game_data)
     tic_tac_toe_replay_manager = TicTacToeReplayManager(ttt_wrapper)
     print(tic_tac_toe_replay_manager)
-    ttt_update_manager.view()
 
     print('BACKWARD')
     while tic_tac_toe_replay_manager.get_position() > 0:
         tic_tac_toe_replay_manager.backward()
         print(tic_tac_toe_replay_manager)
-        ttt_update_manager.view()
 
     print('FORWARD')
     while tic_tac_toe_replay_manager.get_position() < tic_tac_toe_replay_manager.get_max_position():
         tic_tac_toe_replay_manager.forward()
         print(tic_tac_toe_replay_manager)
-        ttt_update_manager.view()
 
     print('SET 0')
     tic_tac_toe_replay_manager.set_position(0)
     print(tic_tac_toe_replay_manager)
-    ttt_update_manager.view()
 
     print('SET 7')
     tic_tac_toe_replay_manager.set_position(7)
     print(tic_tac_toe_replay_manager)
-    ttt_update_manager.view()
 
     print('SET 4')
     tic_tac_toe_replay_manager.set_position(4)
     print(tic_tac_toe_replay_manager)
-    ttt_update_manager.view()
 
     print('SET 1')
     tic_tac_toe_replay_manager.set_position(1)
     print(tic_tac_toe_replay_manager)
-    ttt_update_manager.view()
 
 
 if __name__ == '__main__':

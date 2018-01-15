@@ -14,13 +14,17 @@ class OthelloWrapper(Wrapper):
     def __init__(self, settings, game, events):
         super().__init__(settings, game, events)
 
-    def view(self):
+    def __repr__(self):
+        lines = list()
         for row in range(self.game.board.rows):
+            tiles = list()
             for col in range(self.game.board.cols):
                 idx = self.game.board.tiles[row][col]
-                print('[{}]'.format(self.VIEW_MARKERS[idx]), end='')
-            print()
-        print()
+                tile = '[{}]'.format(self.VIEW_MARKERS[idx])
+                tiles.append(tile)
+            line = ''.join(tiles)
+            lines.append(line)
+        return '\n'.join(lines)
 
     def encode(self):
         return {

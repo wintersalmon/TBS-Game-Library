@@ -7,9 +7,6 @@ class Wrapper(Serializable):
         self.game = game
         self.events = events
 
-    def view(self):
-        raise NotImplementedError
-
     def encode(self):
         raise NotImplementedError
 
@@ -19,4 +16,7 @@ class Wrapper(Serializable):
 
     @classmethod
     def create(cls, **kwargs):
+        raise NotImplementedError
+
+    def __repr__(self):
         raise NotImplementedError
