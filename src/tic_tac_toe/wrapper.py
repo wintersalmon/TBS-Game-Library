@@ -1,0 +1,53 @@
+from core.wrapper import Wrapper
+from core.player import Player
+from tic_tac_toe.events import PlayerPlacementEvent
+from tic_tac_toe.game import TicTacToeGame
+
+
+class TicTacToeWrapper(Wrapper):
+    TILE_MARKERS = ('O', 'X', ' ')
+
+    def __init__(self, settings, game, events):
+        super().__init__(settings, game, events)
+
+    def view(self):
+        status_msg = 'RUNNING' if self.game.status else 'STOPPED'
+        print('game status: {}'.format(status_msg))
+
+        board_fmt = ''
+        for row in self.game.board.tiles:
+            for col in row:
+                if col == self.game.players[0].name:
+                    marker = self.TILE_MARKERS[0]
+                elif col == self.game.players[1].name:
+                    marker = self.TILE_MARKERS[1]
+                else:
+                    marker = self.TILE_MARKERS[2]
+                board_fmt += '[' + marker + ']'
+            board_fmt += '\n'
+        print(board_fmt)
+
+    def encode(self):
+        return {
+            'settings': self.settings,
+            'game': self.game.encode(),
+            'events': [event.encode() for event in self.events],
+        }
+
+    @classmethod
+    def decode(cls, **kwargs):
+        decoded_kwargs = {
+            'settings': kwargs['settings'],
+            'game': TicTacToeGame.decode(**kwargs['game']),
+            'events': [PlayerPlacementEvent.decode(**e_kwargs) for e_kwargs in kwargs['events']]
+        }
+
+        return cls(**decoded_kwargs)
+
+    @classmethod
+    def create(cls, **kwargs):
+        settings = kwargs
+        players = [Player(p) for p in kwargs['player_names']]
+        game = TicTacToeGame(players=players)
+        events = list()
+        return cls(settings=settings, game=game, events=events)

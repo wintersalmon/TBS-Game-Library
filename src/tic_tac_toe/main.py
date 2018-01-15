@@ -1,30 +1,30 @@
 from tic_tac_toe.events import PlayerPlacementEvent
-from tic_tac_toe.managers import TicTacToeManager, TicTacToeMutableManager
-from tic_tac_toe.managers import TicTacToeReplayManager
-from tic_tac_toe.managers import TicTacToeCLIManager
+from tic_tac_toe.wrapper import TicTacToeWrapper
+from tic_tac_toe.managers import TicTacToeUpdateManager, TicTacToeReplayManager
 
 
 def main():
     settings = {
         'player_names': ['tom', 'jerry']
     }
-    ttt_manager = TicTacToeCLIManager.create(**settings)
+    ttt_wrapper = TicTacToeWrapper.create(**settings)
+    ttt_update_manager = TicTacToeUpdateManager(ttt_wrapper)
 
-    ttt_manager.view()
-    while ttt_manager:
+    ttt_update_manager.view()
+    while ttt_update_manager:
         try:
-            event = read_user_event(ttt_manager.game.get_turn_player_name())
-            ttt_manager.update(event)
+            event = read_user_event(ttt_wrapper.game.get_turn_player_name())
+            ttt_update_manager.update(event)
         except ValueError as e:
             print(e)
         except EOFError as e:
             print(e)
             break
         else:
-            ttt_manager.view()
+            ttt_update_manager.view()
 
-    encoded_ttt_data = ttt_manager.encode()
-    decoded_ttt_manager = TicTacToeCLIManager.decode(**encoded_ttt_data)
+    encoded_ttt_data = ttt_wrapper.encode()
+    decoded_ttt_manager = TicTacToeWrapper.decode(**encoded_ttt_data)
     decoded_ttt_manager.view()
 
 
@@ -45,7 +45,8 @@ def replay_main():
     settings = {
         'player_names': ['tom', 'jerry']
     }
-    tic_tac_toe_manager = TicTacToeMutableManager.create(**settings)
+    ttt_wrapper = TicTacToeWrapper.create(**settings)
+    ttt_update_manager = TicTacToeUpdateManager(ttt_wrapper)
     events = [
         PlayerPlacementEvent.create(player_name='tom', row=1, col=1),
         PlayerPlacementEvent.create(player_name='jerry', row=0, col=0),
@@ -60,48 +61,49 @@ def replay_main():
     ]
 
     for event in events:
-        tic_tac_toe_manager.update(event)
-        tic_tac_toe_manager.view()
+        ttt_update_manager.update(event)
+        ttt_update_manager.view()
 
-    tic_tac_toe_manager.view()
-    encoded_game_data = tic_tac_toe_manager.encode()
+    ttt_update_manager.view()
+    encoded_game_data = ttt_wrapper.encode()
 
     print('INIT')
-    tic_tac_toe_replay_manager = TicTacToeReplayManager.decode(**encoded_game_data)
+    ttt_wrapper = TicTacToeWrapper.decode(**encoded_game_data)
+    tic_tac_toe_replay_manager = TicTacToeReplayManager(ttt_wrapper)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_manager.view()
+    ttt_update_manager.view()
 
     print('BACKWARD')
     while tic_tac_toe_replay_manager.get_position() > 0:
         tic_tac_toe_replay_manager.backward()
         print(tic_tac_toe_replay_manager)
-        tic_tac_toe_manager.view()
+        ttt_update_manager.view()
 
     print('FORWARD')
     while tic_tac_toe_replay_manager.get_position() < tic_tac_toe_replay_manager.get_max_position():
         tic_tac_toe_replay_manager.forward()
         print(tic_tac_toe_replay_manager)
-        tic_tac_toe_manager.view()
+        ttt_update_manager.view()
 
     print('SET 0')
     tic_tac_toe_replay_manager.set_position(0)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_manager.view()
+    ttt_update_manager.view()
 
     print('SET 7')
     tic_tac_toe_replay_manager.set_position(7)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_manager.view()
+    ttt_update_manager.view()
 
     print('SET 4')
     tic_tac_toe_replay_manager.set_position(4)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_manager.view()
+    ttt_update_manager.view()
 
     print('SET 1')
     tic_tac_toe_replay_manager.set_position(1)
     print(tic_tac_toe_replay_manager)
-    tic_tac_toe_manager.view()
+    ttt_update_manager.view()
 
 
 if __name__ == '__main__':

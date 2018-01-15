@@ -17,32 +17,31 @@
     + decode
 
 
-### Manager
-- GameManager(Serializable)
+### Wrapper
+- GameWrapper(Serializable)
     + init
     + create
     + encode
     + decode
-
-
-- GameViewableManager(GameManager)
     + view
 
 
-- GameMutableManager(GameViewableManager)
+### Manager
+- GameManger()
+    + init(GameWrapper)
+
+
+- GameUpdateManager(GameManager)
     + update
 
 
-- GameReplayManager(GameViewableManager)
+- GameReplayManager(GameManager)
     + max_position
     + get_position
     + set_position
     + forward
     + backward
 
-
-- GameCLIManager(GameMutableManager)
-    + status
 
 
 ### UTIL
