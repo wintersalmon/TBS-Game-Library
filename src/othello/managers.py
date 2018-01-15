@@ -5,6 +5,11 @@ from othello.events import PlayerPlacementEvent
 from othello.game import OthelloGame
 
 
+GAME_EVENTS = {
+    PlayerPlacementEvent.__name__: PlayerPlacementEvent
+}
+
+
 class OthelloManager(Manager):
     def __init__(self, settings, game, events):
         super().__init__(settings, game, events)
@@ -13,15 +18,28 @@ class OthelloManager(Manager):
         return {
             'settings': self.settings,
             'game': self.game.encode(),
-            'events': [event.encode() for event in self.events],
+            'events': [[event.__class__.__name__, event.encode()] for event in self.events],
         }
 
     @classmethod
     def decode(cls, **kwargs):
+        decoded_settings = kwargs['settings']
+        decoded_game = OthelloGame.decode(**kwargs['game'])
+        decoded_events = list()
+        for e in kwargs['events']:
+
+            try:
+                event_name, event_data = e
+                event = GAME_EVENTS[event_name].decode(**event_data)
+            except Exception as e:
+                raise e
+            else:
+                decoded_events.append(event)
+
         decoded_kwargs = {
-            'settings': kwargs['settings'],
-            'game': OthelloGame.decode(**kwargs['game']),
-            'events': [PlayerPlacementEvent.decode(**e_kwargs) for e_kwargs in kwargs['events']]
+            'settings': decoded_settings,
+            'game': decoded_game,
+            'events': decoded_events
         }
 
         return cls(**decoded_kwargs)
