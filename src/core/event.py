@@ -5,6 +5,9 @@ class Event(Serializable):
     def update(self, game):
         raise NotImplementedError
 
+    def rollback(self, game):
+        raise NotImplementedError
+
     def encode(self):
         raise NotImplementedError
 
