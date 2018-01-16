@@ -1,8 +1,8 @@
 from collections import Sequence
 
 from core.event import Event
+from core.position import Position
 from othello.errors import PositionHasNoFlipTargetsError
-from othello.position import Position
 
 
 class PlayerPlacementEvent(Event):

@@ -1,7 +1,6 @@
 from core.board import Board
-
+from core.position import Position
 from othello.errors import PositionOutOfBoundsError, PositionAlreadyOccupiedError, InvalidMarkerTypeError
-from othello.position import Position
 
 
 class OthelloBoard(Board):

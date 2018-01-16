@@ -1,5 +1,4 @@
-class ImmutableObject(object):
-    __slots__ = ()
+from core.utils import ImmutableObject
 
 
 class Position(ImmutableObject):

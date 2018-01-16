@@ -10,3 +10,7 @@ class Serializable(object):
     @classmethod
     def decode(cls, **kwargs):
         raise NotImplementedError
+
+
+class ImmutableObject(object):
+    __slots__ = ()
