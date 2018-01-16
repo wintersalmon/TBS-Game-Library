@@ -1,23 +1,23 @@
-from core.error import CustomError
+from core.error import ApiError
 
 
-class OthelloCustomError(CustomError):
+class OthelloApiError(ApiError):
     pass
 
 
-class EndOfInputError(OthelloCustomError):
+class EndOfInputError(OthelloApiError):
     pass
 
 
-class InvalidUserInputError(OthelloCustomError):
+class InvalidUserInputError(OthelloApiError):
     pass
 
 
-class InvalidMarkerTypeError(OthelloCustomError):
+class InvalidMarkerTypeError(OthelloApiError):
     pass
 
 
-class InvalidPositionError(OthelloCustomError):
+class InvalidPositionError(OthelloApiError):
     pass
 
 

@@ -1,2 +1,2 @@
-class CustomError(Exception):
+class ApiError(Exception):
     pass

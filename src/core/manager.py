@@ -1,4 +1,4 @@
-from core.error import CustomError
+from core.error import ApiError
 
 
 class GameManager(object):
@@ -57,7 +57,7 @@ class GameReplayManager(GameManager):
             event.update(self.game_wrapper.game)
             self._cur_position += 1
             return True
-        raise CustomError('Impossible to move forward')
+        raise ApiError('Impossible to move forward')
 
     def backward(self):
         if self._cur_position >= 0:
@@ -65,7 +65,7 @@ class GameReplayManager(GameManager):
             event.rollback(self.game_wrapper.game)
             self._cur_position -= 1
             return True
-        raise CustomError('Impossible to move backward')
+        raise ApiError('Impossible to move backward')
 
     def __repr__(self):
         title = 'Game Replay Manger'
