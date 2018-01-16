@@ -30,7 +30,7 @@ def main():
             print('End of Input, Exit game ...')
             break
 
-    encoded_othello_data = othello_update_manager.game_wrapper.game.encode()
+    encoded_othello_data = othello_update_manager.game_wrapper.encode()
     decoded_othello_wrapper = OthelloWrapper.decode(**encoded_othello_data)
     print(decoded_othello_wrapper)
 

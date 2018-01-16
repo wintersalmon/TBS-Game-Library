@@ -26,7 +26,7 @@ def main():
 
     encoded_ttt_data = ttt_wrapper.encode()
     decoded_ttt_manager = TicTacToeWrapper.decode(**encoded_ttt_data)
-    decoded_ttt_manager.view()
+    print(decoded_ttt_manager)
 
 
 def read_user_event():
