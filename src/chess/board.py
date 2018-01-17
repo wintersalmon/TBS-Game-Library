@@ -5,24 +5,16 @@ from core.error import InvalidPositionError, InvalidValueError
 
 class ChessBoard(Board):
     MARKER_INIT = -1
-    PIECE_BLACK = 'BLACK'
-    PIECE_WHITE = 'WHITE'
-    PIECE_KING = 'KING'
-    PIECE_QUEEN = 'QUEEN'
-    PIECE_ROOK = 'ROOK'
-    PIECE_BISHOP = 'BISHOP'
-    PIECE_KNIGHT = 'KNIGHT'
-    PIECE_PAWN = 'PAWN'
 
     INIT_PIECE_ORDER = [
-        PIECE_ROOK,
-        PIECE_KNIGHT,
-        PIECE_BISHOP,
-        PIECE_QUEEN,
-        PIECE_KING,
-        PIECE_BISHOP,
-        PIECE_KNIGHT,
-        PIECE_ROOK,
+        ChessPiece.ROOK,
+        ChessPiece.KNIGHT,
+        ChessPiece.BISHOP,
+        ChessPiece.QUEEN,
+        ChessPiece.KING,
+        ChessPiece.BISHOP,
+        ChessPiece.KNIGHT,
+        ChessPiece.ROOK,
     ]
 
     def __init__(self, tiles=None):
@@ -34,10 +26,10 @@ class ChessBoard(Board):
 
     def _init_chess_pieces(self):
         for col in range(8):
-            self.tiles[0][col] = ChessPiece(name=self.INIT_PIECE_ORDER[col], color=self.PIECE_WHITE)
-            self.tiles[1][col] = ChessPiece(name=self.PIECE_PAWN, color=self.PIECE_WHITE)
-            self.tiles[6][col] = ChessPiece(name=self.PIECE_PAWN, color=self.PIECE_BLACK)
-            self.tiles[7][col] = ChessPiece(name=self.INIT_PIECE_ORDER[col], color=self.PIECE_BLACK)
+            self.tiles[0][col] = ChessPiece(name=self.INIT_PIECE_ORDER[col], color=ChessPiece.COLOR_WHITE)
+            self.tiles[1][col] = ChessPiece(name=ChessPiece.PAWN, color=ChessPiece.COLOR_WHITE)
+            self.tiles[6][col] = ChessPiece(name=ChessPiece.PAWN, color=ChessPiece.COLOR_BLACK)
+            self.tiles[7][col] = ChessPiece(name=self.INIT_PIECE_ORDER[col], color=ChessPiece.COLOR_BLACK)
 
     def set(self, row, col, value):
         if isinstance(value, ChessPiece):
@@ -99,23 +91,9 @@ class ChessBoard(Board):
         for r, rows in enumerate(self.tiles):
             line = list()
             for piece in rows:
-                marker = self.__repr_piece(piece)
+                marker = piece.repr_short() if isinstance(piece, ChessPiece) else '.'
                 line.append('{}  '.format(marker))
             line.insert(0, '{}  '.format(r))
             lines.append(''.join(line))
 
         return '\n'.join(lines)
-
-    def __repr_piece(self, piece):
-        if isinstance(piece, ChessPiece):
-            if piece.name == self.PIECE_KNIGHT:
-                marker = 'N'
-            else:
-                marker = piece.name[0]
-            if piece.color == self.PIECE_BLACK:
-                marker = marker.lower()
-
-        else:
-            marker = '.'
-
-        return '{}'.format(marker)
