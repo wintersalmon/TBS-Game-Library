@@ -1,5 +1,5 @@
 from core.wrapper import Wrapper
-from chess.events import ChessMovePieceEvent
+from chess.events import MoveChessPieceEvent
 from chess.game import ChessGame
 
 
@@ -19,7 +19,7 @@ class ChessWrapper(Wrapper):
         decoded_kwargs = {
             'settings': kwargs['settings'],
             'game': ChessGame.decode(**kwargs['game']),
-            'events': [ChessMovePieceEvent.decode(**e_kwargs) for e_kwargs in kwargs['events']]
+            'events': [MoveChessPieceEvent.decode(**e_kwargs) for e_kwargs in kwargs['events']]
         }
 
         return cls(**decoded_kwargs)

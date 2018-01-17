@@ -1,3 +1,4 @@
+from core.error import InvalidPositionError, InvalidValueError, PositionAlreadySetError
 from core.utils import Serializable
 
 
@@ -11,15 +12,24 @@ class Board(Serializable):
         self.tiles = tiles
 
     def get(self, row, col):
-        return self.tiles[row][col]
+        try:
+            return self.tiles[row][col]
+        except IndexError as e:
+            raise InvalidPositionError(e)
 
     def set(self, row, col, value):
-        if value is self.init_value:
-            raise ValueError('invalid set value {}'.format(value))
-        self.tiles[row][col] = value
+        if self.is_set(row, col):
+            raise PositionAlreadySetError('position({},{}) is already set({})'.format(row, col, self.get(row, col)))
+        try:
+            self.tiles[row][col] = value
+        except IndexError as e:
+            raise InvalidPositionError(e)
 
     def is_set(self, row, col):
-        return self.tiles[row][col] is not self.init_value
+        try:
+            return self.tiles[row][col] is not self.init_value
+        except IndexError as e:
+            raise InvalidPositionError(e)
 
     def reset_tile(self, row, col):
         self.tiles[row][col] = self.init_value

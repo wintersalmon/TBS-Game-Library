@@ -1,12 +1,11 @@
-from chess.errors import PositionOutOfBoundError, PositionEmptyError, PositionAlreadyOccupiedError, \
-    PositionCannotBeReachedError, EventCreationFailed
 from chess.game import ChessGame
 from chess.piece import ChessPiece
+from core.error import EventCreationFailedError, InvalidPositionError
 from core.event import Event
 from core.position import Position
 
 
-class ChessMovePieceEvent(Event):
+class MoveChessPieceEvent(Event):
     def __init__(self, pos_src, pos_dst, piece_src, piece_dst=None):
         # verify data type
         if not isinstance(pos_src, Position):
@@ -64,7 +63,7 @@ class ChessMovePieceEvent(Event):
     def create(cls, *, game, **kwargs):
         # retrieve basic arguments or throw error
         if not isinstance(game, ChessGame):
-            raise ValueError('invalid data type game(ChessGame)')
+            raise EventCreationFailedError('invalid data type game(ChessGame)')
         pos_src = cls.get_argument_or_raise_error(kwargs, 'pos_src')
         pos_dst = cls.get_argument_or_raise_error(kwargs, 'pos_dst')
 
@@ -74,21 +73,15 @@ class ChessMovePieceEvent(Event):
                 piece_src = game.board.get(pos_src.row, pos_src.col)
             else:
                 piece_src = None
-        except IndexError:
-            raise PositionOutOfBoundError('Source {} Out Of Bound'.format(pos_src))
-
-        try:
             if game.board.is_set(pos_dst.row, pos_dst.col):
                 piece_dst = game.board.get(pos_dst.row, pos_dst.col)
             else:
                 piece_dst = None
-        except IndexError:
-            raise PositionOutOfBoundError('Destination {} Out Of Bound'.format(pos_dst))
 
-        # verify arguments or throw errors
-        try:
             game.board.can_move(pos_src, pos_dst)
-        except (PositionEmptyError, PositionAlreadyOccupiedError, PositionCannotBeReachedError) as e:
-            raise EventCreationFailed(e)
+
+        except InvalidPositionError as e:
+            raise EventCreationFailedError(e)
+
         else:
-            return ChessMovePieceEvent(pos_src=pos_src, pos_dst=pos_dst, piece_src=piece_src, piece_dst=piece_dst)
+            return MoveChessPieceEvent(pos_src=pos_src, pos_dst=pos_dst, piece_src=piece_src, piece_dst=piece_dst)

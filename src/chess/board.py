@@ -1,6 +1,6 @@
-from chess.errors import PositionEmptyError, PositionAlreadyOccupiedError
-from core.board import Board
 from chess.piece import ChessPiece
+from core.board import Board
+from core.error import InvalidPositionError, InvalidValueError
 
 
 class ChessBoard(Board):
@@ -43,17 +43,24 @@ class ChessBoard(Board):
         if isinstance(value, ChessPiece):
             super().set(row, col, value)
         else:
-            raise ValueError('invalid value to set {}'.format(value))
+            raise InvalidValueError('invalid value to set {}'.format(value))
 
     def can_move(self, src_pos, dst_pos):
         if not self.is_set(src_pos.row, src_pos.col):
-            raise PositionEmptyError('src position empty')
+            raise InvalidPositionError('from position({}) should not be empty'.format(src_pos))
 
-        # check if src_pos piece can move to dst_pos
+        # TODO: check whether src_pos piece can move to dst_pos
+        # raise InvalidPositionError
+        # 'from position({}), to position({}) cannot be reached'.format(src_pos, dst_pos)
+
+        # TODO: check whether there is not obstacles in between src_pos and dst_pos
+        # raise InvalidPositionError
+        # 'from position({}), to position({}) should not have obstacles in between'.format(src_pos, dst_pos)
 
         if self.is_set(dst_pos.row, dst_pos.col):
             if self.get(src_pos.row, src_pos.col).color == self.get(dst_pos.row, dst_pos.col).color:
-                raise PositionAlreadyOccupiedError('src color and dst color is same')
+                raise InvalidPositionError(
+                    'from position({}), to position({}) should not have same color'.format(src_pos, dst_pos))
 
         return True
 
@@ -87,14 +94,14 @@ class ChessBoard(Board):
 
     def __repr__(self):
         lines = list()
-        first_line = '   1  2  3  4  5  6  7  8'
+        first_line = '   0  1  2  3  4  5  6  7'
         lines.append(first_line)
         for r, rows in enumerate(self.tiles):
             line = list()
             for piece in rows:
                 marker = self.__repr_piece(piece)
                 line.append('{}  '.format(marker))
-            line.insert(0, '{}  '.format(r + 1))
+            line.insert(0, '{}  '.format(r))
             lines.append(''.join(line))
 
         return '\n'.join(lines)
