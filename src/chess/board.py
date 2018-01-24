@@ -1,3 +1,4 @@
+from chess.paths.finder import ChessPathFinder
 from chess.piece import ChessPiece
 from core.board import Board
 from core.error import InvalidPositionError, InvalidValueError
@@ -23,6 +24,7 @@ class ChessBoard(Board):
             self._init_chess_pieces()
         else:
             super().__init__(8, 8, init_value=self.MARKER_INIT, tiles=tiles)
+        self.chess_path_finder = ChessPathFinder()
 
     def _init_chess_pieces(self):
         for col in range(8):
@@ -41,20 +43,32 @@ class ChessBoard(Board):
         if not self.is_set(src_pos.row, src_pos.col):
             raise InvalidPositionError('from position({}) should not be empty'.format(src_pos))
 
-        # TODO: check whether src_pos piece can move to dst_pos
-        # raise InvalidPositionError
-        # 'from position({}), to position({}) cannot be reached'.format(src_pos, dst_pos)
+        # TODO : clean up required
+        src_piece = self.get(src_pos.row, src_pos.col)
+        src_move_paths = list()
+        if src_piece.name == 'KING':
+            src_move_paths = self.chess_path_finder.select_king_move_positions(src_pos)
+        elif src_piece.name == 'QUEEN':
+            src_move_paths = self.chess_path_finder.select_queen_move_positions(src_pos)
+        elif src_piece.name == 'ROOK':
+            src_move_paths = self.chess_path_finder.select_rook_move_positions(src_pos)
+        elif src_piece.name == 'BISHOP':
+            src_move_paths = self.chess_path_finder.select_bishop_move_positions(src_pos)
+        elif src_piece.name == 'KNIGHT':
+            src_move_paths = self.chess_path_finder.select_knight_move_positions(src_pos)
+        elif src_piece.name == 'PAWN':
+            if src_piece.color == 'WHITE':
+                src_move_paths = self.chess_path_finder.select_white_pawn_move_positions(src_pos)
+            else:
+                src_move_paths = self.chess_path_finder.select_black_pawn_move_positions(src_pos)
 
-        # TODO: check whether there is not obstacles in between src_pos and dst_pos
-        # raise InvalidPositionError
-        # 'from position({}), to position({}) should not have obstacles in between'.format(src_pos, dst_pos)
+        for path in src_move_paths:
+            print(path.routes)
+            if dst_pos in path.routes:
+                if path.is_valid_destination(self, dst_pos):
+                    return
 
-        if self.is_set(dst_pos.row, dst_pos.col):
-            if self.get(src_pos.row, src_pos.col).color == self.get(dst_pos.row, dst_pos.col).color:
-                raise InvalidPositionError(
-                    'from position({}), to position({}) should not have same color'.format(src_pos, dst_pos))
-
-        return True
+        raise InvalidPositionError('cannot reach destination({})'.format(dst_pos))
 
     def encode(self):
         encoded_tiles = list()
