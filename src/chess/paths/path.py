@@ -36,7 +36,7 @@ class ChessPiecePath(Path):
         # check dst_piece color
         src_piece = board.get(self.source.row, self.source.col)
         dst_piece = board.get(dst_pos.row, dst_pos.col)
-        if dst_piece == board.MARKER_INIT:
+        if not board.is_set(dst_pos.row, dst_pos.col):
             return self.valid_dst & self.VALID_DST_EMPTY
         elif dst_piece.color != src_piece.color and self.valid_dst & self.VALID_DST_DIFF:
             return True

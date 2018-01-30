@@ -1,9 +1,9 @@
 from chess.board import ChessBoard
 from core.player import Player
-from core.utils import Serializable
+from core.utils import SerializableMixin
 
 
-class ChessGame(Serializable):
+class ChessGame(SerializableMixin):
     def __init__(self, *, players, board, turn_count, status):
         self.players = players
         self.board = board

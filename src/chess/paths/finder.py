@@ -3,6 +3,27 @@ from core.position import Position
 
 
 class BasePathFinder(object):
+    def __init__(self, min_row, max_row, min_col, max_col):
+        self.min_row = min_row
+        self.max_row = max_row
+        self.min_col = min_col
+        self.max_col = max_col
+
+    def _select_valid_positions(self, positions):
+        idx = 0
+        for row, col in positions:
+            if row < self.min_row:
+                return positions[:idx]
+            elif row >= self.max_row:
+                return positions[:idx]
+            elif col < self.min_col:
+                return positions[:idx]
+            elif col >= self.max_col:
+                return positions[:idx]
+            else:
+                idx += 1
+        return positions
+
     @classmethod
     def get_fixed_values(cls, start, count):
         return (start for _ in range(count))
@@ -76,31 +97,18 @@ class BasePathFinder(object):
 
 class ChessPathFinder(BasePathFinder):
     def __init__(self):
-        self.min_row = 0
-        self.max_row = 8
-        self.min_col = 0
-        self.max_col = 8
-
-    def _select_valid_positions(self, positions):
-        idx = 0
-        for row, col in positions:
-            if row < self.min_row:
-                return positions[:idx]
-            elif row >= self.max_row:
-                return positions[:idx]
-            elif col < self.min_col:
-                return positions[:idx]
-            elif col >= self.max_col:
-                return positions[:idx]
-            else:
-                idx += 1
-        return positions
+        super().__init__(min_row=0, max_row=8, min_col=0, max_col=8)
 
     @classmethod
     def convert_tuple_into_position(cls, positions):
         return [Position(r, c) for r, c in positions]
 
-    def select_king_move_positions(self, src_position):
+    def find_paths(self, src_position):
+        raise NotImplementedError
+
+
+class ChessKingPathFinder(ChessPathFinder):
+    def find_paths(self, src_position):
         directions = (
             (self.move_up, 1),
             (self.move_down, 1),
@@ -118,7 +126,9 @@ class ChessPathFinder(BasePathFinder):
 
         return paths
 
-    def select_queen_move_positions(self, src_position):
+
+class ChessQueenPathFinder(ChessPathFinder):
+    def find_paths(self, src_position):
         directions = (
             (self.move_up, 8),
             (self.move_down, 8),
@@ -141,7 +151,9 @@ class ChessPathFinder(BasePathFinder):
 
         return paths
 
-    def select_rook_move_positions(self, src_position):
+
+class ChessRookPathFinder(ChessPathFinder):
+    def find_paths(self, src_position):
         directions = (
             (self.move_up, 8),
             (self.move_down, 8),
@@ -159,7 +171,9 @@ class ChessPathFinder(BasePathFinder):
 
         return paths
 
-    def select_bishop_move_positions(self, src_position):
+
+class ChessBishopPathFinder(ChessPathFinder):
+    def find_paths(self, src_position):
         directions = (
             (self.move_up_left, 8),
             (self.move_up_right, 8),
@@ -177,7 +191,9 @@ class ChessPathFinder(BasePathFinder):
 
         return paths
 
-    def select_knight_move_positions(self, src_position):
+
+class ChessKnightPathFinder(ChessPathFinder):
+    def find_paths(self, src_position):
         src_row = src_position.row
         src_col = src_position.col
         all_positions = [
@@ -200,7 +216,9 @@ class ChessPathFinder(BasePathFinder):
 
         return paths
 
-    def select_black_pawn_move_positions(self, src_position):
+
+class ChessBlackPawnPathFinder(ChessPathFinder):
+    def find_paths(self, src_position):
         if src_position.row == 6:
             forward_count = 2
         else:
@@ -239,7 +257,9 @@ class ChessPathFinder(BasePathFinder):
 
         return paths
 
-    def select_white_pawn_move_positions(self, src_position):
+
+class ChessWhitePawnPathFinder(ChessPathFinder):
+    def find_paths(self, src_position):
         if src_position.row == 1:
             forward_count = 2
         else:

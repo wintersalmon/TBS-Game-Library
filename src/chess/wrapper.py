@@ -1,6 +1,6 @@
-from core.wrapper import Wrapper
 from chess.events import MoveChessPieceEvent
 from chess.game import ChessGame
+from core.wrapper import Wrapper
 
 
 class ChessWrapper(Wrapper):
