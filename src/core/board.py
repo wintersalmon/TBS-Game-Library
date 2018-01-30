@@ -1,8 +1,8 @@
 from core.error import InvalidPositionError, InvalidValueError, PositionAlreadySetError
-from core.utils import Serializable
+from core.utils import SerializableMixin
 
 
-class Board(Serializable):
+class Board(SerializableMixin):
     def __init__(self, rows, cols, *, init_value=None, tiles=None):
         self.rows = rows
         self.cols = cols

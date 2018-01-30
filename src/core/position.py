@@ -1,7 +1,7 @@
-from core.utils import ImmutableObject
+from core.utils import ImmutableMixin
 
 
-class Position(ImmutableObject):
+class Position(ImmutableMixin):
     __slots__ = ('row', 'col')
 
     def __init__(self, row, col):

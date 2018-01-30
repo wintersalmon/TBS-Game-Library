@@ -1,7 +1,7 @@
-from core.utils import Serializable
+from core.utils import SerializableMixin
 
 
-class Player(Serializable):
+class Player(SerializableMixin):
     def __init__(self, name):
         self.name = name
 

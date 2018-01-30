@@ -1,7 +1,7 @@
-from core.utils import Serializable
+from core.utils import SerializableMixin
 
 
-class Event(Serializable):
+class Event(SerializableMixin):
     def update(self, game):
         raise NotImplementedError
 

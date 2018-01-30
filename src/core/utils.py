@@ -3,7 +3,7 @@ class CallableMixin(object):
         raise NotImplementedError
 
 
-class Serializable(object):
+class SerializableMixin(object):
     def encode(self):
         raise NotImplementedError
 
@@ -12,5 +12,5 @@ class Serializable(object):
         raise NotImplementedError
 
 
-class ImmutableObject(object):
+class ImmutableMixin(object):
     __slots__ = ()

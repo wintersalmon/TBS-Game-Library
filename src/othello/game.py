@@ -1,9 +1,9 @@
 from core.player import Player
-from core.utils import Serializable
+from core.utils import SerializableMixin
 from othello.board import OthelloBoard
 
 
-class OthelloGame(Serializable):
+class OthelloGame(SerializableMixin):
     def __init__(self, players, *, board=None, turn_count=0, status=True):
         self.players = players
         self.board = OthelloBoard() if board is None else board

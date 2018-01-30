@@ -1,9 +1,9 @@
 from tic_tac_toe.board import TTTBoard
 from core.player import Player
-from core.utils import Serializable
+from core.utils import SerializableMixin
 
 
-class TicTacToeGame(Serializable):
+class TicTacToeGame(SerializableMixin):
     def __init__(self, players, *, board=None, turn_count=0, status=True):
         self.players = players
         self.board = TTTBoard() if board is None else board

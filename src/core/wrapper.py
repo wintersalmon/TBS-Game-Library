@@ -1,7 +1,7 @@
-from core.utils import Serializable
+from core.utils import SerializableMixin
 
 
-class Wrapper(Serializable):
+class Wrapper(SerializableMixin):
     def __init__(self, settings, game, events):
         self.settings = settings
         self.game = game
