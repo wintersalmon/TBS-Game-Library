@@ -3,7 +3,6 @@ from chess.piece import ChessPiece, ChessPieceWhitePawn, ChessPieceBlackPawn, Ch
     ChessPieceWhiteBishop, ChessPieceWhiteKnight, ChessPieceWhiteQueen, ChessPieceWhiteKing, ChessPieceBlackRook, \
     ChessPieceBlackKnight, ChessPieceBlackBishop, ChessPieceBlackQueen, ChessPieceBlackKing
 from core.board import Board
-from core.error import InvalidPositionError
 
 
 class ChessBoard(Board):
@@ -51,21 +50,6 @@ class ChessBoard(Board):
         self.tiles[7][5] = ChessPieceBlackBishop()
         self.tiles[7][6] = ChessPieceBlackKnight()
         self.tiles[7][7] = ChessPieceBlackRook()
-
-    def can_move(self, src_pos, dst_pos):
-        if not self.is_set(src_pos.row, src_pos.col):
-            raise InvalidPositionError('from position({}) should not be empty'.format(src_pos))
-
-        # TODO : clean up required
-        src_piece = self.get(src_pos.row, src_pos.col)
-        src_move_paths = src_piece.find_paths(src_pos)
-
-        for path in src_move_paths:
-            if dst_pos in path.routes:
-                if path.is_valid_destination(self, dst_pos):
-                    return
-
-        raise InvalidPositionError('cannot reach destination({})'.format(dst_pos))
 
     def encode(self):
         return {'tiles': self.tiles}

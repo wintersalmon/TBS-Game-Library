@@ -68,6 +68,7 @@ class MoveChessPieceEvent(Event):
         pos_dst = cls.get_argument_or_raise_error(kwargs, 'pos_dst')
 
         # retrieve extra arguments or throw errors
+        # TODO : clean up required
         try:
             if game.board.is_set(pos_src.row, pos_src.col):
                 piece_src = game.board.get(pos_src.row, pos_src.col)
@@ -78,7 +79,16 @@ class MoveChessPieceEvent(Event):
             else:
                 piece_dst = None
 
-            game.board.can_move(pos_src, pos_dst)
+            # game.board.can_move(pos_src, pos_dst)
+            if piece_src is None:
+                raise EventCreationFailedError('source position cannot be empty ({},{}):{}'.format(pos_src.row,
+                                                                                                   pos_src.col,
+                                                                                                   piece_src))
+
+            src_move_paths = piece_src.find_paths(pos_src)
+            for path in src_move_paths:
+                if pos_dst in path.routes:
+                    path.is_valid_destination(game.board, pos_dst)
 
         except InvalidPositionError as e:
             raise EventCreationFailedError(e)
