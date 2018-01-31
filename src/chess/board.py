@@ -52,12 +52,35 @@ class ChessBoard(Board):
         self.tiles[7][7] = ChessPieceBlackRook()
 
     def encode(self):
-        return {'tiles': self.tiles}
+        encoded_tiles = list()
+
+        for row in self.tiles:
+            encoded_row = list()
+            for tile in row:
+                try:
+                    encoded_tile = tile.encode()
+                except AttributeError:
+                    encoded_tile = tile
+                encoded_row.append(encoded_tile)
+            encoded_tiles.append(encoded_row)
+
+        return {'tiles': encoded_tiles}
 
     @classmethod
     def decode(cls, **kwargs):
-        tiles = kwargs['tiles']
-        return cls(tiles=tiles)
+        decoded_tiles = list()
+
+        for encoded_row in kwargs['tiles']:
+            decoded_row = list()
+            for encoded_tile in encoded_row:
+                try:
+                    tile = ChessPiece.decode(**encoded_tile)
+                except (ValueError, TypeError):
+                    tile = encoded_tile
+                decoded_row.append(tile)
+            decoded_tiles.append(decoded_row)
+
+        return cls(tiles=decoded_tiles)
 
     def __repr__(self):
         # get lines
