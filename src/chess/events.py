@@ -1,6 +1,6 @@
 from chess.game import ChessGame
 from chess.piece import ChessPiece
-from core.error import EventCreationFailedError, InvalidPositionError
+from core.error import EventCreationFailedError
 from core.event import Event
 from core.position import Position
 
@@ -67,31 +67,17 @@ class MoveChessPieceEvent(Event):
         pos_src = cls.get_argument_or_raise_error(kwargs, 'pos_src')
         pos_dst = cls.get_argument_or_raise_error(kwargs, 'pos_dst')
 
-        # retrieve extra arguments or throw errors
-        # TODO : clean up required
-        try:
-            if game.board.is_set(pos_src.row, pos_src.col):
-                piece_src = game.board.get(pos_src.row, pos_src.col)
-            else:
-                piece_src = None
-            if game.board.is_set(pos_dst.row, pos_dst.col):
-                piece_dst = game.board.get(pos_dst.row, pos_dst.col)
-            else:
-                piece_dst = None
+        piece_src = game.board.get(pos_src.row, pos_src.col)
+        piece_dst = game.board.get(pos_dst.row, pos_dst.col)
 
-            # game.board.can_move(pos_src, pos_dst)
-            if piece_src is None:
-                raise EventCreationFailedError('source position cannot be empty ({},{}):{}'.format(pos_src.row,
-                                                                                                   pos_src.col,
-                                                                                                   piece_src))
+        if not isinstance(piece_src, ChessPiece):
+            raise EventCreationFailedError('source position cannot be empty ({})'.format(pos_src))
 
-            src_move_paths = piece_src.find_paths(pos_src)
-            for path in src_move_paths:
-                if pos_dst in path.routes:
-                    path.is_valid_destination(game.board, pos_dst)
+        if not isinstance(piece_dst, ChessPiece):
+            piece_dst = None
 
-        except InvalidPositionError as e:
-            raise EventCreationFailedError(e)
-
-        else:
+        if piece_src.can_move_to(game.board, pos_src, pos_dst):
             return MoveChessPieceEvent(pos_src=pos_src, pos_dst=pos_dst, piece_src=piece_src, piece_dst=piece_dst)
+        else:
+            raise EventCreationFailedError(
+                'cannot create event with flowing arguments ({}, {})'.format(pos_src, pos_dst))

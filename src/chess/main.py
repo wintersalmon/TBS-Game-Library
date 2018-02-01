@@ -122,6 +122,17 @@ def replay_main():
     replay_manger.set_position(1)
     print(replay_manger)
 
+    print('SET MAX')
+    replay_manger.set_position(replay_manger.get_max_position())
+    print(replay_manger)
+
+    # board = replay_manger.game_wrapper.game.board
+    # for row in range(8):
+    #     for col in range(8):
+    #         piece = board.get(row, col)
+    #         if isinstance(piece, ChessPiece):
+    #             print(row, col, piece.name, piece.search_valid_destinations(board, src=Position(row, col)), sep='\t')
+
 
 if __name__ == '__main__':
     main()

@@ -42,3 +42,26 @@ class ChessPiecePath(Path):
             return True
         else:
             raise InvalidPositionError('invalid dst pos({}) type'.format(dst_pos))
+
+    def get_valid_destinations(self, board):
+        valid_destinations = list()
+
+        src_piece = board.get(self.source.row, self.source.col)
+        for cur_position in self.routes:
+            if board.is_set(cur_position.row, cur_position.col):
+                dst_piece = board.get(cur_position.row, cur_position.col)
+                if src_piece.color != dst_piece.color and self.valid_dst & self.VALID_DST_DIFF:
+                    valid_destinations.append(cur_position)
+
+                if self.skip_obstacles:
+                    continue
+                else:
+                    break
+            else:
+                if self.valid_dst & self.VALID_DST_EMPTY:
+                    valid_destinations.append(cur_position)
+                    continue
+                else:
+                    break
+
+        return valid_destinations

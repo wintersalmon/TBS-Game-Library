@@ -1,4 +1,4 @@
-from chess.paths.finder import ChessBishopPathFinder
+from chess.paths.finder import ChessBishopPathFinder, ChessKingPathFinder
 from chess.paths.finder import ChessBlackPawnPathFinder
 from chess.paths.finder import ChessKnightPathFinder
 from chess.paths.finder import ChessQueenPathFinder
@@ -60,7 +60,7 @@ class BaseChessPiece(object):
             BISHOP: ChessBishopPathFinder(),
             KNIGHT: ChessKnightPathFinder(),
             QUEEN: ChessQueenPathFinder(),
-            KING: ChessKnightPathFinder(),
+            KING: ChessKingPathFinder(),
         },
         WHITE: {
             PAWN: ChessWhitePawnPathFinder(),
@@ -68,7 +68,7 @@ class BaseChessPiece(object):
             BISHOP: ChessBishopPathFinder(),
             KNIGHT: ChessKnightPathFinder(),
             QUEEN: ChessQueenPathFinder(),
-            KING: ChessKnightPathFinder(),
+            KING: ChessKingPathFinder(),
         }
     }
 
@@ -134,8 +134,20 @@ class ChessPiece(BaseChessPiece, ImmutableMixin, SerializableMixin):
         else:
             return nickname.lower()
 
-    def find_paths(self, src_position):
-        return self.PIECE_PATH_FINDERS[self._color_value][self._piece_value].find_paths(src_position)
+    def _search_possible_paths(self, src):
+        return self.PIECE_PATH_FINDERS[self._color_value][self._piece_value].find_paths(src)
+
+    def search_valid_destinations(self, board, src):
+        valid_positions = list()
+        possible_paths = self._search_possible_paths(src)
+        for path in possible_paths:
+            positions = path.get_valid_destinations(board)
+            valid_positions += positions
+        return valid_positions
+
+    def can_move_to(self, board, src, dst):
+        valid_destinations = self.search_valid_destinations(board, src)
+        return dst in valid_destinations
 
     def __repr__(self):
         return self.nickname
