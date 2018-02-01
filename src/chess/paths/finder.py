@@ -114,6 +114,11 @@ class ChessKingPathFinder(ChessPathFinder):
             (self.move_down, 1),
             (self.move_left, 1),
             (self.move_right, 1),
+
+            (self.move_up_left, 1),
+            (self.move_up_right, 1),
+            (self.move_down_left, 1),
+            (self.move_down_right, 1),
         )
 
         paths = list()

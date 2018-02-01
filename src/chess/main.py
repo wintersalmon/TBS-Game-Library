@@ -1,5 +1,6 @@
 from chess.events import MoveChessPieceEvent
 from chess.managers import ChessUpdateManager, ChessReplayManager
+from chess.piece import ChessPiece
 from chess.wrapper import ChessWrapper
 from core.error import EventCreationFailedError, ExitGameException, InvalidInputError
 from core.position import Position
@@ -33,6 +34,8 @@ def main():
     encoded_chess_data = chess_wrapper.encode()
     decoded_chess_data = ChessWrapper.decode(**encoded_chess_data)
     print(decoded_chess_data)
+
+    print_game_status(decoded_chess_data.game)
 
 
 def read_user_event():
@@ -126,12 +129,17 @@ def replay_main():
     replay_manger.set_position(replay_manger.get_max_position())
     print(replay_manger)
 
-    # board = replay_manger.game_wrapper.game.board
-    # for row in range(8):
-    #     for col in range(8):
-    #         piece = board.get(row, col)
-    #         if isinstance(piece, ChessPiece):
-    #             print(row, col, piece.name, piece.search_valid_destinations(board, src=Position(row, col)), sep='\t')
+    print_game_status(replay_manger.game_wrapper.game)
+
+
+def print_game_status(game):
+    board = game.board
+    for row in range(8):
+        for col in range(8):
+            piece = board.get(row, col)
+            if isinstance(piece, ChessPiece):
+                print(row, col, piece.fullname, piece.search_valid_destinations(board, src=Position(row, col)),
+                      sep='\t')
 
 
 if __name__ == '__main__':

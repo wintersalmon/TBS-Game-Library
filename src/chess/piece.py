@@ -30,17 +30,17 @@ class BaseChessPiece(object):
 
     # PIECE NAMES
     PIECE_COLORS = {
-        BLACK: 'BLACK',
-        WHITE: 'WHITE',
+        BLACK: 'Black',
+        WHITE: 'White',
     }
 
     PIECE_NAMES = {
-        PAWN: 'PAWN',
-        ROOK: 'ROOK',
-        BISHOP: 'BISHOP',
-        KNIGHT: 'KNIGHT',
-        QUEEN: 'QUEEN',
-        KING: 'KING',
+        PAWN: 'Pawn',
+        ROOK: 'Rook',
+        BISHOP: 'Bishop',
+        KNIGHT: 'Knight',
+        QUEEN: 'Queen',
+        KING: 'King',
     }
 
     PIECE_NICKNAMES = {
@@ -123,8 +123,8 @@ class ChessPiece(BaseChessPiece, ImmutableMixin, SerializableMixin):
         return self.PIECE_NAMES[self._piece_value]
 
     @property
-    def name(self):
-        return '{}:{}'.format(self.color, self.piece)
+    def fullname(self):
+        return '{}{}'.format(self.color, self.piece)
 
     @property
     def nickname(self):
@@ -134,12 +134,9 @@ class ChessPiece(BaseChessPiece, ImmutableMixin, SerializableMixin):
         else:
             return nickname.lower()
 
-    def _search_possible_paths(self, src):
-        return self.PIECE_PATH_FINDERS[self._color_value][self._piece_value].find_paths(src)
-
     def search_valid_destinations(self, board, src):
         valid_positions = list()
-        possible_paths = self._search_possible_paths(src)
+        possible_paths = self.PIECE_PATH_FINDERS[self._color_value][self._piece_value].find_paths(src)
         for path in possible_paths:
             positions = path.get_valid_destinations(board)
             valid_positions += positions
