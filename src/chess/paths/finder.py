@@ -106,6 +106,14 @@ class ChessPathFinder(BasePathFinder):
     def find_paths(self, src_position):
         raise NotImplementedError
 
+    def search_valid_positions(self, board, src):
+        possible_paths = self.find_paths(src)
+        valid_positions = list()
+        for path in possible_paths:
+            positions = path.get_valid_destinations(board)
+            valid_positions += positions
+        return valid_positions
+
 
 class ChessKingPathFinder(ChessPathFinder):
     def find_paths(self, src_position):

@@ -101,8 +101,8 @@ class ChessPiece(BaseChessPiece, ImmutableMixin, SerializableMixin):
             raise ValueError('invalid value')
 
         self._value = value
-        self._color_value = self.get_color_value(value)
-        self._piece_value = self.get_piece_value(value)
+        self._color = self.get_color_value(value)
+        self._piece = self.get_piece_value(value)
 
     @classmethod
     def decode(cls, **kwargs):
@@ -116,11 +116,11 @@ class ChessPiece(BaseChessPiece, ImmutableMixin, SerializableMixin):
 
     @property
     def color(self):
-        return self.PIECE_COLORS[self._color_value]
+        return self.PIECE_COLORS[self._color]
 
     @property
     def piece(self):
-        return self.PIECE_NAMES[self._piece_value]
+        return self.PIECE_NAMES[self._piece]
 
     @property
     def fullname(self):
@@ -128,19 +128,15 @@ class ChessPiece(BaseChessPiece, ImmutableMixin, SerializableMixin):
 
     @property
     def nickname(self):
-        nickname = self.PIECE_NICKNAMES[self._piece_value]
-        if self._color_value == self.WHITE:
+        nickname = self.PIECE_NICKNAMES[self._piece]
+        if self._color == self.WHITE:
             return nickname.upper()
         else:
             return nickname.lower()
 
     def search_valid_destinations(self, board, src):
-        valid_positions = list()
-        possible_paths = self.PIECE_PATH_FINDERS[self._color_value][self._piece_value].find_paths(src)
-        for path in possible_paths:
-            positions = path.get_valid_destinations(board)
-            valid_positions += positions
-        return valid_positions
+        pathfinder = self.PIECE_PATH_FINDERS[self._color][self._piece]
+        return pathfinder.search_valid_positions(board, src)
 
     def can_move_to(self, board, src, dst):
         valid_destinations = self.search_valid_destinations(board, src)
