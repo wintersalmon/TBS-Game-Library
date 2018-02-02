@@ -1,4 +1,4 @@
-from chess.paths.path import ChessPiecePath
+from chess.pieces.path import ChessPiecePath
 from core.position import Position
 
 

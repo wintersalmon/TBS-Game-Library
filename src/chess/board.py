@@ -1,7 +1,4 @@
-from chess.paths.finder import ChessPathFinder
-from chess.piece import ChessPiece, ChessPieceWhitePawn, ChessPieceBlackPawn, ChessPieceWhiteRook, \
-    ChessPieceWhiteBishop, ChessPieceWhiteKnight, ChessPieceWhiteQueen, ChessPieceWhiteKing, ChessPieceBlackRook, \
-    ChessPieceBlackKnight, ChessPieceBlackBishop, ChessPieceBlackQueen, ChessPieceBlackKing
+from chess.pieces import *
 from core.board import Board
 
 
@@ -12,7 +9,6 @@ class ChessBoard(Board):
             self._init_chess_pieces()
         else:
             super().__init__(8, 8, init_value=ChessPiece.BLANK, tiles=tiles)
-        self.chess_path_finder = ChessPathFinder()
 
     def _init_chess_pieces(self):
         self.tiles[0][0] = ChessPieceWhiteRook()

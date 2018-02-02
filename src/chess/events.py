@@ -1,5 +1,5 @@
 from chess.game import ChessGame
-from chess.piece import ChessPiece
+from chess.pieces import ChessPiece
 from core.error import EventCreationFailedError
 from core.event import Event
 from core.position import Position
@@ -76,7 +76,7 @@ class MoveChessPieceEvent(Event):
         if not isinstance(piece_dst, ChessPiece):
             piece_dst = None
 
-        if piece_src.can_move_to(game.board, pos_src, pos_dst):
+        if piece_src.is_valid_destination(game.board, pos_src, pos_dst):
             return MoveChessPieceEvent(pos_src=pos_src, pos_dst=pos_dst, piece_src=piece_src, piece_dst=piece_dst)
         else:
             raise EventCreationFailedError(
