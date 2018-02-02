@@ -1,5 +1,4 @@
-from chess.pieces.pathfinder import ChessBishopPathFinder, ChessKingPathFinder, ChessBlackPawnPathFinder, \
-    ChessKnightPathFinder, ChessQueenPathFinder, ChessRookPathFinder, ChessWhitePawnPathFinder
+from chess.pathfinders import *
 
 
 class BaseChessPiece(object):

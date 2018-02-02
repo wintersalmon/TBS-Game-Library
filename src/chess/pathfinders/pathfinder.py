@@ -1,98 +1,52 @@
-from chess.pieces.path import ChessPiecePath
+from chess.pathfinders.base import BasePathFinder
 from core.position import Position
 
 
-class BasePathFinder(object):
-    def __init__(self, min_row, max_row, min_col, max_col):
-        self.min_row = min_row
-        self.max_row = max_row
-        self.min_col = min_col
-        self.max_col = max_col
+class Path(object):
+    def __init__(self, source, routes):
+        self.source = source
+        self.routes = routes
 
-    def _select_valid_positions(self, positions):
-        idx = 0
-        for row, col in positions:
-            if row < self.min_row:
-                return positions[:idx]
-            elif row >= self.max_row:
-                return positions[:idx]
-            elif col < self.min_col:
-                return positions[:idx]
-            elif col >= self.max_col:
-                return positions[:idx]
+    def __iter__(self):
+        for route in self.routes:
+            yield route
+
+
+class ChessPiecePath(Path):
+    VALID_DST_EMPTY = 0b1
+    VALID_DST_DIFF = 0b10
+    VALID_DST_EMPTY_OR_DIFF = 0b11
+
+    def __init__(self, source, routes, *, valid_dst=VALID_DST_EMPTY_OR_DIFF, skip_obstacles=False):
+        super().__init__(source=source, routes=routes)
+        self.valid_dst = valid_dst
+        self.skip_obstacles = skip_obstacles
+
+    # def is_valid_destination(self, board, dst_pos):
+    #     return dst_pos in self.get_valid_destinations(board)
+
+    def get_valid_destinations(self, board):
+        valid_destinations = list()
+
+        src_piece = board.get(self.source.row, self.source.col)
+        for cur_position in self.routes:
+            if board.is_set(cur_position.row, cur_position.col):
+                dst_piece = board.get(cur_position.row, cur_position.col)
+                if src_piece.color != dst_piece.color and self.valid_dst & self.VALID_DST_DIFF:
+                    valid_destinations.append(cur_position)
+
+                if self.skip_obstacles:
+                    continue
+                else:
+                    break
             else:
-                idx += 1
-        return positions
+                if self.valid_dst & self.VALID_DST_EMPTY:
+                    valid_destinations.append(cur_position)
+                    continue
+                else:
+                    break
 
-    @classmethod
-    def get_fixed_values(cls, start, count):
-        return (start for _ in range(count))
-
-    @classmethod
-    def get_increased_values(cls, start, count):
-        start += 1
-        return map(lambda offset: start + offset, range(count))
-
-    @classmethod
-    def get_decreased_values(cls, start, count):
-        start -= 1
-        return map(lambda offset: start - offset, range(count))
-
-    @classmethod
-    def move_up(cls, row, col, count):
-        rows = cls.get_decreased_values(row, count)
-        cols = cls.get_fixed_values(col, count)
-
-        return list(zip(rows, cols))
-
-    @classmethod
-    def move_down(cls, row, col, count):
-        rows = cls.get_increased_values(row, count)
-        cols = cls.get_fixed_values(col, count)
-
-        return list(zip(rows, cols))
-
-    @classmethod
-    def move_left(cls, row, col, count):
-        rows = cls.get_fixed_values(row, count)
-        cols = cls.get_decreased_values(col, count)
-
-        return list(zip(rows, cols))
-
-    @classmethod
-    def move_right(cls, row, col, count):
-        rows = cls.get_fixed_values(row, count)
-        cols = cls.get_increased_values(col, count)
-
-        return list(zip(rows, cols))
-
-    @classmethod
-    def move_up_left(cls, row, col, count):
-        rows = cls.get_decreased_values(row, count)
-        cols = cls.get_decreased_values(col, count)
-
-        return list(zip(rows, cols))
-
-    @classmethod
-    def move_up_right(cls, row, col, count):
-        rows = cls.get_decreased_values(row, count)
-        cols = cls.get_increased_values(col, count)
-
-        return list(zip(rows, cols))
-
-    @classmethod
-    def move_down_left(cls, row, col, count):
-        rows = cls.get_increased_values(row, count)
-        cols = cls.get_decreased_values(col, count)
-
-        return list(zip(rows, cols))
-
-    @classmethod
-    def move_down_right(cls, row, col, count):
-        rows = cls.get_increased_values(row, count)
-        cols = cls.get_increased_values(col, count)
-
-        return list(zip(rows, cols))
+        return valid_destinations
 
 
 class ChessPathFinder(BasePathFinder):
