@@ -1,9 +1,13 @@
+import json
+import os
+
 from chess.events import MoveChessPieceEvent
 from chess.managers import ChessUpdateManager, ChessReplayManager
 from chess.piece import ChessPiece
 from chess.wrapper import ChessWrapper
 from core.error import EventCreationFailedError, ExitGameException, InvalidInputError
 from core.position import Position
+from settings import SAVE_DIR
 
 
 def main():
@@ -31,11 +35,27 @@ def main():
         else:
             print(chess_update_manager)
 
-    encoded_chess_data = chess_wrapper.encode()
+    save_chess_game(chess_wrapper)
+    encoded_chess_data = load_chess_game()
     decoded_chess_data = ChessWrapper.decode(**encoded_chess_data)
     print(decoded_chess_data)
 
-    print_game_status(decoded_chess_data.game)
+
+def save_chess_game(game):
+    file_name = input('save file name:')
+    save_file_name = os.path.join(SAVE_DIR, 'chess', '{}.save'.format(file_name))
+
+    encoded_chess_data = game.encode()
+    with open(save_file_name, 'w', encoding='utf-8') as outfile:
+        json.dump(encoded_chess_data, outfile)
+
+
+def load_chess_game():
+    file_name = input('load file name:')
+    load_file_name = os.path.join(SAVE_DIR, 'chess', '{}.save'.format(file_name))
+
+    with open(load_file_name, 'r', encoding='utf-8') as infile:
+        return json.load(infile)
 
 
 def read_user_event():
