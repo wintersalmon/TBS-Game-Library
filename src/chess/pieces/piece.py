@@ -66,6 +66,16 @@ class ChessPiece(BaseChessPiece, ImmutableMixin, SerializableMixin):
     def __repr__(self):
         return self.nickname
 
+    def __eq__(self, other):
+        if isinstance(other, ChessPiece):
+            return (self._color, self._piece) == (other._color, other._piece)
+        elif isinstance(other, int):
+            return False
+        raise NotImplementedError
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
 
 class ChessPieceWhitePawn(ChessPiece):
     def __init__(self):
