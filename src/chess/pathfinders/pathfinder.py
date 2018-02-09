@@ -17,21 +17,18 @@ class ChessPiecePath(Path):
     VALID_DST_DIFF = 0b10
     VALID_DST_EMPTY_OR_DIFF = 0b11
 
-    def __init__(self, source, routes, *, valid_dst=VALID_DST_EMPTY_OR_DIFF, skip_obstacles=False):
+    def __init__(self, source, routes, *, valid_dst=None, skip_obstacles=None):
         super().__init__(source=source, routes=routes)
-        self.valid_dst = valid_dst
-        self.skip_obstacles = skip_obstacles
-
-    # def is_valid_destination(self, board, dst_pos):
-    #     return dst_pos in self.get_valid_destinations(board)
+        self.valid_dst = self.VALID_DST_EMPTY_OR_DIFF if valid_dst is None else valid_dst
+        self.skip_obstacles = False if skip_obstacles is None else skip_obstacles
 
     def get_valid_destinations(self, board):
         valid_destinations = list()
 
-        src_piece = board.get(self.source.row, self.source.col)
+        src_piece = board.get(*self.source)
         for cur_position in self.routes:
-            if board.is_set(cur_position.row, cur_position.col):
-                dst_piece = board.get(cur_position.row, cur_position.col)
+            if board.is_set(*cur_position):
+                dst_piece = board.get(*cur_position)
                 if src_piece.color != dst_piece.color and self.valid_dst & self.VALID_DST_DIFF:
                     valid_destinations.append(cur_position)
 
@@ -66,122 +63,92 @@ class ChessPathFinder(BasePathFinder):
         for path in possible_paths:
             positions = path.get_valid_destinations(board)
             valid_positions += positions
-        return valid_positions
+        return self.convert_tuple_into_position(valid_positions)
 
 
-class ChessKingPathFinder(ChessPathFinder):
-    def find_paths(self, src_position):
-        directions = (
-            (self.move_up, 1),
-            (self.move_down, 1),
-            (self.move_left, 1),
-            (self.move_right, 1),
+class ChessPathFinderSimple(ChessPathFinder):
+    def find_paths(self, src):
+        routes = self._create_routes(src)
+        valid_routes = tuple(self._select_valid_positions(positions) for positions in routes)
+        valid_paths = tuple(ChessPiecePath(source=src, routes=routes) for routes in valid_routes if valid_routes)
+        return valid_paths
 
-            (self.move_up_left, 1),
-            (self.move_up_right, 1),
-            (self.move_down_left, 1),
-            (self.move_down_right, 1),
+    def _create_routes(self, src_position):
+        raise NotImplementedError
+
+
+class ChessKingPathFinder(ChessPathFinderSimple):
+    def _create_routes(self, src_position):
+        count = 1
+
+        return (
+            (self.move_up(*src_position, count)),
+            (self.move_down(*src_position, count)),
+            (self.move_left(*src_position, count)),
+            (self.move_right(*src_position, count)),
+
+            (self.move_up_left(*src_position, count)),
+            (self.move_up_right(*src_position, count)),
+            (self.move_down_left(*src_position, count)),
+            (self.move_down_right(*src_position, count)),
         )
 
-        paths = list()
-        for direction, count in directions:
-            positions = direction(src_position.row, src_position.col, count)
-            valid_positions = self._select_valid_positions(positions)
-            if valid_positions:
-                valid_routes = self.convert_tuple_into_position(valid_positions)
-                paths.append(ChessPiecePath(source=src_position, routes=valid_routes))
 
-        return paths
+class ChessQueenPathFinder(ChessPathFinderSimple):
+    def _create_routes(self, src_position):
+        count = 8
 
+        return (
+            (self.move_up(*src_position, count)),
+            (self.move_down(*src_position, count)),
+            (self.move_left(*src_position, count)),
+            (self.move_right(*src_position, count)),
 
-class ChessQueenPathFinder(ChessPathFinder):
-    def find_paths(self, src_position):
-        directions = (
-            (self.move_up, 8),
-            (self.move_down, 8),
-            (self.move_left, 8),
-            (self.move_right, 8),
-
-            (self.move_up_left, 8),
-            (self.move_up_right, 8),
-            (self.move_down_left, 8),
-            (self.move_down_right, 8),
+            (self.move_up_left(*src_position, count)),
+            (self.move_up_right(*src_position, count)),
+            (self.move_down_left(*src_position, count)),
+            (self.move_down_right(*src_position, count)),
         )
 
-        paths = list()
-        for direction, count in directions:
-            positions = direction(src_position.row, src_position.col, count)
-            valid_positions = self._select_valid_positions(positions)
-            if valid_positions:
-                valid_routes = self.convert_tuple_into_position(valid_positions)
-                paths.append(ChessPiecePath(source=src_position, routes=valid_routes))
 
-        return paths
+class ChessRookPathFinder(ChessPathFinderSimple):
+    def _create_routes(self, src_position):
+        count = 8
 
-
-class ChessRookPathFinder(ChessPathFinder):
-    def find_paths(self, src_position):
-        directions = (
-            (self.move_up, 8),
-            (self.move_down, 8),
-            (self.move_left, 8),
-            (self.move_right, 8),
+        return (
+            (self.move_up(*src_position, count)),
+            (self.move_down(*src_position, count)),
+            (self.move_left(*src_position, count)),
+            (self.move_right(*src_position, count)),
         )
 
-        paths = list()
-        for direction, count in directions:
-            positions = direction(src_position.row, src_position.col, count)
-            valid_positions = self._select_valid_positions(positions)
-            if valid_positions:
-                valid_routes = self.convert_tuple_into_position(valid_positions)
-                paths.append(ChessPiecePath(source=src_position, routes=valid_routes))
 
-        return paths
+class ChessBishopPathFinder(ChessPathFinderSimple):
+    def _create_routes(self, src_position):
+        count = 8
 
-
-class ChessBishopPathFinder(ChessPathFinder):
-    def find_paths(self, src_position):
-        directions = (
-            (self.move_up_left, 8),
-            (self.move_up_right, 8),
-            (self.move_down_left, 8),
-            (self.move_down_right, 8),
+        return (
+            (self.move_up_left(*src_position, count)),
+            (self.move_up_right(*src_position, count)),
+            (self.move_down_left(*src_position, count)),
+            (self.move_down_right(*src_position, count)),
         )
 
-        paths = list()
-        for direction, count in directions:
-            positions = direction(src_position.row, src_position.col, count)
-            valid_positions = self._select_valid_positions(positions)
-            if valid_positions:
-                valid_routes = self.convert_tuple_into_position(valid_positions)
-                paths.append(ChessPiecePath(source=src_position, routes=valid_routes))
 
-        return paths
+class ChessKnightPathFinder(ChessPathFinderSimple):
+    def _create_routes(self, src_position):
+        row, col = src_position
 
-
-class ChessKnightPathFinder(ChessPathFinder):
-    def find_paths(self, src_position):
-        src_row = src_position.row
-        src_col = src_position.col
-        all_positions = [
-            [(src_row - 2, src_col - 1)],
-            [(src_row - 2, src_col + 1)],
-            [(src_row + 2, src_col - 1)],
-            [(src_row + 2, src_col + 1)],
-            [(src_row - 1, src_col + 2)],
-            [(src_row + 1, src_col + 2)],
-            [(src_row - 1, src_col - 2)],
-            [(src_row + 1, src_col - 2)],
-        ]
-
-        paths = list()
-        for positions in all_positions:
-            valid_positions = self._select_valid_positions(positions)
-            if valid_positions:
-                valid_routes = self.convert_tuple_into_position(valid_positions)
-                paths.append(ChessPiecePath(source=src_position, routes=valid_routes, skip_obstacles=True))
-
-        return paths
+        return (
+            ((row - 2, col - 1),),
+            ((row - 2, col + 1),),
+            ((row + 2, col - 1),),
+            ((row + 2, col + 1),),
+            ((row - 1, col - 2),),
+            ((row + 1, col - 2),),
+            ((row - 1, col + 2),),
+            ((row + 1, col + 2),),
+        )
 
 
 class ChessBlackPawnPathFinder(ChessPathFinder):

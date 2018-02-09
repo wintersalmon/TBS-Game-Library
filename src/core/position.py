@@ -8,6 +8,9 @@ class Position(ImmutableMixin):
         self.row = row
         self.col = col
 
+    def __getitem__(self, item):
+        return (self.row, self.col)[item]
+
     def encode(self):
         return {
             'row': self.row,
