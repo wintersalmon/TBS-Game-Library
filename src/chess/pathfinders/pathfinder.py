@@ -69,7 +69,7 @@ class ChessPathFinder(BasePathFinder):
 class ChessPathFinderSimple(ChessPathFinder):
     def find_paths(self, src):
         routes = self._create_routes(src)
-        valid_routes = tuple(self._select_valid_positions(positions) for positions in routes)
+        valid_routes = tuple(self._select_inbound_positions(positions) for positions in routes)
         valid_paths = tuple(ChessPiecePath(source=src, routes=routes) for routes in valid_routes if valid_routes)
         return valid_paths
 
@@ -151,83 +151,68 @@ class ChessKnightPathFinder(ChessPathFinderSimple):
         )
 
 
-class ChessBlackPawnPathFinder(ChessPathFinder):
-    def find_paths(self, src_position):
+class ChessPathFinderComplex(ChessPathFinder):
+    def find_paths(self, src):
+        paths = self._create_paths(src)
+
+        for path in paths:
+            path['routes'] = self._select_inbound_positions(path['routes'])
+
+        valid_paths = tuple(ChessPiecePath(**path) for path in paths if path['routes'])
+
+        return valid_paths
+
+    def _create_paths(self, src_position):
+        raise NotImplementedError
+
+
+class ChessBlackPawnPathFinder(ChessPathFinderComplex):
+    def _create_paths(self, src_position):
         if src_position.row == 6:
             forward_count = 2
         else:
             forward_count = 1
 
-        forward_positions = self.move_up(src_position.row, src_position.col, forward_count)
-        left_positions = self.move_up_left(src_position.row, src_position.col, 1)
-        right_positions = self.move_up_right(src_position.row, src_position.col, 1)
-
-        valid_forward_positions = self._select_valid_positions(forward_positions)
-        valid_left_positions = self._select_valid_positions(left_positions)
-        valid_right_positions = self._select_valid_positions(right_positions)
-
-        valid_forward_routes = self.convert_tuple_into_position(valid_forward_positions)
-        valid_left_routes = self.convert_tuple_into_position(valid_left_positions)
-        valid_right_routes = self.convert_tuple_into_position(valid_right_positions)
-
-        paths = list()
-        if valid_forward_routes:
-            valid_forward_path = ChessPiecePath(source=src_position,
-                                                routes=valid_forward_routes,
-                                                valid_dst=ChessPiecePath.VALID_DST_EMPTY)
-            paths.append(valid_forward_path)
-
-        if valid_left_routes:
-            valid_left_path = ChessPiecePath(source=src_position,
-                                             routes=valid_left_routes,
-                                             valid_dst=ChessPiecePath.VALID_DST_DIFF)
-            paths.append(valid_left_path)
-
-        if valid_right_routes:
-            valid_right_path = ChessPiecePath(source=src_position,
-                                              routes=valid_right_routes,
-                                              valid_dst=ChessPiecePath.VALID_DST_DIFF)
-            paths.append(valid_right_path)
-
-        return paths
+        return (
+            {
+                'source': src_position,
+                'routes': (self.move_up(*src_position, forward_count)),
+                'valid_dst': ChessPiecePath.VALID_DST_EMPTY
+            },
+            {
+                'source': src_position,
+                'routes': (self.move_up_left(*src_position, 1)),
+                'valid_dst': ChessPiecePath.VALID_DST_DIFF
+            },
+            {
+                'source': src_position,
+                'routes': (self.move_up_right(*src_position, 1)),
+                'valid_dst': ChessPiecePath.VALID_DST_DIFF
+            },
+        )
 
 
-class ChessWhitePawnPathFinder(ChessPathFinder):
-    def find_paths(self, src_position):
+class ChessWhitePawnPathFinder(ChessPathFinderComplex):
+    def _create_paths(self, src_position):
         if src_position.row == 1:
             forward_count = 2
         else:
             forward_count = 1
 
-        forward_positions = self.move_down(src_position.row, src_position.col, forward_count)
-        left_positions = self.move_down_left(src_position.row, src_position.col, 1)
-        right_positions = self.move_down_right(src_position.row, src_position.col, 1)
-
-        valid_forward_positions = self._select_valid_positions(forward_positions)
-        valid_left_positions = self._select_valid_positions(left_positions)
-        valid_right_positions = self._select_valid_positions(right_positions)
-
-        valid_forward_routes = self.convert_tuple_into_position(valid_forward_positions)
-        valid_left_routes = self.convert_tuple_into_position(valid_left_positions)
-        valid_right_routes = self.convert_tuple_into_position(valid_right_positions)
-
-        paths = list()
-        if valid_forward_routes:
-            valid_forward_path = ChessPiecePath(source=src_position,
-                                                routes=valid_forward_routes,
-                                                valid_dst=ChessPiecePath.VALID_DST_EMPTY)
-            paths.append(valid_forward_path)
-
-        if valid_left_routes:
-            valid_left_path = ChessPiecePath(source=src_position,
-                                             routes=valid_left_routes,
-                                             valid_dst=ChessPiecePath.VALID_DST_DIFF)
-            paths.append(valid_left_path)
-
-        if valid_right_routes:
-            valid_right_path = ChessPiecePath(source=src_position,
-                                              routes=valid_right_routes,
-                                              valid_dst=ChessPiecePath.VALID_DST_DIFF)
-            paths.append(valid_right_path)
-
-        return paths
+        return (
+            {
+                'source': src_position,
+                'routes': (self.move_down(*src_position, forward_count)),
+                'valid_dst': ChessPiecePath.VALID_DST_EMPTY
+            },
+            {
+                'source': src_position,
+                'routes': (self.move_down_left(*src_position, 1)),
+                'valid_dst': ChessPiecePath.VALID_DST_DIFF
+            },
+            {
+                'source': src_position,
+                'routes': (self.move_down_right(*src_position, 1)),
+                'valid_dst': ChessPiecePath.VALID_DST_DIFF
+            },
+        )

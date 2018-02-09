@@ -5,7 +5,7 @@ class BasePathFinder(object):
         self.min_col = min_col
         self.max_col = max_col
 
-    def _select_valid_positions(self, positions):
+    def _select_inbound_positions(self, positions):
         idx = 0
         for row, col in positions:
             if row < self.min_row:
