@@ -42,22 +42,42 @@ class MoveChessPieceEvent(Event):
         game.turn_count -= 1
 
     def encode(self):
-        return {
+        encoded_properties = {
             'pos_src': self.pos_src.encode(),
             'pos_dst': self.pos_dst.encode(),
             'piece_src': self.piece_src.encode(),
-            'piece_dst': self.piece_dst.encode() if self.piece_dst else self.piece_dst,
         }
+
+        if self.piece_dst is not None:
+            encoded_properties['piece_dst'] = self.piece_dst.encode()
+
+        return encoded_properties
+        # return {
+        #     'pos_src': self.pos_src.encode(),
+        #     'pos_dst': self.pos_dst.encode(),
+        #     'piece_src': self.piece_src.encode(),
+        #     'piece_dst': self.piece_dst.encode() if self.piece_dst else self.piece_dst,
+        # }
 
     @classmethod
     def decode(cls, **kwargs):
         decoded_kwargs = {
             'pos_src': Position.decode(**kwargs['pos_src']),
             'pos_dst': Position.decode(**kwargs['pos_dst']),
-            'piece_src': ChessPiece.decode(**kwargs['piece_src']),
-            'piece_dst': ChessPiece.decode(**kwargs['piece_dst']) if kwargs['piece_dst'] else None,
+            'piece_src': ChessPiece.decode(kwargs['piece_src']),
         }
+
+        if 'piece_dst' in kwargs:
+            decoded_kwargs['piece_dst'] = ChessPiece.decode(kwargs['piece_dst'])
+
         return cls(**decoded_kwargs)
+        # decoded_kwargs = {
+        #     'pos_src': Position.decode(**kwargs['pos_src']),
+        #     'pos_dst': Position.decode(**kwargs['pos_dst']),
+        #     'piece_src': ChessPiece.decode(kwargs['piece_src']),
+        #     'piece_dst': ChessPiece.decode(kwargs['piece_dst']) if kwargs['piece_dst'] else None,
+        # }
+        # return cls(**decoded_kwargs)
 
     @classmethod
     def create(cls, *, game, **kwargs):

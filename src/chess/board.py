@@ -1,5 +1,6 @@
 from chess.pieces import *
 from core.board import Board
+from core.error import InvalidValueError
 
 
 class ChessBoard(Board):
@@ -48,19 +49,18 @@ class ChessBoard(Board):
         self.tiles[7][7] = ChessPieceBlackRook()
 
     def encode(self):
-        encoded_tiles = list()
-
-        for row in self.tiles:
-            encoded_row = list()
-            for tile in row:
+        encoded_rows = list()
+        for rows in self.tiles:
+            encoded_cols = list()
+            for col in rows:
                 try:
-                    encoded_tile = tile.encode()
+                    encoded_col = col.encode()
                 except AttributeError:
-                    encoded_tile = tile
-                encoded_row.append(encoded_tile)
-            encoded_tiles.append(encoded_row)
+                    encoded_col = col
+                encoded_cols.append(encoded_col)
+            encoded_rows.append(encoded_cols)
 
-        return {'tiles': encoded_tiles}
+        return {'tiles': encoded_rows}
 
     @classmethod
     def decode(cls, **kwargs):
@@ -70,13 +70,44 @@ class ChessBoard(Board):
             decoded_row = list()
             for encoded_tile in encoded_row:
                 try:
-                    tile = ChessPiece.decode(**encoded_tile)
-                except (ValueError, TypeError):
+                    tile = ChessPiece.decode(encoded_tile)
+                except InvalidValueError:
                     tile = encoded_tile
                 decoded_row.append(tile)
             decoded_tiles.append(decoded_row)
 
         return cls(tiles=decoded_tiles)
+
+    # def encode(self):
+    #     encoded_tiles = list()
+    #
+    #     for row in self.tiles:
+    #         encoded_row = list()
+    #         for tile in row:
+    #             try:
+    #                 encoded_tile = tile.encode()
+    #             except AttributeError:
+    #                 encoded_tile = tile
+    #             encoded_row.append(encoded_tile)
+    #         encoded_tiles.append(encoded_row)
+    #
+    #     return {'tiles': encoded_tiles}
+    #
+    # @classmethod
+    # def decode(cls, **kwargs):
+    #     decoded_tiles = list()
+    #
+    #     for encoded_row in kwargs['tiles']:
+    #         decoded_row = list()
+    #         for encoded_tile in encoded_row:
+    #             try:
+    #                 tile = ChessPiece.decode(**encoded_tile)
+    #             except (ValueError, TypeError):
+    #                 tile = encoded_tile
+    #             decoded_row.append(tile)
+    #         decoded_tiles.append(decoded_row)
+    #
+    #     return cls(tiles=decoded_tiles)
 
     def __repr__(self):
         # get lines

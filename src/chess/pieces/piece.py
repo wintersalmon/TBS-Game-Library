@@ -4,34 +4,33 @@ from core.utils import SerializableMixin, ImmutableMixin
 
 
 class ChessPiece(BaseChessPiece, ImmutableMixin, SerializableMixin):
-    __slots__ = ('_piece', '_color')
+    __slots__ = ('_piece', '_color', '_pathfinder')
 
     def __init__(self, color, piece):
-        if self.is_color(color):
-            self._color = color
-        else:
+        self._color = self.get_color_value(color)
+        self._piece = self.get_piece_value(piece)
+
+        if not self.is_color(self._color):
             raise InvalidValueError('invalid color value ({})'.format(color))
 
-        if self.is_piece(piece):
-            self._piece = piece
-        else:
+        if not self.is_piece(self._piece):
             raise InvalidValueError('invalid piece value ({})'.format(piece))
 
+        try:
+            self._pathfinder = self.PIECE_PATH_FINDERS[self._color][self._piece]
+        except KeyError:
+            raise InvalidValueError('pathfinder does not exist for values ({}, {})'.format(color, piece))
+
     @classmethod
-    def decode(cls, **kwargs):
-        color = kwargs['color']
-        piece = kwargs['piece']
-        return cls(color=color, piece=piece)
+    def decode(cls, value):
+        return cls(color=value, piece=value)
 
     def encode(self):
-        return {
-            'color': self._color,
-            'piece': self._piece,
-        }
+        return self.value
 
     @property
     def value(self):
-        return self._piece & self._color
+        return self._piece | self._color
 
     @property
     def color(self):
@@ -53,12 +52,8 @@ class ChessPiece(BaseChessPiece, ImmutableMixin, SerializableMixin):
         else:
             return nickname.lower()
 
-    @property
-    def pathfinder(self):
-        return self.PIECE_PATH_FINDERS[self._color][self._piece]
-
     def search_valid_destinations(self, board, src):
-        return self.pathfinder.search_valid_positions(board, src)
+        return self._pathfinder.search_valid_positions(board, src)
 
     def is_valid_destination(self, board, src, dst):
         return dst in self.search_valid_destinations(board, src)

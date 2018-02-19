@@ -17,73 +17,37 @@
         "board": {
             "tiles": [
                 [
-                    {
-                        "color": 1024,
-                        "piece": 4
-                    },
+                    1028,
                     0,
-                    {
-                        "color": 1024,
-                        "piece": 8
-                    },
+                    1032,
                     0,
-                    {
-                        "color": 1024,
-                        "piece": 64
-                    },
+                    1088,
                     0,
                     0,
-                    {
-                        "color": 1024,
-                        "piece": 4
-                    }
+                    1028
                 ],
                 [
                     0,
                     0,
-                    {
-                        "color": 1024,
-                        "piece": 2
-                    },
-                    {
-                        "color": 1024,
-                        "piece": 32
-                    },
-                    {
-                        "color": 1024,
-                        "piece": 2
-                    },
-                    {
-                        "color": 1024,
-                        "piece": 2
-                    },
+                    1026,
+                    1056,
+                    1026,
+                    1026,
                     0,
-                    {
-                        "color": 1024,
-                        "piece": 2
-                    }
+                    1026
                 ],
                 [
                     0,
-                    {
-                        "color": 1024,
-                        "piece": 2
-                    },
+                    1026,
                     0,
                     0,
                     0,
                     0,
                     0,
-                    {
-                        "color": 1024,
-                        "piece": 2
-                    }
+                    1026
                 ],
                 [
-                    {
-                        "color": 1024,
-                        "piece": 2
-                    },
+                    1026,
                     0,
                     0,
                     0,
@@ -93,20 +57,11 @@
                     0
                 ],
                 [
-                    {
-                        "color": 512,
-                        "piece": 2
-                    },
+                    514,
                     0,
                     0,
-                    {
-                        "color": 1024,
-                        "piece": 16
-                    },
-                    {
-                        "color": 512,
-                        "piece": 2
-                    },
+                    1040,
+                    514,
                     0,
                     0,
                     0
@@ -123,50 +78,23 @@
                 ],
                 [
                     0,
-                    {
-                        "color": 512,
-                        "piece": 2
-                    },
-                    {
-                        "color": 512,
-                        "piece": 2
-                    },
+                    514,
+                    514,
                     0,
                     0,
-                    {
-                        "color": 512,
-                        "piece": 2
-                    },
+                    514,
                     0,
-                    {
-                        "color": 512,
-                        "piece": 2
-                    }
+                    514
                 ],
                 [
-                    {
-                        "color": 512,
-                        "piece": 4
-                    },
-                    {
-                        "color": 512,
-                        "piece": 16
-                    },
+                    516,
+                    528,
                     0,
                     0,
-                    {
-                        "color": 512,
-                        "piece": 64
-                    },
+                    576,
                     0,
-                    {
-                        "color": 512,
-                        "piece": 16
-                    },
-                    {
-                        "color": 512,
-                        "piece": 4
-                    }
+                    528,
+                    516
                 ]
             ]
         },
@@ -183,11 +111,7 @@
                 "row": 3,
                 "col": 0
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 2
-            },
-            "piece_dst": null
+            "piece_src": 1026
         },
         {
             "pos_src": {
@@ -198,11 +122,7 @@
                 "row": 4,
                 "col": 0
             },
-            "piece_src": {
-                "color": 512,
-                "piece": 2
-            },
-            "piece_dst": null
+            "piece_src": 514
         },
         {
             "pos_src": {
@@ -213,11 +133,7 @@
                 "row": 2,
                 "col": 1
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 2
-            },
-            "piece_dst": null
+            "piece_src": 1026
         },
         {
             "pos_src": {
@@ -228,11 +144,7 @@
                 "row": 4,
                 "col": 3
             },
-            "piece_src": {
-                "color": 512,
-                "piece": 2
-            },
-            "piece_dst": null
+            "piece_src": 514
         },
         {
             "pos_src": {
@@ -243,11 +155,7 @@
                 "row": 2,
                 "col": 2
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 16
-            },
-            "piece_dst": null
+            "piece_src": 1040
         },
         {
             "pos_src": {
@@ -258,11 +166,7 @@
                 "row": 2,
                 "col": 7
             },
-            "piece_src": {
-                "color": 512,
-                "piece": 8
-            },
-            "piece_dst": null
+            "piece_src": 520
         },
         {
             "pos_src": {
@@ -273,14 +177,8 @@
                 "row": 2,
                 "col": 7
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 2
-            },
-            "piece_dst": {
-                "color": 512,
-                "piece": 8
-            }
+            "piece_src": 1026,
+            "piece_dst": 520
         },
         {
             "pos_src": {
@@ -291,11 +189,7 @@
                 "row": 4,
                 "col": 6
             },
-            "piece_src": {
-                "color": 512,
-                "piece": 2
-            },
-            "piece_dst": null
+            "piece_src": 514
         },
         {
             "pos_src": {
@@ -306,11 +200,7 @@
                 "row": 2,
                 "col": 5
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 16
-            },
-            "piece_dst": null
+            "piece_src": 1040
         },
         {
             "pos_src": {
@@ -321,11 +211,7 @@
                 "row": 4,
                 "col": 4
             },
-            "piece_src": {
-                "color": 512,
-                "piece": 2
-            },
-            "piece_dst": null
+            "piece_src": 514
         },
         {
             "pos_src": {
@@ -336,14 +222,8 @@
                 "row": 4,
                 "col": 6
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 16
-            },
-            "piece_dst": {
-                "color": 512,
-                "piece": 2
-            }
+            "piece_src": 1040,
+            "piece_dst": 514
         },
         {
             "pos_src": {
@@ -354,11 +234,7 @@
                 "row": 5,
                 "col": 7
             },
-            "piece_src": {
-                "color": 512,
-                "piece": 8
-            },
-            "piece_dst": null
+            "piece_src": 520
         },
         {
             "pos_src": {
@@ -369,11 +245,7 @@
                 "row": 1,
                 "col": 6
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 8
-            },
-            "piece_dst": null
+            "piece_src": 1032
         },
         {
             "pos_src": {
@@ -384,14 +256,8 @@
                 "row": 4,
                 "col": 6
             },
-            "piece_src": {
-                "color": 512,
-                "piece": 8
-            },
-            "piece_dst": {
-                "color": 1024,
-                "piece": 16
-            }
+            "piece_src": 520,
+            "piece_dst": 1040
         },
         {
             "pos_src": {
@@ -402,14 +268,8 @@
                 "row": 4,
                 "col": 3
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 8
-            },
-            "piece_dst": {
-                "color": 512,
-                "piece": 2
-            }
+            "piece_src": 1032,
+            "piece_dst": 514
         },
         {
             "pos_src": {
@@ -420,14 +280,8 @@
                 "row": 4,
                 "col": 3
             },
-            "piece_src": {
-                "color": 512,
-                "piece": 32
-            },
-            "piece_dst": {
-                "color": 1024,
-                "piece": 8
-            }
+            "piece_src": 544,
+            "piece_dst": 1032
         },
         {
             "pos_src": {
@@ -438,14 +292,8 @@
                 "row": 4,
                 "col": 3
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 16
-            },
-            "piece_dst": {
-                "color": 512,
-                "piece": 32
-            }
+            "piece_src": 1040,
+            "piece_dst": 544
         },
         {
             "pos_src": {
@@ -456,14 +304,8 @@
                 "row": 1,
                 "col": 3
             },
-            "piece_src": {
-                "color": 512,
-                "piece": 8
-            },
-            "piece_dst": {
-                "color": 1024,
-                "piece": 2
-            }
+            "piece_src": 520,
+            "piece_dst": 1026
         },
         {
             "pos_src": {
@@ -474,14 +316,8 @@
                 "row": 1,
                 "col": 3
             },
-            "piece_src": {
-                "color": 1024,
-                "piece": 32
-            },
-            "piece_dst": {
-                "color": 512,
-                "piece": 8
-            }
+            "piece_src": 1056,
+            "piece_dst": 520
         }
     ]
 }
