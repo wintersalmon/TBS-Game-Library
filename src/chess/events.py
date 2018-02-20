@@ -1,5 +1,5 @@
 from chess.game import ChessGame
-from chess.pieces import ChessPiece
+from chess.piece import ChessPiece
 from core.error import EventCreationFailedError
 from core.event import Event
 from core.position import Position
@@ -52,12 +52,6 @@ class MoveChessPieceEvent(Event):
             encoded_properties['piece_dst'] = self.piece_dst.encode()
 
         return encoded_properties
-        # return {
-        #     'pos_src': self.pos_src.encode(),
-        #     'pos_dst': self.pos_dst.encode(),
-        #     'piece_src': self.piece_src.encode(),
-        #     'piece_dst': self.piece_dst.encode() if self.piece_dst else self.piece_dst,
-        # }
 
     @classmethod
     def decode(cls, **kwargs):
@@ -71,13 +65,6 @@ class MoveChessPieceEvent(Event):
             decoded_kwargs['piece_dst'] = ChessPiece.decode(kwargs['piece_dst'])
 
         return cls(**decoded_kwargs)
-        # decoded_kwargs = {
-        #     'pos_src': Position.decode(**kwargs['pos_src']),
-        #     'pos_dst': Position.decode(**kwargs['pos_dst']),
-        #     'piece_src': ChessPiece.decode(kwargs['piece_src']),
-        #     'piece_dst': ChessPiece.decode(kwargs['piece_dst']) if kwargs['piece_dst'] else None,
-        # }
-        # return cls(**decoded_kwargs)
 
     @classmethod
     def create(cls, *, game, **kwargs):

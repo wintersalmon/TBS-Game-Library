@@ -16,14 +16,86 @@
         ],
         "board": {
             "tiles": [
-                "R B K  R",
-                "  PQPP P",
-                " P     P",
-                "P       ",
-                "p  Np   ",
-                "        ",
-                " pp  p p",
-                "rn  k nr"
+                [
+                    1028,
+                    0,
+                    1032,
+                    0,
+                    1088,
+                    0,
+                    0,
+                    1028
+                ],
+                [
+                    0,
+                    0,
+                    1026,
+                    1056,
+                    1026,
+                    1026,
+                    0,
+                    1026
+                ],
+                [
+                    0,
+                    1026,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    1026
+                ],
+                [
+                    1026,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    514,
+                    0,
+                    0,
+                    1040,
+                    514,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    514,
+                    514,
+                    0,
+                    0,
+                    514,
+                    0,
+                    514
+                ],
+                [
+                    516,
+                    528,
+                    0,
+                    0,
+                    576,
+                    0,
+                    528,
+                    516
+                ]
             ]
         },
         "turn_count": 19,
@@ -39,7 +111,7 @@
                 "row": 3,
                 "col": 0
             },
-            "piece_src": "P"
+            "piece_src": 1026
         },
         {
             "pos_src": {
@@ -50,7 +122,7 @@
                 "row": 4,
                 "col": 0
             },
-            "piece_src": "p"
+            "piece_src": 514
         },
         {
             "pos_src": {
@@ -61,7 +133,7 @@
                 "row": 2,
                 "col": 1
             },
-            "piece_src": "P"
+            "piece_src": 1026
         },
         {
             "pos_src": {
@@ -72,7 +144,7 @@
                 "row": 4,
                 "col": 3
             },
-            "piece_src": "p"
+            "piece_src": 514
         },
         {
             "pos_src": {
@@ -83,7 +155,7 @@
                 "row": 2,
                 "col": 2
             },
-            "piece_src": "N"
+            "piece_src": 1040
         },
         {
             "pos_src": {
@@ -94,7 +166,7 @@
                 "row": 2,
                 "col": 7
             },
-            "piece_src": "b"
+            "piece_src": 520
         },
         {
             "pos_src": {
@@ -105,8 +177,8 @@
                 "row": 2,
                 "col": 7
             },
-            "piece_src": "P",
-            "piece_dst": "b"
+            "piece_src": 1026,
+            "piece_dst": 520
         },
         {
             "pos_src": {
@@ -117,7 +189,7 @@
                 "row": 4,
                 "col": 6
             },
-            "piece_src": "p"
+            "piece_src": 514
         },
         {
             "pos_src": {
@@ -128,7 +200,7 @@
                 "row": 2,
                 "col": 5
             },
-            "piece_src": "N"
+            "piece_src": 1040
         },
         {
             "pos_src": {
@@ -139,7 +211,7 @@
                 "row": 4,
                 "col": 4
             },
-            "piece_src": "p"
+            "piece_src": 514
         },
         {
             "pos_src": {
@@ -150,8 +222,8 @@
                 "row": 4,
                 "col": 6
             },
-            "piece_src": "N",
-            "piece_dst": "p"
+            "piece_src": 1040,
+            "piece_dst": 514
         },
         {
             "pos_src": {
@@ -162,7 +234,7 @@
                 "row": 5,
                 "col": 7
             },
-            "piece_src": "b"
+            "piece_src": 520
         },
         {
             "pos_src": {
@@ -173,7 +245,7 @@
                 "row": 1,
                 "col": 6
             },
-            "piece_src": "B"
+            "piece_src": 1032
         },
         {
             "pos_src": {
@@ -184,8 +256,8 @@
                 "row": 4,
                 "col": 6
             },
-            "piece_src": "b",
-            "piece_dst": "N"
+            "piece_src": 520,
+            "piece_dst": 1040
         },
         {
             "pos_src": {
@@ -196,8 +268,8 @@
                 "row": 4,
                 "col": 3
             },
-            "piece_src": "B",
-            "piece_dst": "p"
+            "piece_src": 1032,
+            "piece_dst": 514
         },
         {
             "pos_src": {
@@ -208,8 +280,8 @@
                 "row": 4,
                 "col": 3
             },
-            "piece_src": "q",
-            "piece_dst": "B"
+            "piece_src": 544,
+            "piece_dst": 1032
         },
         {
             "pos_src": {
@@ -220,8 +292,8 @@
                 "row": 4,
                 "col": 3
             },
-            "piece_src": "N",
-            "piece_dst": "q"
+            "piece_src": 1040,
+            "piece_dst": 544
         },
         {
             "pos_src": {
@@ -232,8 +304,8 @@
                 "row": 1,
                 "col": 3
             },
-            "piece_src": "b",
-            "piece_dst": "P"
+            "piece_src": 520,
+            "piece_dst": 1026
         },
         {
             "pos_src": {
@@ -244,8 +316,8 @@
                 "row": 1,
                 "col": 3
             },
-            "piece_src": "Q",
-            "piece_dst": "b"
+            "piece_src": 1056,
+            "piece_dst": 520
         }
     ]
 }

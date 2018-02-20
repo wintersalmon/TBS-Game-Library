@@ -3,7 +3,7 @@ import os
 
 from chess.events import MoveChessPieceEvent
 from chess.managers import ChessUpdateManager, ChessReplayManager
-from chess.pieces import ChessPiece
+from chess.piece import ChessPiece
 from chess.wrapper import ChessWrapper
 from core.error import EventCreationFailedError, ExitGameException, InvalidInputError
 from core.position import Position
