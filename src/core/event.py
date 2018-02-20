@@ -28,5 +28,5 @@ class Event(SerializableMixin):
         else:
             return value
 
-    def __repr__(self):
+    def __str__(self):
         return '{}{}'.format(self.__class__.__name__, tuple(self.__dict__.values()))

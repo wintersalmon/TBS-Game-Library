@@ -10,9 +10,9 @@ class ChessGame(SerializableMixin):
         self.turn_count = turn_count
         self.status = status
 
-    def __repr__(self):
+    def __str__(self):
         players_repr = 'players: {}'.format([player.name for player in self.players])
-        board_repr = repr(self.board)
+        board_repr = str(self.board)
         reprs = (players_repr, board_repr)
         return '\n'.join(reprs)
 

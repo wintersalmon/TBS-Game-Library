@@ -15,7 +15,7 @@ class TTTBoard(Board):
         tiles = kwargs['tiles']
         return cls(tiles=tiles)
 
-    def __repr__(self):
+    def __str__(self):
         lines = list()
         for row in self.tiles:
             lines.append(str(row))

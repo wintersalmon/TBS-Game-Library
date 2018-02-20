@@ -18,5 +18,5 @@ class Wrapper(SerializableMixin):
     def create(cls, **kwargs):
         raise NotImplementedError
 
-    def __repr__(self):
+    def __str__(self):
         raise NotImplementedError

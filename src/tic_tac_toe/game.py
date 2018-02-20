@@ -10,7 +10,7 @@ class TicTacToeGame(SerializableMixin):
         self.turn_count = turn_count if turn_count >= 0 else 0
         self.status = status
 
-    def __repr__(self):
+    def __str__(self):
         players_fmt = 'players: {}'.format([player.name for player in self.players])
         return '\n'.join((players_fmt, str(self.board)))
 

@@ -14,7 +14,7 @@ class OthelloWrapper(Wrapper):
     def __init__(self, settings, game, events):
         super().__init__(settings, game, events)
 
-    def __repr__(self):
+    def __str__(self):
         lines = list()
         for row in range(self.game.board.rows):
             tiles = list()

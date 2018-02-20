@@ -5,7 +5,7 @@ class Player(SerializableMixin):
     def __init__(self, name):
         self.name = name
 
-    def __repr__(self):
+    def __str__(self):
         return 'Player({})'.format(self.name)
 
     def encode(self):

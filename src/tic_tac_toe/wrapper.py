@@ -35,7 +35,7 @@ class TicTacToeWrapper(Wrapper):
         events = list()
         return cls(settings=settings, game=game, events=events)
 
-    def __repr__(self):
+    def __str__(self):
         status_msg = 'RUNNING' if self.game.status else 'STOPPED'
         game_status_repr = 'game status: {}'.format(status_msg)
 

@@ -31,5 +31,5 @@ class ChessWrapper(Wrapper):
         events = list()
         return cls(settings=settings, game=game, events=events)
 
-    def __repr__(self):
-        return repr(self.game)
+    def __str__(self):
+        return str(self.game)

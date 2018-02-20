@@ -5,8 +5,8 @@ class GameManager(object):
     def __init__(self, game_wrapper):
         self.game_wrapper = game_wrapper
 
-    def __repr__(self):
-        return repr(self.game_wrapper)
+    def __str__(self):
+        return str(self.game_wrapper)
 
 
 class GameUpdateManager(GameManager):
@@ -18,10 +18,10 @@ class GameUpdateManager(GameManager):
         else:
             self.game_wrapper.events.append(event)
 
-    def __repr__(self):
+    def __str__(self):
         title = 'Game Update Manager'
         event_repr = 'Total Events: {}'.format(len(self.game_wrapper.events))
-        game_repr = super().__repr__()
+        game_repr = super().__str__()
         return '\n'.join((title, event_repr, game_repr))
 
 
@@ -67,8 +67,8 @@ class GameReplayManager(GameManager):
             return True
         raise ApiError('Impossible to move backward')
 
-    def __repr__(self):
+    def __str__(self):
         title = 'Game Replay Manger'
         replay_repr = 'Position: {}/{}'.format(self._cur_position, self._max_position)
-        game_repr = super().__repr__()
+        game_repr = super().__str__()
         return '\n'.join((title, replay_repr, game_repr))

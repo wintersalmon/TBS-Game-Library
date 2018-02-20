@@ -56,7 +56,7 @@ class ChessBoard(Board):
 
         return cls(tiles=decoded_tiles)
 
-    def __repr__(self):
+    def __str__(self):
         repr_tiles = [[str(col) for col in row] for row in self.tiles]
 
         # add row,col number

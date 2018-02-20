@@ -72,7 +72,7 @@ class ChessPiece(ImmutableMixin, SerializableMixin):
     def decode(cls, nickname):
         return cls(nickname=nickname)
 
-    def __repr__(self):
+    def __str__(self):
         return self.nickname
 
     def __eq__(self, other):

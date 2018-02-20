@@ -23,18 +23,18 @@
     + create
     + encode
     + decode
-    - repr
+    - str
 
 
 ### Manager
 - GameManger()
     + init(GameWrapper)
-    - repr
+    - str
 
 
 - GameUpdateManager(GameManager)
     + update
-    - repr
+    - str
 
 - GameReplayManager(GameManager)
     + max_position
@@ -42,7 +42,7 @@
     + set_position
     + forward
     + backward
-    - repr
+    - str
 
 
 ### UTIL
