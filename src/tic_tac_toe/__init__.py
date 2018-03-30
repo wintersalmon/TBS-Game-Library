@@ -1,5 +1,5 @@
-from .main import main as main
-from .main import replay_main as replay
+from .main import main
+from .main import replay
 
 __all__ = [
     'main',

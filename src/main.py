@@ -10,6 +10,7 @@ if __name__ == '__main__':
 
         module = importlib.import_module(module_name)
         mode = getattr(module, mode_name)
+
         mode()
 
     else:
