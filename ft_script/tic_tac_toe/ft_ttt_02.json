@@ -1,0 +1,66 @@
+{
+  "settings": {
+    "player_names": [
+      "tom",
+      "jerry"
+    ]
+  },
+  "game": {
+    "players": [
+      {
+        "name": "tom"
+      },
+      {
+        "name": "jerry"
+      }
+    ],
+    "board": {
+      "tiles": [
+        [
+          "tom",
+          "jerry",
+          "jerry"
+        ],
+        [
+          null,
+          "tom",
+          null
+        ],
+        [
+          null,
+          null,
+          "tom"
+        ]
+      ]
+    },
+    "turn_count": 5,
+    "status": false
+  },
+  "events": [
+    {
+      "row": 1,
+      "col": 1,
+      "player_name": "tom"
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "player_name": "jerry"
+    },
+    {
+      "row": 0,
+      "col": 0,
+      "player_name": "tom"
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "player_name": "jerry"
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "player_name": "tom"
+    }
+  ]
+}

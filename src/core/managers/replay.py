@@ -1,34 +1,11 @@
 from core.error import ApiError
+from core.managers import LoadManager
 
 
-class GameManager(object):
-    def __init__(self, game_wrapper):
-        self.game_wrapper = game_wrapper
-
-    def __str__(self):
-        return str(self.game_wrapper)
-
-
-class GameUpdateManager(GameManager):
-    def update(self, event):
-        try:
-            event.update(self.game_wrapper.game)
-        except Exception as e:
-            raise e
-        else:
-            self.game_wrapper.events.append(event)
-
-    def __str__(self):
-        title = 'Game Update Manager'
-        event_repr = 'Total Events: {}'.format(len(self.game_wrapper.events))
-        game_repr = super().__str__()
-        return '\n'.join((title, event_repr, game_repr))
-
-
-class GameReplayManager(GameManager):
-    def __init__(self, game_wrapper):
-        super().__init__(game_wrapper=game_wrapper)
-        self._max_position = len(self.game_wrapper.events)
+class ReplayManager(LoadManager):
+    def __init__(self, wrapper):
+        super().__init__(wrapper=wrapper)
+        self._max_position = len(self.wrapper.events)
         self._cur_position = self._max_position
 
     def set_position(self, position):
@@ -53,16 +30,16 @@ class GameReplayManager(GameManager):
 
     def forward(self):
         if self._cur_position < self._max_position:
-            event = self.game_wrapper.events[self._cur_position]
-            event.update(self.game_wrapper.game)
+            event = self.wrapper.events[self._cur_position]
+            event.update(self.wrapper.game)
             self._cur_position += 1
             return True
         raise ApiError('Impossible to move forward')
 
     def backward(self):
         if self._cur_position >= 0:
-            event = self.game_wrapper.events[self._cur_position - 1]
-            event.rollback(self.game_wrapper.game)
+            event = self.wrapper.events[self._cur_position - 1]
+            event.rollback(self.wrapper.game)
             self._cur_position -= 1
             return True
         raise ApiError('Impossible to move backward')

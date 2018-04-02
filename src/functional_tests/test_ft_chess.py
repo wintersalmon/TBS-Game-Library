@@ -1,22 +1,13 @@
-import json
-import os
-from unittest import TestCase, main
+from unittest import main
 
 from chess.events import MoveChessPieceEvent
 from chess.managers import ChessUpdateManager
 from chess.wrapper import ChessWrapper
 from core.position import Position
-from settings import FT_SCRIPT_DIR
+from functional_tests.base import BaseFunctionalTestCase
 
 
-class ChessFunctionalTestCase(TestCase):
-    @staticmethod
-    def load_json(file_name):
-        load_file_name = os.path.join(FT_SCRIPT_DIR, 'chess', file_name)
-
-        with open(load_file_name, 'r', encoding='utf-8') as infile:
-            return json.load(infile)
-
+class ChessFunctionalTestCase(BaseFunctionalTestCase):
     def test_basic_game(self):
         settings = {
             'player_names': ['alpha', 'beta']
@@ -62,7 +53,7 @@ class ChessFunctionalTestCase(TestCase):
         # print(chess_update_manager)
 
     def test_basic_game_load(self):
-        encoded_game = self.load_json('ft_chess_01.json')
+        encoded_game = self.load_json('chess', 'ft_chess_01.json')
         encoded_settings = encoded_game['settings']
         encoded_events = encoded_game['events']
         decoded_game = ChessWrapper.decode(**encoded_game)

@@ -1,3 +1,4 @@
+from core.error import InvalidPositionError
 from core.event import Event
 
 
@@ -21,10 +22,10 @@ class PlayerPlacementEvent(Event):
         try:
             prev_marker = game.board.tiles[self._row][self._col]
         except IndexError as e:
-            raise ValueError('position out of range: {}, {}'.format(self._row, self._col))
+            raise InvalidPositionError('position out of range: {}, {}'.format(self._row, self._col))
 
         if prev_marker is not None:
-            raise ValueError('position already occupied: {}'.format(prev_marker))
+            raise InvalidPositionError('position already occupied: {}'.format(prev_marker))
 
         game.board.tiles[self._row][self._col] = self._player_name
 

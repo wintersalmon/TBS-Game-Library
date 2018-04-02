@@ -1,0 +1,46 @@
+{
+  "settings": {
+    "player_names": [
+      "tom",
+      "jerry"
+    ]
+  },
+  "game": {
+    "players": [
+      {
+        "name": "tom"
+      },
+      {
+        "name": "jerry"
+      }
+    ],
+    "board": {
+      "tiles": [
+        [
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          "tom",
+          null
+        ],
+        [
+          null,
+          null,
+          null
+        ]
+      ]
+    },
+    "turn_count": 1,
+    "status": true
+  },
+  "events": [
+    {
+      "row": 1,
+      "col": 1,
+      "player_name": "tom"
+    }
+  ]
+}

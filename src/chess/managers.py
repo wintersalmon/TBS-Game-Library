@@ -1,9 +1,9 @@
-from core.manager import GameUpdateManager, GameReplayManager
-
-
-class ChessUpdateManager(GameUpdateManager):
-    pass
-
-
-class ChessReplayManager(GameReplayManager):
-    pass
+# from core.managers import UpdateManager, ReplayManager
+#
+#
+# class ChessUpdateManager(UpdateManager):
+#     pass
+#
+#
+# class ChessReplayManager(ReplayManager):
+#     pass

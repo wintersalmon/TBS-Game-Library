@@ -1,12 +1,10 @@
-from core.wrapper import Wrapper
 from core.player import Player
+from core.wrapper import Wrapper
 from tic_tac_toe.events import PlayerPlacementEvent
 from tic_tac_toe.game import TicTacToeGame
 
 
 class TicTacToeWrapper(Wrapper):
-    TILE_MARKERS = ('O', 'X', ' ')
-
     def __init__(self, settings, game, events):
         super().__init__(settings, game, events)
 
@@ -34,6 +32,10 @@ class TicTacToeWrapper(Wrapper):
         game = TicTacToeGame(players=players)
         events = list()
         return cls(settings=settings, game=game, events=events)
+
+
+class TicTacToeCLIDrawWrapper(TicTacToeWrapper):
+    TILE_MARKERS = ('O', 'X', ' ')
 
     def __str__(self):
         status_msg = 'RUNNING' if self.game.status else 'STOPPED'

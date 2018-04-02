@@ -1,9 +1,9 @@
-from core.manager import GameUpdateManager, GameReplayManager
-
-
-class OthelloUpdateManager(GameUpdateManager):
-    pass
-
-
-class OthelloReplayManager(GameReplayManager):
-    pass
+# from core.managers import UpdateManager, ReplayManager
+#
+#
+# class OthelloUpdateManager(UpdateManager):
+#     pass
+#
+#
+# class OthelloReplayManager(ReplayManager):
+#     pass
