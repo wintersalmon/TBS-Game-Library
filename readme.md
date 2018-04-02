@@ -9,10 +9,8 @@
 
 ### How To Run
 ```bash
-python main.py <target_package> [target_mode]
-
-python main.py tic_tac_toe
-python main.py othello
-python main.py chess replay
+main.py <package>  # create new game"
+main.py <package> <file_name>  # load existing game with <file_name>
+main.py -r <package> <file_name>  # load existing game in replay mode
 
 ```
