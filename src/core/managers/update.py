@@ -1,4 +1,4 @@
-from core.managers import SaveManager
+from .save import SaveManager
 
 
 class UpdateManager(SaveManager):

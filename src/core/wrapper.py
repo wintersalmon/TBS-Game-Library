@@ -7,6 +7,9 @@ class Wrapper(SerializableMixin):
         self.game = game
         self.events = events
 
+    def draw(self):
+        pass
+
     def encode(self):
         raise NotImplementedError
 

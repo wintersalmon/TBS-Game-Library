@@ -1,8 +1,8 @@
 from collections import Sequence
 
+from core.error import InvalidPositionError
 from core.event import Event
 from core.position import Position
-from othello.errors import PositionHasNoFlipTargetsError
 
 
 class PlayerPlacementEvent(Event):
@@ -64,7 +64,7 @@ class PlayerPlacementEvent(Event):
         flip_positions = game.board.find_flip_positions(row, col, player_marker)
 
         if len(flip_positions) == 0:
-            raise PositionHasNoFlipTargetsError(
+            raise InvalidPositionError(
                 'invalid position ({}, {}), has not target to flip'.format(row, col, player_marker))
         else:
             return PlayerPlacementEvent(row=row, col=col, marker=player_marker, flip_positions=flip_positions)

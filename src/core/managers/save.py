@@ -1,6 +1,6 @@
 import json
 
-from core.managers import LoadManager
+from .load import LoadManager
 
 
 class SaveManager(LoadManager):

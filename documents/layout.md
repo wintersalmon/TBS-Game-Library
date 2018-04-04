@@ -32,17 +32,37 @@
     - str
 
 
-- GameUpdateManager(GameManager)
+- GameLoadManager(GameManager)
+    + load(cls_wrapper, file_directory, file_name)
+
+
+- GameSaveManager(GameLoadManager)
+    + save(file_directory, file_name)
+
+
+- GameUpdateManager(GameSaveManager)
     + update
     - str
 
-- GameReplayManager(GameManager)
+
+- GameReplayManager(GameLoadManager)
     + max_position
     + get_position
     + set_position
     + forward
     + backward
     - str
+
+### UI
+- todo : work in progress
+
+- UI()
+
+- CLI()
+
+- ReplayCLI()
+
+- PlayCLI()
 
 
 ### UTIL

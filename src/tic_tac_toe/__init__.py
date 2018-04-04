@@ -1,10 +1,11 @@
-from .main import main_loop, replay_loop
 from .wrapper import TicTacToeWrapper as Wrapper
-from .wrapper import TicTacToeCLIDrawWrapper as CLIWrapper
+from .wrapper import TicTacToeCLIWrapper as CLIWrapper
+from .ui import TicTacToeCLIReplay as CLIReplay
+from .ui import TicTacToeCLIPlay as CLIPlay
 
 __all__ = [
-    'main_loop',
-    'replay_loop',
     'Wrapper',
     'CLIWrapper',
+    'CLIReplay',
+    'CLIPlay',
 ]

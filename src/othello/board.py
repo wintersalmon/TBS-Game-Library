@@ -1,6 +1,6 @@
 from core.board import Board
+from core.error import PositionOutOfBoundError, InvalidValueError, PositionAlreadySetError
 from core.position import Position
-from othello.errors import PositionOutOfBoundsError, PositionAlreadyOccupiedError, InvalidMarkerTypeError
 
 
 class OthelloBoard(Board):
@@ -38,15 +38,15 @@ class OthelloBoard(Board):
         try:
             self.tiles[row][col]
         except IndexError:
-            raise PositionOutOfBoundsError('({}, {})'.format(row, col))
+            raise PositionOutOfBoundError('({}, {})'.format(row, col))
 
         # check Marker Type
         if value not in self.SET_MARKERS:
-            raise InvalidMarkerTypeError('invalid marker type: {}'.format(value))
+            raise InvalidValueError('invalid marker type: {}'.format(value))
 
         # check PositionAlreadyOccupiedError
         if self.is_set(row, col):
-            raise PositionAlreadyOccupiedError('({}, {})'.format(row, col))
+            raise PositionAlreadySetError('({}, {})'.format(row, col))
 
         self.tiles[row][col] = value
 

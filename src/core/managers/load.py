@@ -1,7 +1,7 @@
 import json
 import os
 
-from core.managers import Manager
+from .base import Manager
 
 
 class LoadManager(Manager):
@@ -13,8 +13,10 @@ class LoadManager(Manager):
         return os.path.join(file_directory, '{}.json'.format(file_name))
 
     @classmethod
-    def load(cls, file_directory, file_name):
+    def load(cls, cls_wrapper, file_directory, file_name):
         file_path = cls.create_file_path(file_directory, file_name)
         # todo : raise error if file does not exist
         with open(file_path, 'r', encoding='utf-8') as load_file:
-            return json.load(load_file)
+            data = json.load(load_file)
+            wrapper = cls_wrapper.decode(**data)
+            return cls(wrapper=wrapper)

@@ -1,10 +1,11 @@
-from .main import main_loop, replay_loop
 from .wrapper import ChessWrapper as Wrapper
 from .wrapper import ChessCLIWrapper as CLIWrapper
+from .ui import ChessCLIReplay as CLIReplay
+from .ui import ChessCLIPlay as CLIPlay
 
 __all__ = [
-    'main_loop',
-    'replay_loop',
     'Wrapper',
     'CLIWrapper',
+    'CLIReplay',
+    'CLIPlay',
 ]

@@ -1,5 +1,4 @@
-from core.error import ApiError
-from core.managers import LoadManager
+from .load import LoadManager
 
 
 class ReplayManager(LoadManager):
@@ -18,8 +17,7 @@ class ReplayManager(LoadManager):
             else:
                 move_to_direction = self.backward
 
-            while pos_offset > 0:
-                move_to_direction()
+            while pos_offset > 0 and move_to_direction():
                 pos_offset -= 1
 
     def get_max_position(self):
@@ -34,7 +32,8 @@ class ReplayManager(LoadManager):
             event.update(self.wrapper.game)
             self._cur_position += 1
             return True
-        raise ApiError('Impossible to move forward')
+        else:
+            return False
 
     def backward(self):
         if self._cur_position >= 0:
@@ -42,7 +41,8 @@ class ReplayManager(LoadManager):
             event.rollback(self.wrapper.game)
             self._cur_position -= 1
             return True
-        raise ApiError('Impossible to move backward')
+        else:
+            return False
 
     def __str__(self):
         title = 'Game Replay Manger'

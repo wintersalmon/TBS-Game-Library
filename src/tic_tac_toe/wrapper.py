@@ -34,7 +34,7 @@ class TicTacToeWrapper(Wrapper):
         return cls(settings=settings, game=game, events=events)
 
 
-class TicTacToeCLIDrawWrapper(TicTacToeWrapper):
+class TicTacToeCLIWrapper(TicTacToeWrapper):
     TILE_MARKERS = ('O', 'X', ' ')
 
     def __str__(self):
@@ -56,3 +56,6 @@ class TicTacToeCLIDrawWrapper(TicTacToeWrapper):
             lines.append(line)
 
         return '\n'.join((game_status_repr, *lines))
+
+    def draw(self):
+        print(str(self))
