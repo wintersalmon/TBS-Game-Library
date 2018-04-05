@@ -66,6 +66,7 @@ class CLIPlay(CLI):
         while self._main_loop():
             self.draw()
 
+<<<<<<< HEAD
     def _create_game(self):
         raise NotImplementedError
 
@@ -75,6 +76,8 @@ class CLIPlay(CLI):
     def draw(self):
         print(self.manager)
 
+=======
+>>>>>>> dev-cli-improvement
     def save(self, *, save_as=None):
         if save_as:
             save_file_name = save_as
@@ -91,3 +94,12 @@ class CLIPlay(CLI):
 
         if save_file_name:
             self.manager.save(self.save_dir, save_file_name)
+<<<<<<< HEAD
+=======
+
+    def _create_game(self):
+        raise NotImplementedError
+
+    def _main_loop(self):
+        raise NotImplementedError
+>>>>>>> dev-cli-improvement
