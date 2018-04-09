@@ -1,5 +1,5 @@
 from core.board import Board
-from core.error import PositionOutOfBoundError, InvalidValueError, PositionAlreadySetError
+from core.error import InvalidValueError, InvalidPositionError
 from core.position import Position
 
 
@@ -23,6 +23,15 @@ class OthelloBoard(Board):
         else:
             super().__init__(8, 8, init_value=self.MARKER_INIT, tiles=tiles)
 
+    @property
+    def count(self):
+        count = -4
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if self.is_set(r, c):
+                    count += 1
+        return count
+
     def encode(self):
         return {
             'tiles': self.tiles
@@ -34,33 +43,48 @@ class OthelloBoard(Board):
         return cls(tiles=tiles)
 
     def set(self, row, col, value):
-        # check PositionOutOfBoundsError
-        try:
-            self.tiles[row][col]
-        except IndexError:
-            raise PositionOutOfBoundError('({}, {})'.format(row, col))
-
-        # check Marker Type
         if value not in self.SET_MARKERS:
             raise InvalidValueError('invalid marker type: {}'.format(value))
-
-        # check PositionAlreadyOccupiedError
-        if self.is_set(row, col):
-            raise PositionAlreadySetError('({}, {})'.format(row, col))
-
-        self.tiles[row][col] = value
+        elif self.is_set(row, col):
+            raise InvalidPositionError('position already occupied: {}, {}'.format(row, col))
+        else:
+            super().set(row, col, value)
 
     def flip(self, row, col):
         if self.is_set(row, col):
             self.tiles[row][col] ^= self.MARKER_FLIP
         else:
-            raise ValueError('cannot flip init marker ({}, {}: {})'.format(row, col, self.tiles[row][col]))
+            raise InvalidPositionError('cannot flip init marker ({}, {}: {})'.format(row, col, self.tiles[row][col]))
+
+    def has_adjacent_tile(self, row, col):
+        positions = (
+            (row - 1, col),  # top
+            (row + 1, col),  # down
+            (row, col - 1),  # left
+            (row, col + 1),  # right
+
+            (row - 1, col - 1),  # top left
+            (row - 1, col + 1),  # top right
+            (row + 1, col - 1),  # down left
+            (row + 1, col + 1),  # down right
+        )
+
+        valid_positions = [(row, col) for row, col in positions if 0 <= row < 8 and 0 <= col < 8]
+
+        for row, col in valid_positions:
+            if self.is_set(row, col):
+                return True
+        return False
 
     def flip_all_positions(self, positions):
         for pos in positions:
             self.flip(row=pos.row, col=pos.col)
 
     def find_flip_positions(self, src_row, src_col, src_marker):
+        # if src position is already set or does not have adjacent tile return empty list
+        if self.is_set(src_row, src_col) or not self.has_adjacent_tile(src_row, src_col):
+            return list()
+
         flip_targets = set()
 
         candidate_collections = self._find_flip_candidates(src_row, src_col)

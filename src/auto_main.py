@@ -1,8 +1,10 @@
 import getopt
-import importlib
 import sys
 
+from datetime import datetime
+
 from core.error import ApiError
+from othello.ui import OthelloCLIAutoPlay
 
 
 def show_usage(error_msg=None):
@@ -20,20 +22,6 @@ def main():
         show_usage(str(e))
         sys.exit(1)
 
-    # determine game UI and MODE from given options
-    game_ui = 'CLI'
-    game_mode = 'Play'
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            show_usage()
-            sys.exit()
-        elif opt in ("-r", "--replay"):
-            game_mode = 'Replay'
-        elif opt in ("-g", "--gui"):
-            game_ui = 'GUI'
-
-    # determine game PACKAGE and FILE from given arguments
-    package_name = args[0]
     if len(args) == 1:
         load_file_name = None
     elif len(args) == 2:
@@ -42,21 +30,18 @@ def main():
         show_usage("must have 1 or 2 arguments")
         sys.exit(3)
 
-    # load package
-    package = importlib.import_module(package_name)
-    ui_name = game_ui + game_mode
-    cls_ui = getattr(package, ui_name)
-
     # run game, if something goes wrong temp save game
-    ui = cls_ui(file_name=load_file_name)
+    # ui = OthelloCLIAutoPlay(file_name=load_file_name, is_simple_draw=False)
+    ui = OthelloCLIAutoPlay(file_name=load_file_name, wait_time=1, is_simple_draw=False)
+    # ui = OthelloCLIAutoPlay(file_name=load_file_name)
     try:
         ui.run()
     except ApiError as e:
         print('unexpected error: ', e)
-        # todo : add temp save game
+        ui.save_as('dump_{}'.format(datetime.now().strftime('%Y_%m_%d_%H_%M_%S')))
     except Exception as e:
         print('unexpected error: ', e)
-        # todo : add temp save game
+        ui.save_as('dump_{}'.format(datetime.now().strftime('%Y_%m_%d_%H_%M_%S')))
 
 
 if __name__ == '__main__':

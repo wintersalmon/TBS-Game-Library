@@ -3,10 +3,6 @@ from core.wrapper import Wrapper
 from othello.events import PlayerPlacementEvent
 from othello.game import OthelloGame
 
-GAME_EVENTS = {
-    PlayerPlacementEvent.__name__: PlayerPlacementEvent
-}
-
 
 class OthelloWrapper(Wrapper):
     def __init__(self, settings, game, events):
@@ -16,23 +12,14 @@ class OthelloWrapper(Wrapper):
         return {
             'settings': self.settings,
             'game': self.game.encode(),
-            'events': [[event.__class__.__name__, event.encode()] for event in self.events],
+            'events': [event.encode() for event in self.events]
         }
 
     @classmethod
     def decode(cls, **kwargs):
         decoded_settings = kwargs['settings']
         decoded_game = OthelloGame.decode(**kwargs['game'])
-        decoded_events = list()
-        for e in kwargs['events']:
-
-            try:
-                event_name, event_data = e
-                event = GAME_EVENTS[event_name].decode(**event_data)
-            except Exception as e:
-                raise e
-            else:
-                decoded_events.append(event)
+        decoded_events = [PlayerPlacementEvent.decode(**event) for event in kwargs['events']]
 
         decoded_kwargs = {
             'settings': decoded_settings,
@@ -49,19 +36,3 @@ class OthelloWrapper(Wrapper):
         game = OthelloGame(players=players)
         events = list()
         return cls(settings=settings, game=game, events=events)
-
-
-class OthelloCLIWrapper(OthelloWrapper):
-    VIEW_MARKERS = [' ', '●', '○']
-
-    def __str__(self):
-        lines = list()
-        for row in range(self.game.board.rows):
-            tiles = list()
-            for col in range(self.game.board.cols):
-                idx = self.game.board.tiles[row][col]
-                tile = '[{}]'.format(self.VIEW_MARKERS[idx])
-                tiles.append(tile)
-            line = ''.join(tiles)
-            lines.append(line)
-        return '\n'.join(lines)

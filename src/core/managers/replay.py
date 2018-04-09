@@ -36,16 +36,10 @@ class ReplayManager(LoadManager):
             return False
 
     def backward(self):
-        if self._cur_position >= 0:
+        if self._cur_position > 0:
             event = self.wrapper.events[self._cur_position - 1]
             event.rollback(self.wrapper.game)
             self._cur_position -= 1
             return True
         else:
             return False
-
-    def __str__(self):
-        title = 'Game Replay Manger'
-        replay_repr = 'Position: {}/{}'.format(self._cur_position, self._max_position)
-        game_repr = super().__str__()
-        return '\n'.join((title, replay_repr, game_repr))

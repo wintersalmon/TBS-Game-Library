@@ -17,60 +17,62 @@
     "board": {
       "tiles": [
         [
-          "tom",
-          "jerry",
-          "tom"
+          0,
+          1,
+          0
         ],
         [
-          "tom",
-          "jerry",
-          null
+          0,
+          1,
+          -1
         ],
         [
-          "tom",
-          null,
-          "jerry"
+          0,
+          -1,
+          1
         ]
       ]
     },
-    "turn_count": 7,
-    "status": false
+    "status": {
+      "code": 2,
+      "turn": 7
+    }
   },
   "events": [
     {
       "row": 0,
       "col": 0,
-      "player_name": "tom"
+      "player": 0
     },
     {
       "row": 0,
       "col": 1,
-      "player_name": "jerry"
+      "player": 1
     },
     {
       "row": 1,
       "col": 0,
-      "player_name": "tom"
+      "player": 0
     },
     {
       "row": 1,
       "col": 1,
-      "player_name": "jerry"
+      "player": 1
     },
     {
       "row": 0,
       "col": 2,
-      "player_name": "tom"
+      "player": 0
     },
     {
       "row": 2,
       "col": 2,
-      "player_name": "jerry"
+      "player": 1
     },
     {
       "row": 2,
       "col": 0,
-      "player_name": "tom"
+      "player": 0
     }
   ]
 }

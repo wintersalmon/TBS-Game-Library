@@ -1,3 +1,4 @@
+from core.error import InvalidParameterError
 from core.utils import SerializableMixin
 
 
@@ -24,7 +25,7 @@ class Event(SerializableMixin):
         try:
             value = kwargs[key]
         except KeyError:
-            raise AttributeError('missing attribute ' + key)
+            raise InvalidParameterError('missing parameter: ' + key)
         else:
             return value
 

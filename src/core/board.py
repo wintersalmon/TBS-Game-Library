@@ -1,4 +1,4 @@
-from core.error import InvalidPositionError, InvalidValueError, PositionAlreadySetError
+from core.error import InvalidPositionError
 from core.utils import SerializableMixin
 
 
@@ -18,8 +18,6 @@ class Board(SerializableMixin):
             raise InvalidPositionError(e)
 
     def set(self, row, col, value):
-        if self.is_set(row, col):
-            raise PositionAlreadySetError('position({},{}) is already set({})'.format(row, col, self.get(row, col)))
         try:
             self.tiles[row][col] = value
         except IndexError as e:
@@ -32,7 +30,10 @@ class Board(SerializableMixin):
             raise InvalidPositionError(e)
 
     def reset_tile(self, row, col):
-        self.tiles[row][col] = self.init_value
+        try:
+            self.tiles[row][col] = self.init_value
+        except IndexError as e:
+            raise InvalidPositionError(e)
 
     def encode(self):
         return {

@@ -7,7 +7,7 @@ from tic_tac_toe.events import PlayerPlacementEvent
 from tic_tac_toe.wrapper import TicTacToeWrapper
 
 
-class ChessFunctionalTestCase(BaseFunctionalTestCase):
+class TTTFunctionalTestCase(BaseFunctionalTestCase):
     def test_basic_game(self):
         settings = {'player_names': ['tom', 'jerry']}
         wrapper = TicTacToeWrapper.create(**settings)
@@ -15,20 +15,23 @@ class ChessFunctionalTestCase(BaseFunctionalTestCase):
 
         event = PlayerPlacementEvent.create(game=manager.wrapper.game, row=1, col=1)
         manager.update(event)
+        self.assertEqual(bool(manager.wrapper.game.status), True)
 
         event = PlayerPlacementEvent.create(game=manager.wrapper.game, row=0, col=0)
         manager.update(event)
+        self.assertEqual(bool(manager.wrapper.game.status), True)
 
         event = PlayerPlacementEvent.create(game=manager.wrapper.game, row=0, col=1)
         manager.update(event)
+        self.assertEqual(bool(manager.wrapper.game.status), True)
 
         event = PlayerPlacementEvent.create(game=manager.wrapper.game, row=0, col=2)
         manager.update(event)
+        self.assertEqual(bool(manager.wrapper.game.status), True)
 
         event = PlayerPlacementEvent.create(game=manager.wrapper.game, row=2, col=1)
         manager.update(event)
-
-        self.assertEqual(manager.wrapper.game.status, False)
+        self.assertEqual(bool(manager.wrapper.game.status), False)
 
     def test_misplacement(self):
         settings = {'player_names': ['tom', 'jerry']}
@@ -73,6 +76,9 @@ class ChessFunctionalTestCase(BaseFunctionalTestCase):
             new_manager.update(event)
 
         self.assertEqual(new_manager.wrapper.encode(), decoded_game.encode())
+
+    def basic_game_replay(self):
+        pass  # todo: write replay test code
 
 
 if __name__ == "__main__":
