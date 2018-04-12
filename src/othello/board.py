@@ -25,12 +25,14 @@ class OthelloBoard(Board):
 
     @property
     def count(self):
-        count = -4
+        black, white = 0, 0
         for r in range(self.rows):
             for c in range(self.cols):
-                if self.is_set(r, c):
-                    count += 1
-        return count
+                if self.tiles[r][c] == self.MARKER_BLACK:
+                    black += 1
+                elif self.tiles[r][c] == self.MARKER_WHITE:
+                    white += 1
+        return black, white
 
     def encode(self):
         return {
@@ -56,7 +58,7 @@ class OthelloBoard(Board):
         else:
             raise InvalidPositionError('cannot flip init marker ({}, {}: {})'.format(row, col, self.tiles[row][col]))
 
-    def has_adjacent_tile(self, row, col):
+    def is_outer_edge(self, row, col):
         positions = (
             (row - 1, col),  # top
             (row + 1, col),  # down
@@ -81,86 +83,49 @@ class OthelloBoard(Board):
             self.flip(row=pos.row, col=pos.col)
 
     def find_flip_positions(self, src_row, src_col, src_marker):
-        # if src position is already set or does not have adjacent tile return empty list
-        if self.is_set(src_row, src_col) or not self.has_adjacent_tile(src_row, src_col):
+        """returns empty list if position is already occupied or not outer edge"""
+        if self.is_set(src_row, src_col) or not self.is_outer_edge(src_row, src_col):
+            return list()
+        else:
+            positions = self._collect_line_positions(src_row, src_col, src_marker)
+            return [Position(r, c) for r, c in positions]
+
+    def _collect_line_positions(self, row, col, marker):
+        positions = list()
+
+        positions += self._line_tracker(row, col, marker, -1, 0)  # up
+        positions += self._line_tracker(row, col, marker, 1, 0)  # down
+        positions += self._line_tracker(row, col, marker, 0, -1)  # left
+        positions += self._line_tracker(row, col, marker, 0, 1)  # right
+
+        positions += self._line_tracker(row, col, marker, -1, -1)  # up left
+        positions += self._line_tracker(row, col, marker, -1, 1)  # up right
+        positions += self._line_tracker(row, col, marker, 1, -1)  # down left
+        positions += self._line_tracker(row, col, marker, 1, 1)  # down right
+
+        return positions
+
+    def _line_tracker(self, row, col, marker, r_off, c_off):
+        def move(r, c):
+            return r + r_off, c + c_off
+
+        if r_off == 0 and c_off == 0:
             return list()
 
-        flip_targets = set()
-
-        candidate_collections = self._find_flip_candidates(src_row, src_col)
-        for candidates in candidate_collections.values():
-            flip_targets.update(self._find_flip_targets(src_row, src_col, src_marker, candidates))
-
-        return [Position(r, c) for r, c in flip_targets]
-
-    def _find_flip_candidates(self, src_row, src_col):
-        # find horizontal tiles
-        horizontal_flip_candidates = set()
-        for c in range(self.cols):
-            horizontal_flip_candidates.add((src_row, c))
-
-        # find vertical tiles
-        vertical_flip_candidates = set()
-        for r in range(self.rows):
-            vertical_flip_candidates.add((r, src_col))
-
-        # find diagonal left-top to right-bottom tiles
-        pos1 = set(zip(reversed(range(src_row)), reversed(range(src_col))))
-        pos2 = set(zip(range(src_row, self.rows), range(src_col, self.cols)))
-        pos_diagonal = {(src_row, src_col)} | pos1 | pos2
-        diagonal_lt_to_rb_flip_candidates = {(r, c) for r, c in pos_diagonal if
-                                             (0 <= r < self.rows) and (0 <= c < self.cols)}
-
-        # find diagonal left-bottom to right-top tiles
-        pos1 = set(zip(range(src_row, -1, -1), range(src_col, 8)))
-        pos2 = set(zip(reversed(range(self.rows, src_row, -1)), reversed(range(0, src_col))))
-        pos_diagonal = {(src_row, src_col)} | pos1 | pos2
-        diagonal_lb_to_rt_flip_candidates = {(r, c) for r, c in pos_diagonal if
-                                             (0 <= r < self.rows) and (0 <= c < self.cols)}
-
-        flip_candidate_collections = {
-            'horizontal': horizontal_flip_candidates,
-            'vertical': vertical_flip_candidates,
-            'diagonal_lt_to_rb ': diagonal_lt_to_rb_flip_candidates,
-            'diagonal_lb_to_rt ': diagonal_lb_to_rt_flip_candidates
-        }
-
-        return flip_candidate_collections
-
-    def _find_flip_targets(self, src_row, src_col, src_marker, candidates):
-        src_pos = (src_row, src_col)
-        sorted_candidates = sorted(candidates)
-        pos_left_end_idx = 0
-        pos_right_start_idx = 0
-
-        for idx, pos in enumerate(sorted_candidates):
-            if pos >= src_pos:
-                pos_left_end_idx = idx
-                break
-
-        for idx, pos in enumerate(sorted_candidates[pos_left_end_idx:], pos_left_end_idx):
-            if pos > src_pos:
-                pos_right_start_idx = idx
-                break
-
-        left_positions = sorted_candidates[:pos_left_end_idx]
-        right_positions = sorted_candidates[pos_right_start_idx:]
-        target_positions = set()
-
-        for positions in (reversed(left_positions), right_positions):
-            can_mark_tiles = False
-            marked_positions = set()
-            for r, c in positions:
-                dst_tile = self.tiles[r][c]
-                if dst_tile == self.MARKER_INIT:
-                    can_mark_tiles = False
+        positions = list()
+        try:
+            while True:
+                row, col = move(row, col)
+                if row < 0 or col < 0:
+                    raise IndexError
+                elif self.tiles[row][col] == self.MARKER_INIT:
+                    raise IndexError
+                elif self.tiles[row][col] == marker:
                     break
-                elif dst_tile == src_marker:
-                    can_mark_tiles = True
-                    break
-                marked_positions.add((r, c))
+                else:
+                    positions.append((row, col))
 
-            if can_mark_tiles:
-                target_positions.update(marked_positions)
+        except IndexError:
+            positions = list()
 
-        return target_positions
+        return positions

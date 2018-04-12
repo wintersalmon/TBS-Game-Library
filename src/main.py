@@ -38,6 +38,7 @@ def main():
         load_file_name = None
     elif len(args) == 2:
         load_file_name = args[1]
+
     else:
         show_usage("must have 1 or 2 arguments")
         sys.exit(3)

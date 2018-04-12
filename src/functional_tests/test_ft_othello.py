@@ -31,6 +31,7 @@ class OthelloFunctionalTestCase(BaseFunctionalTestCase):
             new_manager.update(event)
 
         self.assertEqual(new_manager.wrapper.encode(), decoded_game.encode())
+        self.assertEqual(new_manager.wrapper.game.board.count, decoded_game.game.board.count)
 
 
 if __name__ == "__main__":

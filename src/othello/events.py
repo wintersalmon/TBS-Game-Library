@@ -46,7 +46,7 @@ class PlayerPlacementEvent(Event):
         row = cls.get_argument_or_raise_error(kwargs, 'row')
         col = cls.get_argument_or_raise_error(kwargs, 'col')
 
-        player_marker = game.status.turn_player
+        player_marker = game.status.player
         flip_positions = game.board.find_flip_positions(row, col, player_marker)
 
         if len(flip_positions) == 0:
