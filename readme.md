@@ -7,10 +7,31 @@
 + Another purpose is to collect commonly used TBS-Game-Components and create a core library
 
 
-### How To Run
-```bash
-main.py <package>  # create new game"
-main.py <package> <file_name>  # load existing game with <file_name>
-main.py -r <package> <file_name>  # load existing game in replay mode
+### Contents
+    /docs
+    /example  # need to be source root
+        /chess
+        /othello
+        /tictactoe
+            /data
+                /events
+                /status
+            /wrapper.py
+            /manager.py
+            /main.py
+    /tbs  # need to be source root
+    readme.md
 
+
+### How To Run
+
+- `/tbs` must be Sources Root
+- `/example` must be Sources Root
+
+``` bash
+cd examples
+
+main.py play <package> [--cli]    # create new game
+main.py replay <package> [--cli]  # load saved game in replay mode
+# --cli: load game in CLI(command line interface) mode
 ```
