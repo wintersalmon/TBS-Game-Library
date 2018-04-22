@@ -1,14 +1,11 @@
-import time
-
-from core.ui import CLIReplay
-from othello.wrapper import OthelloWrapper
-from settings import SAVE_DIR
+from core.cli import CLIReplay
+from othello.managers import OthelloReplayManager
 from .draw import OthelloCLIDrawMixin
 
 
 class OthelloCLIReplay(CLIReplay, OthelloCLIDrawMixin):
-    def __init__(self, file_name):
-        super().__init__(cls_wrapper=OthelloWrapper, save_dir=SAVE_DIR['othello'], file_name=file_name)
+    def __init__(self):
+        super().__init__(cls_manager=OthelloReplayManager)
 
     def draw(self):
         super().draw()
@@ -17,25 +14,27 @@ class OthelloCLIReplay(CLIReplay, OthelloCLIDrawMixin):
         self.draw_board(game)
 
 
-class OthelloCLIAutoReplay(OthelloCLIReplay):
-    def __init__(self, file_name, wait_time=0, simple_output_mode=False):
-        super().__init__(file_name=file_name)
-        self.wait_time = wait_time
-        self.simple_output_mode = simple_output_mode
+GameApp = OthelloCLIReplay
 
-    def draw(self):
-        if self.simple_output_mode:
-            self.draw_status(self.manager.wrapper.game)
-        else:
-            super().draw()
-
-    def clean(self):
-        self.manager = None
-
-    def update(self):
-        self.manager.forward()
-        if self.wait_time:
-            time.sleep(self.wait_time)
-
-    def status(self):
-        return super().status() and self.manager.get_position() < self.manager.get_max_position()
+# class OthelloCLIAutoReplay(OthelloCLIReplay):
+#     def __init__(self, file_name, wait_time=0, simple_output_mode=False):
+#         super().__init__(file_name=file_name)
+#         self.wait_time = wait_time
+#         self.simple_output_mode = simple_output_mode
+#
+#     def draw(self):
+#         if self.simple_output_mode:
+#             self.draw_status(self.manager.wrapper.game)
+#         else:
+#             super().draw()
+#
+#     def clean(self):
+#         self.manager = None
+#
+#     def update(self):
+#         self.manager.forward()
+#         if self.wait_time:
+#             time.sleep(self.wait_time)
+#
+#     def status(self):
+#         return super().status() and self.manager.get_position() < self.manager.get_max_position()

@@ -4,14 +4,14 @@ from core.error import InvalidPositionError
 from core.managers import UpdateManager
 from functional_tests.base import BaseFunctionalTestCase
 from tic_tac_toe.events import PlayerPlacementEvent
+from tic_tac_toe.managers import TicTacToeUpdateManager
 from tic_tac_toe.wrapper import TicTacToeWrapper
 
 
 class TTTFunctionalTestCase(BaseFunctionalTestCase):
     def test_basic_game(self):
         settings = {'player_names': ['tom', 'jerry']}
-        wrapper = TicTacToeWrapper.create(**settings)
-        manager = UpdateManager(wrapper=wrapper)
+        manager = TicTacToeUpdateManager.create(**settings)
 
         event = PlayerPlacementEvent.create(game=manager.wrapper.game, row=1, col=1)
         manager.update(event)
@@ -67,7 +67,7 @@ class TTTFunctionalTestCase(BaseFunctionalTestCase):
         decoded_game = TicTacToeWrapper.decode(**encoded_game)
 
         new_wrapper = TicTacToeWrapper.create(**encoded_settings)
-        new_manager = UpdateManager(wrapper=new_wrapper)
+        new_manager = TicTacToeUpdateManager(wrapper=new_wrapper)
 
         self.assertNotEqual(new_manager.wrapper.encode(), decoded_game.encode())
 

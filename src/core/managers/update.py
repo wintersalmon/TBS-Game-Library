@@ -1,11 +1,7 @@
-from .save import SaveManager
+from .file import FileManager
 
 
-class UpdateManager(SaveManager):
+class UpdateManager(FileManager):
     def update(self, event):
-        try:
-            event.update(self.wrapper.game)
-        except Exception as e:
-            raise e
-        else:
-            self.wrapper.events.append(event)
+        event.update(self.wrapper.game)
+        self.wrapper.events.append(event)

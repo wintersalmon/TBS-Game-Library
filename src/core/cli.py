@@ -2,7 +2,7 @@ from core.error import ExitGameException
 from core.managers import ReplayManager, UpdateManager
 
 
-class UIMixin(object):
+class CLIMixin(object):
     def run(self):
         self.init()
         self.draw()
@@ -30,16 +30,18 @@ class UIMixin(object):
         raise NotImplementedError
 
 
-class CLIReplay(UIMixin):
-    def __init__(self, cls_wrapper, save_dir, file_name):
-        super().__init__()
-        self.cls_wrapper = cls_wrapper
-        self.save_dir = save_dir
-        self.file_name = file_name
+class CLIReplay(CLIMixin):
+    def __init__(self, cls_manager):
+        super(CLIReplay, self).__init__()
+        if not issubclass(cls_manager, ReplayManager):
+            raise NotImplementedError
+        self.cls_manager = cls_manager
+        self.file_name = None
         self.manager = None
 
     def init(self):
-        self.manager = ReplayManager.load(self.cls_wrapper, self.save_dir, self.file_name)
+        self.file_name = input('save file name: ')
+        self.manager = self.cls_manager.load(self.file_name)
         self.manager.set_position(0)
 
     def clean(self):
@@ -65,6 +67,9 @@ class CLIReplay(UIMixin):
         return self.manager is not None
 
     def draw(self):
+        self._draw_game_replay_status()
+
+    def _draw_game_replay_status(self):
         print()
         replay_repr = 'Position: {}/{}'.format(self.manager.get_position(), self.manager.get_max_position())
         if self.manager.get_position() == 0:
@@ -80,21 +85,22 @@ class CLIReplay(UIMixin):
         print('\n'.join((replay_repr, prev_event, next_event)))
 
 
-class CLIPlay(UIMixin):
-    def __init__(self, cls_wrapper, save_dir, file_name):
-        super().__init__()
-        self.cls_wrapper = cls_wrapper
-        self.save_dir = save_dir
-        self.file_name = file_name
+class CLIPlay(CLIMixin):
+    def __init__(self, cls_manager):
+        super(CLIPlay, self).__init__()
+        if not issubclass(cls_manager, UpdateManager):
+            raise NotImplementedError
+        self.cls_manager = cls_manager
+        self.file_name = None
         self.manager = None
 
     def init(self):
+        self.file_name = input('save file name (press ENTER for new game): ')
         if self.file_name:
-            self.manager = UpdateManager.load(self.cls_wrapper, self.save_dir, self.file_name)
+            self.manager = self.cls_manager.load(self.file_name)
         else:
             settings = self._create_game_settings()
-            wrapper = self.cls_wrapper.create(**settings)
-            self.manager = UpdateManager(wrapper=wrapper)
+            self.manager = self.cls_manager.create(**settings)
 
     def clean(self):
         save_file_name = None
@@ -108,9 +114,12 @@ class CLIPlay(UIMixin):
                 save_file_name = input('save file name? (press ENTER to skip) ')
 
         if save_file_name:
-            self.manager.save(self.save_dir, save_file_name)
+            self.manager.save(save_file_name)
 
     def draw(self):
+        self._draw_game_play_status()
+
+    def _draw_game_play_status(self):
         print()
         event_repr = 'Total Events: {}'.format(len(self.manager.wrapper.events))
         print('\n'.join((event_repr,)))

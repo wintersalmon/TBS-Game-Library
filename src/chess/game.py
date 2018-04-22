@@ -10,12 +10,6 @@ class ChessGame(SerializableMixin):
         self.turn_count = turn_count
         self.status = status
 
-    def __str__(self):
-        players_repr = 'players: {}'.format([player.name for player in self.players])
-        board_repr = str(self.board)
-        reprs = (players_repr, board_repr)
-        return '\n'.join(reprs)
-
     def get_turn_player_name(self):
         total_players = len(self.players)
         cur_player_number = self.turn_count % total_players

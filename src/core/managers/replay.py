@@ -1,9 +1,9 @@
-from .load import LoadManager
+from .file import FileManager
 
 
-class ReplayManager(LoadManager):
+class ReplayManager(FileManager):
     def __init__(self, wrapper):
-        super().__init__(wrapper=wrapper)
+        super(ReplayManager, self).__init__(wrapper=wrapper)
         self._max_position = len(self.wrapper.events)
         self._cur_position = self._max_position
 
@@ -19,6 +19,10 @@ class ReplayManager(LoadManager):
 
             while pos_offset > 0 and move_to_direction():
                 pos_offset -= 1
+
+            return True
+        else:
+            return False
 
     def get_max_position(self):
         return self._max_position

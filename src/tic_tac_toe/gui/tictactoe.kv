@@ -1,0 +1,55 @@
+#:kivy 1.10.1
+#:set background_color (0.235, 0.235, 0.392, 0.5)
+#:set default_font_size 50
+#:set tile_height 100
+#:set tile_width 100
+#:set marker_size (80, 80)
+
+
+<TicTacToeTile@Widget>:
+    size_hint: (None, None)
+    height: tile_height
+    width: tile_width
+    canvas:
+        Color:
+            rgba: self.color
+        Ellipse:
+            pos: self.pos
+            size: marker_size
+
+
+<TicTacToe>:
+    board: tic_tac_toe_board
+
+    canvas.before:
+        Color:
+            rgba: background_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    GridLayout:
+        cols: 2
+        size_hint_y: None
+        height: 200
+
+        Label:
+            font_size: default_font_size
+            text: root.player1
+
+        Label:
+            font_size: default_font_size
+            text: root.player2
+
+        Label:
+            font_size: default_font_size
+            text: root.status
+
+
+    GridLayout:
+        id: tic_tac_toe_board
+        rows: 3
+        cols: 3
+        size_hint: (None, None)
+        height: self.rows * tile_height if self.rows else 0
+        width: self.cols * tile_width if self.cols else 0

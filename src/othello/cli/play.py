@@ -1,17 +1,13 @@
-import random
-import time
-
 from core.error import InvalidPositionError, InvalidInputError, ExitGameException
-from core.ui import CLIPlay
-from othello.events import PlayerPlacementEvent
+from core.cli import CLIPlay
 from othello.cli.draw import OthelloCLIDrawMixin
-from othello.wrapper import OthelloWrapper
-from settings import SAVE_DIR
+from othello.events import PlayerPlacementEvent
+from othello.managers import OthelloUpdateManager
 
 
 class OthelloCLIPlay(CLIPlay, OthelloCLIDrawMixin):
-    def __init__(self, file_name=None):
-        super().__init__(cls_wrapper=OthelloWrapper, save_dir=SAVE_DIR['othello'], file_name=file_name)
+    def __init__(self):
+        super().__init__(cls_manager=OthelloUpdateManager)
 
     def update(self):
         try:
@@ -43,7 +39,6 @@ class OthelloCLIPlay(CLIPlay, OthelloCLIDrawMixin):
         try:
             row, col = values
             row, col = int(row), int(col)
-            row, col = row - 1, col - 1
 
         except ValueError:
             raise InvalidInputError('input requires two integers')
@@ -51,45 +46,47 @@ class OthelloCLIPlay(CLIPlay, OthelloCLIDrawMixin):
             return PlayerPlacementEvent.create(game=self.manager.wrapper.game, row=row, col=col)
 
 
-class OthelloCLIAutoPlay(OthelloCLIPlay, OthelloCLIDrawMixin):
-    def __init__(self, file_name=None, wait_time=0, simple_output_mode=False):
-        super().__init__(file_name=file_name)
-        self.wait_time = wait_time
-        self.simple_output_mode = simple_output_mode
+GameApp = OthelloCLIPlay
 
-    def draw(self):
-        if self.simple_output_mode:
-            self.draw_status(self.manager.wrapper.game)
-        else:
-            super().draw()
-
-    def update(self):
-        super().update()
-        if self.wait_time:
-            time.sleep(self.wait_time)
-
-    def _read_user_input_and_create_event(self):
-        turn_player = self.manager.wrapper.game.status.player
-        board = self.manager.wrapper.game.board
-
-        next_positions = list()
-        for row in range(board.rows):
-            for col in range(board.cols):
-                flip_positions = board.find_flip_positions(row, col, turn_player)
-                if flip_positions:
-                    next_positions.append((len(flip_positions), row, col))
-
-        max_flip_positions = sorted(next_positions, reverse=True)[0][0]
-
-        max_positions = [(f, r, c) for f, r, c in next_positions if f == max_flip_positions]
-        selection = random.choice(max_positions)
-
-        row = selection[1]
-        col = selection[2]
-        if not self.simple_output_mode:
-            print('row, col: {} {}'.format(row, col))
-
-        return PlayerPlacementEvent.create(game=self.manager.wrapper.game, row=row, col=col)
-
-    def save_as(self, file_name):
-        self.manager.save(self.save_dir, file_name)
+# class OthelloCLIAutoPlay(OthelloCLIPlay, OthelloCLIDrawMixin):
+#     def __init__(self, file_name=None, wait_time=0, simple_output_mode=False):
+#         super().__init__(file_name=file_name)
+#         self.wait_time = wait_time
+#         self.simple_output_mode = simple_output_mode
+#
+#     def draw(self):
+#         if self.simple_output_mode:
+#             self.draw_status(self.manager.wrapper.game)
+#         else:
+#             super().draw()
+#
+#     def update(self):
+#         super().update()
+#         if self.wait_time:
+#             time.sleep(self.wait_time)
+#
+#     def _read_user_input_and_create_event(self):
+#         turn_player = self.manager.wrapper.game.status.player
+#         board = self.manager.wrapper.game.board
+#
+#         next_positions = list()
+#         for row in range(board.rows):
+#             for col in range(board.cols):
+#                 flip_positions = board.find_flip_positions(row, col, turn_player)
+#                 if flip_positions:
+#                     next_positions.append((len(flip_positions), row, col))
+#
+#         max_flip_positions = sorted(next_positions, reverse=True)[0][0]
+#
+#         max_positions = [(f, r, c) for f, r, c in next_positions if f == max_flip_positions]
+#         selection = random.choice(max_positions)
+#
+#         row = selection[1]
+#         col = selection[2]
+#         if not self.simple_output_mode:
+#             print('row, col: {} {}'.format(row, col))
+#
+#         return PlayerPlacementEvent.create(game=self.manager.wrapper.game, row=row, col=col)
+#
+#     def save_as(self, file_name):
+#         self.manager.save(self.save_dir, file_name)

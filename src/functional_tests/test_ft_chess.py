@@ -1,8 +1,8 @@
 from unittest import main
 
 from chess.events import MoveChessPieceEvent
+from chess.managers import ChessUpdateManager
 from chess.wrapper import ChessWrapper
-from core.managers import UpdateManager
 from core.position import Position
 from functional_tests.base import BaseFunctionalTestCase
 
@@ -12,8 +12,10 @@ class ChessFunctionalTestCase(BaseFunctionalTestCase):
         settings = {
             'player_names': ['alpha', 'beta']
         }
-        chess_wrapper = ChessWrapper.create(**settings)
-        chess_update_manager = UpdateManager(chess_wrapper)
+        chess_update_manager = ChessUpdateManager.create(**settings)
+        chess_wrapper = chess_update_manager.wrapper
+        # chess_wrapper = ChessWrapper.create(**settings)
+        # chess_update_manager = UpdateManager(chess_wrapper)
         # print(chess_update_manager)
 
         event = MoveChessPieceEvent.create(game=chess_wrapper.game,
@@ -59,7 +61,7 @@ class ChessFunctionalTestCase(BaseFunctionalTestCase):
         decoded_game = ChessWrapper.decode(**encoded_game)
 
         chess_wrapper = ChessWrapper.create(**encoded_settings)
-        chess_update_manager = UpdateManager(chess_wrapper)
+        chess_update_manager = ChessUpdateManager(chess_wrapper)
 
         events = [MoveChessPieceEvent.decode(**e_data) for e_data in encoded_events]
         for event in events:

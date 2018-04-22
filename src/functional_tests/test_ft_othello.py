@@ -1,8 +1,8 @@
 from unittest import main
 
-from core.managers import UpdateManager
 from functional_tests.base import BaseFunctionalTestCase
 from othello.events import PlayerPlacementEvent
+from othello.managers import OthelloUpdateManager
 from othello.wrapper import OthelloWrapper
 
 
@@ -22,7 +22,7 @@ class OthelloFunctionalTestCase(BaseFunctionalTestCase):
         decoded_game = OthelloWrapper.decode(**encoded_game)
 
         new_wrapper = OthelloWrapper.create(**encoded_settings)
-        new_manager = UpdateManager(wrapper=new_wrapper)
+        new_manager = OthelloUpdateManager(wrapper=new_wrapper)
 
         self.assertNotEqual(new_manager.wrapper.encode(), decoded_game.encode())
 

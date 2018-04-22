@@ -1,19 +1,14 @@
+from chess.cli.chess import ChessCLIDrawMixin
 from chess.events import MoveChessPieceEvent
-from chess.wrapper import ChessCLIWrapper
+from chess.managers import ChessUpdateManager
+from core.cli import CLIPlay
 from core.error import EventCreationFailedError, ExitGameException, InvalidInputError
 from core.position import Position
-from core.ui import CLIReplay, CLIPlay
-from settings import SAVE_DIR
-
-
-class ChessCLIReplay(CLIReplay):
-    def __init__(self, file_name):
-        super().__init__(cls_wrapper=ChessCLIWrapper, save_dir=SAVE_DIR['chess'], file_name=file_name)
 
 
 class ChessCLIPlay(CLIPlay):
-    def __init__(self, file_name=None):
-        super().__init__(cls_wrapper=ChessCLIWrapper, save_dir=SAVE_DIR['chess'], file_name=file_name)
+    def __init__(self):
+        super().__init__(cls_manager=ChessUpdateManager)
 
     def update(self):
         try:
@@ -48,4 +43,8 @@ class ChessCLIPlay(CLIPlay):
         return bool(self.manager)
 
     def draw(self):
-        print(self.manager)
+        super().draw()
+        ChessCLIDrawMixin.draw(self.manager.wrapper.game)
+
+
+GameApp = ChessCLIPlay

@@ -55,13 +55,3 @@ class ChessBoard(Board):
             decoded_tiles.append(decoded_row)
 
         return cls(tiles=decoded_tiles)
-
-    def __str__(self):
-        repr_tiles = [[str(col) for col in row] for row in self.tiles]
-
-        # add row,col number
-        for line_num, row in enumerate(repr_tiles):
-            row.insert(0, str(line_num))
-        repr_tiles.insert(0, [' ', '0', '1', '2', '3', '4', '5', '6', '7'])
-
-        return '\n'.join(['  '.join(row) for row in repr_tiles])
