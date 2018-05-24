@@ -1,19 +1,44 @@
 ## Class Layer
 
+### Tier 0
+- save.json   # represents actual save file
+
+
 ### Tier 1
-- Game, Events
-- logic and data layer
-- handles game logic
-- Game represents DATA, Event represents LOGIC
+- data   # represents game objects
+    + get
+    + set
+    + encode
+    + decode
+- event  # represents game actions
+    + update
+    + rollback
+    + create
+    + encode
+    + decode
+- status # uses data to represent game status, limits invalid events
+    + get
 
 
 ### Tier 2
-- Wrapper, Manager
-- File Management layer
-- handles GameFile(Create,Load,Save), GameUpdate, Replay Managements
+- represents actual game
+- basic game functions
+- Wrapper
+    + encode
+    + decode
+    + create
+    + push(e)
+    + pop(): e
 
 
 ### Tier 3
-- UI
-- handles User Interface
-- Top layer of the system
+- advanced game functions
+- FileManager
+- ReplayManager
+- UpdateManager
+- NetworkManager  # TBD
+
+
+### Tier 4
+- final layer of the system
+- handles user interactions with game
