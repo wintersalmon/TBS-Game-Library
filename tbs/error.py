@@ -11,6 +11,10 @@ class ApiError(ApiException):
     pass
 
 
+class ApiEventError(ApiError):
+    pass
+
+
 class InvalidInputError(ApiError):
     pass
 
