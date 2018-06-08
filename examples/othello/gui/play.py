@@ -20,7 +20,7 @@ class OthelloPlay(Othello):
                 try:
                     row = tile.row
                     col = tile.col
-                    event = PlayerPlacementEvent.create(game=self.game, row=row, col=col)
+                    event = PlayerPlacementEvent(row=row, col=col)
                     self.manager.update(event)
                 except ApiError as e:
                     print(e)

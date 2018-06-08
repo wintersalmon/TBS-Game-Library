@@ -43,7 +43,7 @@ class OthelloCLIPlay(CLIPlay, OthelloCLIDrawMixin):
         except ValueError:
             raise InvalidInputError('input requires two integers')
         else:
-            return PlayerPlacementEvent.create(game=self.manager.wrapper.game, row=row, col=col)
+            return PlayerPlacementEvent(row=row, col=col)
 
 
 GameApp = OthelloCLIPlay

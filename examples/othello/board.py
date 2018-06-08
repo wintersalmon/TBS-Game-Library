@@ -23,6 +23,8 @@ class OthelloBoard(Board):
         else:
             super().__init__(8, 8, init_value=self.MARKER_INIT, tiles=tiles)
 
+        self._flip_tiles = [[None] * self.cols for _ in range(self.rows)]
+
     @property
     def count(self):
         black, white = 0, 0
@@ -50,7 +52,16 @@ class OthelloBoard(Board):
         elif self.is_set(row, col):
             raise InvalidPositionError('position already occupied: {}, {}'.format(row, col))
         else:
+            flip_positions = self.find_flip_positions(src_row=row, src_col=col, src_marker=value)
+            self._flip_tiles[row][col] = flip_positions
+            self.flip_all_positions(flip_positions)
             super().set(row, col, value)
+
+    def reset_tile(self, row, col):
+        if self._flip_tiles[row][col]:
+            self.flip_all_positions(self._flip_tiles[row][col])
+            self._flip_tiles[row][col] = None
+        super().reset_tile(row, col)
 
     def flip(self, row, col):
         if self.is_set(row, col):
