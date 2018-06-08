@@ -1,7 +1,16 @@
 from .file import FileManager
 
 
+# class UpdateManager(FileManager):
+#     def update(self, event):
+#         event.update(self.wrapper.game)
+#         self.wrapper.events.append(event)
+
 class UpdateManager(FileManager):
     def update(self, event):
-        event.update(self.wrapper.game)
-        self.wrapper.events.append(event)
+        try:
+            event.update(self.wrapper.game)
+        except Exception as e:
+            raise
+        else:
+            self.wrapper.events.append(event)

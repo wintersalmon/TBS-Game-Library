@@ -1,8 +1,8 @@
-from mandom.data.events.event import MandomAutoBackupEvent
+from tbs.event import SimpleRollbackEvent
 from mandom.data.status import StatusCode
 
 
-class ChallengeDungeonEvent(MandomAutoBackupEvent):
+class ChallengeDungeonEvent(SimpleRollbackEvent):
 
     def __init__(self, player):
         super(ChallengeDungeonEvent, self).__init__(player=player)

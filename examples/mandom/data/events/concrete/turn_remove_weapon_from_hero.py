@@ -1,14 +1,14 @@
 from mandom.data.deck import Deck
-from mandom.data.events.event import MandomEvent
 from mandom.data.hero import Hero
 from mandom.data.monsters import MonsterStack
 from mandom.data.player import PlayerTurnTracker
 from mandom.data.status import StatusCode
 from mandom.data.weapons import WeaponStack
 from mandom.data.weapons.code import WeaponCode
+from tbs.event import Event
 
 
-class TurnRemoveWeaponFromHero(MandomEvent):
+class TurnRemoveWeaponFromHero(Event):
     def __init__(self, player: int, weapon: int):
         super(TurnRemoveWeaponFromHero, self).__init__(player=player, weapon=weapon)
 

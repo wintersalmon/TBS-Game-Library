@@ -1,9 +1,9 @@
-from mandom.data.events.event import MandomEvent
 from mandom.data.player import PlayerTurnTracker
 from mandom.data.status import StatusCode
+from tbs.event import Event
 
 
-class TurnFoldEvent(MandomEvent):
+class TurnFoldEvent(Event):
     def __init__(self, player: int):
         super(TurnFoldEvent, self).__init__(player=player)
 

@@ -3,17 +3,17 @@ from datetime import datetime
 
 from mandom.data.deck import Deck
 from mandom.data.dungeon import Dungeon
-from mandom.data.events.event import MandomAutoBackupEvent
 from mandom.data.hero import Hero
 from mandom.data.monsters import MonsterStack
 from mandom.data.player import PlayerTurnTracker
 from mandom.data.status import StatusCode
 from mandom.data.weapons import WeaponStack
+from tbs.event import SimpleRollbackEvent
 
 MAX_RANDOM_SEED_VALUE = 622_702_080
 
 
-class InitRoundEvent(MandomAutoBackupEvent):
+class InitRoundEvent(SimpleRollbackEvent):
     def __init__(self, seed_value: int = None):
         if seed_value is None:
             seed_value = random.Random(datetime.now()).randint(1, MAX_RANDOM_SEED_VALUE)

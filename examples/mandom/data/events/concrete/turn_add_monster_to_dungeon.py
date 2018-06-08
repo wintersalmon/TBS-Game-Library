@@ -1,11 +1,11 @@
 from mandom.data.deck import Deck
 from mandom.data.dungeon import Dungeon
-from mandom.data.events.event import MandomEvent
 from mandom.data.player import PlayerTurnTracker
 from mandom.data.status import StatusCode
+from tbs.event import Event
 
 
-class TurnAddMonsterToDungeon(MandomEvent):
+class TurnAddMonsterToDungeon(Event):
     def __init__(self, player: int):
         super(TurnAddMonsterToDungeon, self).__init__(player=player)
 

@@ -1,8 +1,8 @@
-from mandom.data.events.event import MandomEvent
 from mandom.data.status import StatusCode
+from tbs.event import Event
 
 
-class TurnDrawEvent(MandomEvent):
+class TurnDrawEvent(Event):
     def __init__(self, player: int):
         super(TurnDrawEvent, self).__init__(player=player)
 
