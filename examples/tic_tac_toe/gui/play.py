@@ -17,9 +17,10 @@ class TicTacToePlay(TicTacToe):
         for tile in self.board.children[:]:
             if tile.collide_point(*touch.pos):
                 try:
+                    player = self.game.status.turn_player
                     row = tile.row
                     col = tile.col
-                    event = PlayerPlacementEvent.create(game=self.game, row=row, col=col)
+                    event = PlayerPlacementEvent(player=player, row=row, col=col)
                     self.manager.update(event)
                 except ApiError as e:
                     print(e)

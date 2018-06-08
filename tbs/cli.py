@@ -42,7 +42,7 @@ class CLIReplay(CLIMixin):
     def init(self):
         self.file_name = input('save file name: ')
         self.manager = self.cls_manager.load(self.file_name)
-        self.manager.set_position(0)
+        # self.manager.set_position(0)
 
     def clean(self):
         self.manager = None

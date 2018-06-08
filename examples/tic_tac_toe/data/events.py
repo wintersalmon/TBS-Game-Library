@@ -1,4 +1,3 @@
-from tbs.error import InvalidPositionError
 from tbs.event import Event
 
 
@@ -19,25 +18,31 @@ class PlayerPlacementEvent(Event):
         return self.get_parameter('col')
 
     def _update(self, game):
-        raise NotImplementedError
+        game.board.set(self.row, self.col, self.player)
+        game.status.update(game)
 
     def _rollback(self, game):
-        raise NotImplementedError
+        game.board.reset_tile(self.row, self.col)
+        game.status.rollback(game)
 
     def _validate_update_or_raise_error(self, game):
-        if game.status.turn_player != self.player:
-            return False
+        self._validate_value_eq_or_raise_error(
+            name='player',
+            current=self.player,
+            required=game.status.turn_player)
 
-        if game.board.is_set(self.row, self.col):
-            return False
-
-        return True
+        self._validate_value_eq_or_raise_error(
+            name='tile is not occupied',
+            current=game.board.is_set(self.row, self.col),
+            required=False)
 
     def _create_game_backup(self, game):
-        raise NotImplementedError
+        return {
+            'tile': game.board.get(self.row, self.col)
+        }
 
     def _restore_from_backup(self, game, backup):
-        raise NotImplementedError
+        game.board.set(self.row, self.col, backup['tile'])
 
     # def update(self, game):
     #     if game.board.is_set(self._row, self._col):

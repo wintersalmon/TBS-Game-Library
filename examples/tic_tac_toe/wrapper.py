@@ -11,7 +11,6 @@ class TicTacToeWrapper(Wrapper):
     def encode(self):
         return {
             'settings': self.settings,
-            'game': self.game.encode(),
             'events': [event.encode() for event in self.events],
         }
 
@@ -19,16 +18,21 @@ class TicTacToeWrapper(Wrapper):
     def decode(cls, **kwargs):
         decoded_kwargs = {
             'settings': kwargs['settings'],
-            'game': TicTacToeGame.decode(**kwargs['game']),
+            'game': cls.create_game_from_settings(**kwargs['settings']),
             'events': [PlayerPlacementEvent.decode(**e_kwargs) for e_kwargs in kwargs['events']]
         }
 
         return cls(**decoded_kwargs)
 
     @classmethod
-    def create(cls, **kwargs):
-        settings = kwargs
+    def create_game_from_settings(cls, **kwargs):
         players = [Player(p) for p in kwargs['player_names']]
         game = TicTacToeGame(players=players)
+        return game
+
+    @classmethod
+    def create(cls, **kwargs):
+        settings = kwargs
+        game = cls.create_game_from_settings(**settings)
         events = list()
         return cls(settings=settings, game=game, events=events)

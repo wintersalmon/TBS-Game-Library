@@ -29,6 +29,7 @@ class GameApp(CLIPlay):
         return {'player_names': ['tom', 'jerry']}
 
     def _read_user_input_and_create_event(self):
+        turn_player = player=self.manager.wrapper.game.status.turn_player
         values = input('row, col: ').split()
 
         if len(values) == 0:
@@ -42,4 +43,4 @@ class GameApp(CLIPlay):
         except ValueError:
             raise InvalidInputError('input requires two integers')
         else:
-            return PlayerPlacementEvent.create(game=self.manager.wrapper.game, row=row, col=col)
+            return PlayerPlacementEvent(player=turn_player, row=row, col=col)
