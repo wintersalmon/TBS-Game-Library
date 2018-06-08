@@ -10,7 +10,7 @@ class ChessWrapper(Wrapper):
     def encode(self):
         return {
             'settings': self.settings,
-            'game': self.game.encode(),
+            # 'game': self.game.encode(),
             'events': [event.encode() for event in self.events],
         }
 
@@ -18,15 +18,19 @@ class ChessWrapper(Wrapper):
     def decode(cls, **kwargs):
         decoded_kwargs = {
             'settings': kwargs['settings'],
-            'game': ChessGame.decode(**kwargs['game']),
+            'game': cls.create_game_from_settings(**kwargs['settings']),
             'events': [MoveChessPieceEvent.decode(**e_kwargs) for e_kwargs in kwargs['events']]
         }
 
         return cls(**decoded_kwargs)
 
     @classmethod
+    def create_game_from_settings(cls, **settings):
+        return ChessGame.create(**settings)
+
+    @classmethod
     def create(cls, **kwargs):
         settings = kwargs
-        game = ChessGame.create(**settings)
+        game = cls.create_game_from_settings(**settings)
         events = list()
         return cls(settings=settings, game=game, events=events)

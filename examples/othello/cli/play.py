@@ -1,4 +1,4 @@
-from tbs.error import InvalidPositionError, InvalidInputError, ExitGameException
+from tbs.error import InvalidPositionError, InvalidInputError, ExitGameException, ApiError
 from tbs.cli import CLIPlay
 from othello.cli.draw import OthelloCLIDrawMixin
 from othello.events import PlayerPlacementEvent
@@ -13,9 +13,7 @@ class OthelloCLIPlay(CLIPlay, OthelloCLIDrawMixin):
         try:
             event = self._read_user_input_and_create_event()
             self.manager.update(event)
-        except InvalidPositionError as e:
-            print(e)
-        except InvalidInputError as e:
+        except ApiError as e:
             print(e)
 
     def draw(self):
