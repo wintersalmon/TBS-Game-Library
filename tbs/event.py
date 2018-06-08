@@ -41,50 +41,40 @@ class Event(SerializableMixin):
     def __init__(self, **kwargs):
         super().__init__()
         self._params = kwargs
-        self._can_apply_update = True
+        self._is_update_applied = False
 
     def get_parameter(self, key):
         return self._params[key]
 
-    @property
-    def can_apply_update(self):
-        return self._can_apply_update
-
-    @property
-    def can_apply_rollback(self):
-        return not self._can_apply_update
-
     def update(self, game):
-        if not self.can_apply_update:
-            raise ApiEventError('cannot update event')
+        if self._is_update_applied:
+            raise ApiEventError('invalid action update')
 
-        if not self._event_update_valid(game):
-            raise ApiEventError('event is not valid')
+        self._validate_update_or_raise_error(game)
 
         temp_backup = self._create_game_backup(game)
-
         try:
             self._update(game)
         except Exception as e:
             self._restore_from_backup(game, temp_backup)
             raise
         else:
-            self._can_apply_update = False
+            self._is_update_applied = True
         return temp_backup
 
     def rollback(self, game):
-        if not self.can_apply_rollback:
-            raise ApiEventError('cannot rollback event')
+        if not self._is_update_applied:
+            raise ApiEventError('invalid action rollback')
 
         temp_backup = self._create_game_backup(game)
-
         try:
             self._rollback(game)
         except Exception as e:
             self._restore_from_backup(game, temp_backup)
             raise
         else:
-            self._can_apply_update = True
+            self._is_update_applied = False
+        return temp_backup
 
     def _update(self, game):
         raise NotImplementedError
@@ -92,7 +82,7 @@ class Event(SerializableMixin):
     def _rollback(self, game):
         raise NotImplementedError
 
-    def _event_update_valid(self, game):
+    def _validate_update_or_raise_error(self, game):
         raise NotImplementedError
 
     def _create_game_backup(self, game):
@@ -100,6 +90,32 @@ class Event(SerializableMixin):
 
     def _restore_from_backup(self, game, backup):
         raise NotImplementedError
+
+    @classmethod
+    def _validate_value_in_or_raise_error(cls, name, current, required):
+        if current in required:
+            return
+        raise ApiEventError(cls._create_value_error_fmt(name, current, 'in', required))
+
+    @classmethod
+    def _validate_value_eq_or_raise_error(cls, name, current, required):
+        if current == required:
+            return
+        raise ApiEventError(cls._create_value_error_fmt(name, current, '==', required))
+
+    @classmethod
+    def _validate_value_gt_or_raise_error(cls, name, current, required):
+        if current > required:
+            return
+        raise ApiEventError(cls._create_value_error_fmt(name, current, '>', required))
+
+    @classmethod
+    def _create_value_error_fmt(cls, name, current, operator, required):
+        return 'invalid value {name}: {cur} {op} {req}'.format(
+            name=name,
+            cur=current,
+            op=operator,
+            req=required)
 
     def encode(self):
         return self._params
@@ -126,7 +142,7 @@ class SimpleRollbackEvent(Event):
     def _update(self, game):
         raise NotImplementedError
 
-    def _event_update_valid(self, game):
+    def _validate_update_or_raise_error(self, game):
         raise NotImplementedError
 
     def _create_game_backup(self, game):

@@ -1,5 +1,5 @@
-from tbs.event import SimpleRollbackEvent
 from mandom.data.status import StatusCode
+from tbs.event import SimpleRollbackEvent
 
 
 class ChallengeDungeonEvent(SimpleRollbackEvent):
@@ -24,20 +24,22 @@ class ChallengeDungeonEvent(SimpleRollbackEvent):
         else:
             game.status = StatusCode.CHALLENGE
 
-    def _event_update_valid(self, game):
-        if game.status != StatusCode.ROUND:
-            return False
+    def _validate_update_or_raise_error(self, game):
+        self._validate_value_eq_or_raise_error(
+            name='status',
+            current=game.status,
+            required=StatusCode.ROUND)
 
-        if self.player != game.player_turn_tracker.current_player:
-            return False
+        self._validate_value_eq_or_raise_error(
+            name='player',
+            current=game.player_turn_tracker.current_player,
+            required=self.player)
 
-        if self.player not in game.player_turn_tracker.players:
-            return False
-
-        if len(game.player_turn_tracker) != 1:
-            return False
-
-        return True
+        self._validate_value_eq_or_raise_error(
+            name='active player count',
+            current=len(game.player_turn_tracker),
+            required=1,
+        )
 
     def _create_game_backup(self, game):
         backup_data = dict()

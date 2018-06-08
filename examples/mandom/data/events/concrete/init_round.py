@@ -37,12 +37,12 @@ class InitRoundEvent(SimpleRollbackEvent):
         # update status
         game.status = StatusCode.ROUND
 
-    def _event_update_valid(self, game):
-        # check game status
-        if game.status in (StatusCode.GAME_INIT, StatusCode.CHALLENGE):
-            return True
-        else:
-            return False
+    def _validate_update_or_raise_error(self, game):
+        self._validate_value_in_or_raise_error(
+            name='status',
+            current=game.status,
+            required=(StatusCode.GAME_INIT, StatusCode.CHALLENGE))
+
 
     def _create_game_backup(self, game):
         backup_data = dict()

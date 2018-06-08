@@ -25,17 +25,22 @@ class TurnAddMonsterToDungeon(Event):
         game.player_turn_tracker.update_turn_backward()
         game.status = StatusCode.TURN
 
-    def _event_update_valid(self, game):
-        if game.status != StatusCode.TURN:
-            return False
+    def _validate_update_or_raise_error(self, game):
+        self._validate_value_eq_or_raise_error(
+            name='status',
+            current=game.status,
+            required=StatusCode.TURN)
 
-        if self.player != game.player_turn_tracker.current_player:
-            return False
+        self._validate_value_eq_or_raise_error(
+            name='player',
+            current=game.player_turn_tracker.current_player,
+            required=self.player)
 
-        if len(game.deck) <= 0:
-            return False
-
-        return True
+        self._validate_value_gt_or_raise_error(
+            name='active player count',
+            current=len(game.deck),
+            required=0,
+        )
 
     def _create_game_backup(self, game):
         backup_data = dict()
