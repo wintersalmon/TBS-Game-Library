@@ -4,14 +4,13 @@ from mandom.data.deck import Deck
 from mandom.data.dungeon import Dungeon
 from mandom.data.hero import Hero
 from mandom.data.monsters import MonsterStack
-from mandom.data.player import PlayerTurnTracker
+from mandom.data.player import Player, PlayerTurnTracker
 from mandom.data.status import StatusCode
 from mandom.data.weapons import WeaponStack
-from tbs.player import Player
-from tbs.utils import SerializableMixin
+from tbs.game import Game
 
 
-class MandomGame(SerializableMixin):
+class MandomGame(Game):
     def __init__(self,
                  players: List[Player],
                  hero: Hero = None,
@@ -52,7 +51,7 @@ class MandomGame(SerializableMixin):
         removed_monsters = MonsterStack.decode(**kwargs['removed_monsters'])
         removed_weapons = WeaponStack.decode(**kwargs['removed_weapons'])
         player_turn_tracker = PlayerTurnTracker.decode(**kwargs['player_turn_tracker'])
-        status = StatusCode(int(kwargs['status']))if 'status' in kwargs else None
+        status = StatusCode(int(kwargs['status'])) if 'status' in kwargs else None
         return cls(
             players=players,
             hero=hero,
@@ -62,3 +61,8 @@ class MandomGame(SerializableMixin):
             removed_weapons=removed_weapons,
             player_turn_tracker=player_turn_tracker,
             status=status)
+
+    @classmethod
+    def create(cls, **kwargs):
+        players = [Player(p) for p in kwargs['player_names']]
+        return cls(players=players)

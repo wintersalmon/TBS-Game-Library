@@ -1,6 +1,6 @@
 import collections
 
-from mandom.data.events import EventCode, EventFactory
+from mandom.data.events import EventCode, MandomEventFactory
 from mandom.wrapper import MandomWrapper
 
 
@@ -10,37 +10,37 @@ def main():
     }
     wrapper = MandomWrapper.create(**settings)
     events = [
-        EventFactory.get(EventCode.INIT_ROUND)(),
+        MandomEventFactory.create(EventCode.INIT_ROUND.value),
 
-        EventFactory.create(EventCode.TURN_DRAW, params={'player': 0}),
-        EventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON, params={'player': 0}),
+        MandomEventFactory.create(EventCode.TURN_DRAW.value, player=0),
+        MandomEventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON.value, player=0),
 
-        EventFactory.create(EventCode.TURN_DRAW, params={'player': 1}),
-        EventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON, params={'player': 1}),
+        MandomEventFactory.create(EventCode.TURN_DRAW.value, player=1),
+        MandomEventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON.value, player=1),
 
-        EventFactory.create(EventCode.TURN_DRAW, params={'player': 2}),
-        EventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON, params={'player': 2}),
+        MandomEventFactory.create(EventCode.TURN_DRAW.value, player=2),
+        MandomEventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON.value, player=2),
 
-        EventFactory.create(EventCode.TURN_DRAW, params={'player': 3}),
-        EventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON, params={'player': 3}),
+        MandomEventFactory.create(EventCode.TURN_DRAW.value, player=3),
+        MandomEventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON.value, player=3),
 
-        EventFactory.create(EventCode.TURN_DRAW, params={'player': 0}),
-        EventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO, params={'player': 0, 'weapon': 1}),
+        MandomEventFactory.create(EventCode.TURN_DRAW.value, player=0),
+        MandomEventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO.value, player=0, weapon=1),
 
-        EventFactory.create(EventCode.TURN_DRAW, params={'player': 1}),
-        EventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO, params={'player': 1, 'weapon': 3}),
+        MandomEventFactory.create(EventCode.TURN_DRAW.value, player=1),
+        MandomEventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO.value, player=1, weapon=3),
 
-        EventFactory.create(EventCode.TURN_DRAW, params={'player': 2}),
-        EventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO, params={'player': 2, 'weapon': 5}),
+        MandomEventFactory.create(EventCode.TURN_DRAW.value, player=2),
+        MandomEventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO.value, player=2, weapon=5),
 
-        EventFactory.create(EventCode.TURN_DRAW, params={'player': 3}),
-        EventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO, params={'player': 3, 'weapon': 6}),
+        MandomEventFactory.create(EventCode.TURN_DRAW.value, player=3),
+        MandomEventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO.value, player=3, weapon=6),
 
-        EventFactory.create(EventCode.TURN_FOLD, params={'player': 0}),
-        EventFactory.create(EventCode.TURN_FOLD, params={'player': 1}),
-        EventFactory.create(EventCode.TURN_FOLD, params={'player': 2}),
+        MandomEventFactory.create(EventCode.TURN_FOLD.value, player=0),
+        MandomEventFactory.create(EventCode.TURN_FOLD.value, player=1),
+        MandomEventFactory.create(EventCode.TURN_FOLD.value, player=2),
 
-        EventFactory.create(EventCode.CHALLENGE_DUNGEON, params={'player': 3}),
+        MandomEventFactory.create(EventCode.CHALLENGE_DUNGEON.value, player=3),
     ]
     records = collections.deque()
 

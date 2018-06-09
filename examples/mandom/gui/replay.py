@@ -8,7 +8,7 @@ from tbs.gui import GUIReplay
 class MandomApp(App):
 
     def build(self):
-        manager = MandomReplayManager.load('second')
+        manager = MandomReplayManager.load('first')
         return GUIReplay(Mandom, manager)
 
 

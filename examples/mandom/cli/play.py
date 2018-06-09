@@ -1,6 +1,6 @@
 from typing import Iterable
 
-from mandom.data.events import EventFactory, EventCode
+from mandom.data.events import MandomEventFactory, EventCode
 from mandom.cli.mandom import MandomCLIDraw
 from mandom.data.status import StatusCode
 from mandom.managers import MandomUpdateManager
@@ -92,19 +92,20 @@ class GameApp(CLIPlay):
             if len(values) == 0:
                 raise ExitGameException('exit game exception')
             elif values == 'i':
-                event = EventFactory.create(EventCode.INIT_ROUND)
+                event = MandomEventFactory.create(EventCode.INIT_ROUND.value)
             elif values == 'c':
-                event = EventFactory.create(EventCode.CHALLENGE_DUNGEON, params={'player': player})
+                event = MandomEventFactory.create(EventCode.CHALLENGE_DUNGEON.value, player=player)
             elif values == 'f':
-                event = EventFactory.create(EventCode.TURN_FOLD, params={'player': player})
+                event = MandomEventFactory.create(EventCode.TURN_FOLD.value, player=player)
             elif values == 'd':
-                event = EventFactory.create(EventCode.TURN_DRAW, params={'player': player})
+                event = MandomEventFactory.create(EventCode.TURN_DRAW.value, player=player)
             elif values == 'a':
-                event = EventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON, params={'player': player})
+                event = MandomEventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON.value, player=player)
             elif values == 'r':
                 weapon = self.manager.wrapper.game.hero.weapons[0].value
-                event = EventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO,
-                                            params={'player': player, 'weapon': weapon})
+                event = MandomEventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO.value,
+                                                  player=player,
+                                                  weapon=weapon)
 
             if event is not None:
                 break

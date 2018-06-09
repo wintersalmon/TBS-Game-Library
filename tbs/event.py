@@ -147,7 +147,7 @@ class EventFactory(object):
         return cls.REPOSITORY[code].decode(**data)
 
     @classmethod
-    def create(cls, code, **kwargs):
+    def create(cls, code: int, **kwargs):
         if code not in cls.REPOSITORY:
             raise InvalidTypeError('code not registered: {}'.format(code))
         return cls.REPOSITORY[code](**kwargs)
