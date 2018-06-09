@@ -1,0 +1,112 @@
+#:kivy 1.10.1
+#:set background_color (0.235, 0.235, 0.392, 1)
+#:set default_font_size 50
+
+
+<PlayerWidget@GridLayout>:
+    cols: 1
+    size_hint_y: None
+    height: 100
+
+    canvas.before:
+        Color:
+            rgba: (0.5, 0.5, 0.5, 1) if self.is_active else background_color
+        Rectangle:
+            pos: self.pos
+            size: (self.width - 10, self.height)
+
+    Label:
+        font_size: default_font_size
+        text: root.player_name
+
+    GridLayout:
+        cols: 2
+        Label:
+            font_size: default_font_size - 10
+            text: 'LP: {}'.format(str(root.player_life_point))
+            halign: 'right'
+
+        Label:
+            font_size: default_font_size - 10
+            text: 'VP: {}'.format(str(root.player_victory_point))
+            halign: 'left'
+
+
+<WeaponWidget@Label>:
+    text: self.weapon_name
+    font_size: default_font_size - 10
+
+    canvas.before:
+        Color:
+            rgba: (0.5, 0.5, 0.5, 1) if self.is_active else background_color
+        Rectangle:
+            pos: self.pos
+            size: (self.width - 10, self.height)
+
+
+<MonsterWidget@Label>:
+    text: self.monster_name if self.is_visible and self.is_active else ''
+    font_size: default_font_size - 10
+
+    canvas.before:
+        Color:
+            rgba: (0.5, 0.5, 0.5, 1) if self.is_active else background_color
+        Rectangle:
+            pos: self.pos
+            size: (self.width - 10, self.height - 10)
+
+
+<Mandom>:
+    canvas.before:
+        Color:
+            rgba: background_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    GridLayout:
+        rows: 1
+        padding: (100, 100)
+        size_hint_y: None
+        height: 100
+        Label:
+            id: game_status_container
+            font_size: default_font_size - 10
+
+    GridLayout:
+        id: player_container
+        rows: 1
+        size_hint_y: None
+        height: 200
+        padding: (100, 100)
+
+    GridLayout:
+        padding: (100, 100)
+        cols: 2
+        size_hint_y: None
+        height: 200
+        Label:
+            id: hero_container
+            size_hint_x: None
+            width: 200
+        GridLayout:
+            id: weapon_container
+            rows: 1
+            size_hint_y: None
+            height: 200
+
+    GridLayout:
+        rows: 1
+        padding: (100, 100)
+
+        GridLayout:
+            id: deck_container
+            cols: 1
+
+        Label:
+            id: selected_card
+            font_size: default_font_size - 10
+
+        GridLayout:
+            id: dungeon_container
+            cols: 1
