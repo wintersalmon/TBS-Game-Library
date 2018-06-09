@@ -1,10 +1,10 @@
+from tbs.game import Game
 from tbs.player import Player
-from tbs.utils import SerializableMixin
 from tic_tac_toe.data.board import TTTBoard
 from tic_tac_toe.data.status import TTTStatus
 
 
-class TicTacToeGame(SerializableMixin):
+class TicTacToeGame(Game):
     def __init__(self, players, *, board=None, status=None):
         self.players = players
         self.board = TTTBoard() if board is None else board

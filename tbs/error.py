@@ -27,6 +27,10 @@ class InvalidValueError(ApiError):
     pass
 
 
+class InvalidTypeError(ApiError):
+    pass
+
+
 class InvalidParameterError(ApiError):
     pass
 

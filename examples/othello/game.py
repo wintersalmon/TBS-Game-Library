@@ -24,3 +24,8 @@ class OthelloGame(SerializableMixin):
         status = OthelloStatus.decode(**kwargs['status'])
 
         return cls(players=players, board=board, status=status)
+
+    @classmethod
+    def create(cls, **kwargs):
+        players = [Player(p) for p in kwargs['player_names']]
+        return cls(players=players)

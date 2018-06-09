@@ -1,40 +1,5 @@
-from tbs.error import ApiEventError
+from tbs.error import ApiEventError, InvalidTypeError, InvalidValueError
 from tbs.utils import SerializableMixin
-
-
-# from tbs.error import InvalidParameterError
-# from tbs.utils import SerializableMixin
-#
-#
-# class Event(SerializableMixin):
-#     def update(self, game):
-#         raise NotImplementedError
-#
-#     def rollback(self, game):
-#         raise NotImplementedError
-#
-#     def encode(self):
-#         raise NotImplementedError
-#
-#     @classmethod
-#     def decode(cls, **kwargs):
-#         raise NotImplementedError
-#
-#     @classmethod
-#     def create(cls, *, game, **kwargs):
-#         raise NotImplementedError
-#
-#     @classmethod
-#     def get_argument_or_raise_error(cls, kwargs, key):
-#         try:
-#             value = kwargs[key]
-#         except KeyError:
-#             raise InvalidParameterError('missing parameter: ' + key)
-#         else:
-#             return value
-#
-#     def __str__(self):
-#         return '{}{}'.format(self.__class__.__name__, tuple(self.__dict__.values()))
 
 
 class Event(SerializableMixin):
@@ -150,3 +115,39 @@ class SimpleRollbackEvent(Event):
 
     def _restore_from_backup(self, game, backup):
         raise NotImplementedError
+
+
+class EventFactory(object):
+    REPOSITORY = dict()
+
+    @classmethod
+    def register(cls, code: int, cls_data):
+        if code in cls.REPOSITORY:
+            raise InvalidValueError('duplicate code: {}'.format(code))
+
+        cls.REPOSITORY[code] = cls_data
+
+    @classmethod
+    def encode(cls, obj):
+        for code, cls_data in cls.REPOSITORY.items():
+            if isinstance(obj, cls_data):
+                return {
+                    'code': code,
+                    'data': obj.encode()
+                }
+
+        raise InvalidTypeError('obj not registered: {}'.format(obj))
+
+    @classmethod
+    def decode(cls, **kwargs):
+        code = kwargs['code']
+        data = kwargs['data']
+        if code not in cls.REPOSITORY:
+            raise InvalidValueError('code not found: {}'.format(code))
+        return cls.REPOSITORY[code].decode(**data)
+
+    @classmethod
+    def create(cls, code, **kwargs):
+        if code not in cls.REPOSITORY:
+            raise InvalidTypeError('code not registered: {}'.format(code))
+        return cls.REPOSITORY[code](**kwargs)

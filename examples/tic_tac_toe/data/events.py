@@ -1,4 +1,4 @@
-from tbs.event import Event
+from tbs.event import Event, EventFactory
 
 
 class PlayerPlacementEvent(Event):
@@ -43,3 +43,10 @@ class PlayerPlacementEvent(Event):
 
     def _restore_from_backup(self, game, backup):
         game.board.set(self.row, self.col, backup['tile'])
+
+
+class TTTEventFactory(EventFactory):
+    pass
+
+
+TTTEventFactory.register(1001, PlayerPlacementEvent)
