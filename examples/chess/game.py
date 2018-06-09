@@ -1,9 +1,9 @@
 from chess.board import ChessBoard
+from tbs.game import Game
 from tbs.player import Player
-from tbs.utils import SerializableMixin
 
 
-class ChessGame(SerializableMixin):
+class ChessGame(Game):
     def __init__(self, *, players, board, turn_count, status):
         self.players = players
         self.board = board
