@@ -15,9 +15,5 @@ class Wrapper(SerializableMixin):
         raise NotImplementedError
 
     @classmethod
-    def create_game_from_settings(cls, **kwargs):
-        raise NotImplementedError
-
-    @classmethod
     def create(cls, **kwargs):
         raise NotImplementedError
