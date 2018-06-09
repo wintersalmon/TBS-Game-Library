@@ -7,7 +7,7 @@ from tbs.gui import GUIReplay
 
 class OthelloApp(App):
     def build(self):
-        manager = OthelloReplayManager.load('b_01')
+        manager = OthelloReplayManager.load('first')
         game = GUIReplay(Othello, manager)
         return game
 

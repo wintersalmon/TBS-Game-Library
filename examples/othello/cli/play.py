@@ -1,8 +1,8 @@
-from tbs.error import InvalidPositionError, InvalidInputError, ExitGameException, ApiError
-from tbs.cli import CLIPlay
 from othello.cli.draw import OthelloCLIDrawMixin
 from othello.events import PlayerPlacementEvent
 from othello.managers import OthelloUpdateManager
+from tbs.cli import CLIPlay
+from tbs.error import InvalidInputError, ExitGameException, ApiError
 
 
 class OthelloCLIPlay(CLIPlay, OthelloCLIDrawMixin):
@@ -44,13 +44,11 @@ class OthelloCLIPlay(CLIPlay, OthelloCLIDrawMixin):
             return PlayerPlacementEvent(row=row, col=col)
 
 
-GameApp = OthelloCLIPlay
-
-# class OthelloCLIAutoPlay(OthelloCLIPlay, OthelloCLIDrawMixin):
-#     def __init__(self, file_name=None, wait_time=0, simple_output_mode=False):
-#         super().__init__(file_name=file_name)
-#         self.wait_time = wait_time
-#         self.simple_output_mode = simple_output_mode
+# class OthelloCLIAutoPlay(OthelloCLIPlay):
+#     def __init__(self):
+#         super().__init__()
+#         self.wait_time = 0
+#         self.simple_output_mode = False
 #
 #     def draw(self):
 #         if self.simple_output_mode:
@@ -84,7 +82,8 @@ GameApp = OthelloCLIPlay
 #         if not self.simple_output_mode:
 #             print('row, col: {} {}'.format(row, col))
 #
-#         return PlayerPlacementEvent.create(game=self.manager.wrapper.game, row=row, col=col)
-#
-#     def save_as(self, file_name):
-#         self.manager.save(self.save_dir, file_name)
+#         return PlayerPlacementEvent(row=row, col=col)
+
+
+GameApp = OthelloCLIPlay
+# GameApp = OthelloCLIAutoPlay

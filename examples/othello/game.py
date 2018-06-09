@@ -1,10 +1,10 @@
 from othello.board import OthelloBoard
 from othello.status import OthelloStatus
+from tbs.game import Game
 from tbs.player import Player
-from tbs.utils import SerializableMixin
 
 
-class OthelloGame(SerializableMixin):
+class OthelloGame(Game):
     def __init__(self, players, *, board=None, status=None):
         self.players = players
         self.board = OthelloBoard() if board is None else board

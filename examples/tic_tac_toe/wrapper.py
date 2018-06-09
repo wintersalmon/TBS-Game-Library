@@ -5,4 +5,4 @@ from tic_tac_toe.data.game import TicTacToeGame
 
 class TicTacToeWrapper(Wrapper):
     cls_game = TicTacToeGame
-    event_factory = TTTEventFactory
+    cls_event_factory = TTTEventFactory
