@@ -115,6 +115,11 @@ class Mandom(GridLayout):
             else:
                 m_widget.is_active = False
 
+        if self.game.status == StatusCode.TURN:
+            self.ids.selected_card.text = self.game.deck.view_top_card().name.title()
+        else:
+            self.ids.selected_card.text = ''
+
 
 class MandomApp(App):
 
