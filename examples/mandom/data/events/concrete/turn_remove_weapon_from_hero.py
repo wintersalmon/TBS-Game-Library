@@ -54,6 +54,12 @@ class TurnRemoveWeaponFromHero(Event):
             required=0,
         )
 
+        self._validate_value_eq_or_raise_error(
+            name='weapon active',
+            current=WeaponCode(self.weapon) in game.hero.weapons,
+            required=True
+        )
+
     def _create_game_backup(self, game):
         backup_data = dict()
         backup_data['removed_monsters'] = game.removed_monsters.encode()

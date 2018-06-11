@@ -33,6 +33,12 @@ class TurnDrawEvent(Event):
             required=1,
         )
 
+        self._validate_value_gt_or_raise_error(
+            name='deck size',
+            current=len(game.deck),
+            required=0,
+        )
+
     def _create_game_backup(self, game):
         backup = dict()
         backup['status'] = game.status

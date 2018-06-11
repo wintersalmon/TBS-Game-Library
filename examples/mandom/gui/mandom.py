@@ -15,6 +15,7 @@ class PlayerWidget(GridLayout):
     player_life_point = NumericProperty(-1)
     player_victory_point = NumericProperty(-1)
     is_active = BooleanProperty(False)
+    is_current_player = BooleanProperty(False)
 
     def __init__(self, player_name, **kwargs):
         super(PlayerWidget, self).__init__(**kwargs)
@@ -92,6 +93,7 @@ class Mandom(GridLayout):
             p_widget.player_life_point = player.life_point
             p_widget.player_victory_point = player.victory_point
             p_widget.is_active = player_position in self.game.player_turn_tracker.players
+            p_widget.is_current_player = player_position == self.game.player_turn_tracker.current_player
 
         for w_widget in self.weapons_widgets:
             weapon = w_widget.weapon_code
@@ -114,11 +116,6 @@ class Mandom(GridLayout):
                 m_widget.monster_name = self.game.dungeon[position].name.title()
             else:
                 m_widget.is_active = False
-
-        if self.game.status == StatusCode.TURN:
-            self.ids.selected_card.text = self.game.deck.view_top_card().name.title()
-        else:
-            self.ids.selected_card.text = ''
 
 
 class MandomApp(App):

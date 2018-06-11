@@ -42,13 +42,16 @@ class MandomPlay(Mandom):
 
             elif self.manager.wrapper.game.status == StatusCode.TURN:
 
-                if self.ids.selected_card.collide_point(*touch.pos):
+                if self.ids.deck_container.collide_point(*touch.pos):
                     event = MandomEventFactory.create(EventCode.TURN_ADD_MONSTER_TO_DUNGEON.value, player=player)
-                elif self.ids.weapon_container.collide_point(*touch.pos):
-                    weapon = self.manager.wrapper.game.hero.weapons[0]
-                    event = MandomEventFactory.create(EventCode.TURN_REMOVE_WEAPON_FROM_HERO.value,
-                                                      player=player,
-                                                      weapon=weapon)
+                else:
+                    for w_widget in self.ids.weapon_container.children[:]:
+                        if w_widget.collide_point(*touch.pos):
+                            weapon = w_widget.weapon_code
+                            event = MandomEventFactory.create(
+                                EventCode.TURN_REMOVE_WEAPON_FROM_HERO.value,
+                                player=player,
+                                weapon=weapon)
 
         if event is not None:
             try:
