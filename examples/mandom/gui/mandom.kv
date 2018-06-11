@@ -4,6 +4,14 @@
 #:set background_color_focus (0, 0.7, 0.7, 1)
 #:set default_font_size 50
 
+<MyImage@AsyncImage>:
+    canvas.after:
+        Color:
+            rgba: background_color if self.texture is None else (0,0,0,0)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
 
 <PlayerWidget@GridLayout>:
     cols: 1
@@ -46,16 +54,13 @@
                 halign: 'left'
 
 
-<WeaponWidget@Label>:
-    text: self.weapon_name
-    font_size: default_font_size - 10
-
-    canvas.before:
+<WeaponWidget@AsyncImage>:
+    canvas.after:
         Color:
-            rgba: background_color_active if self.is_active else background_color
+            rgba: (0,0,0,0) if self.is_active else background_color
         Rectangle:
             pos: self.pos
-            size: (self.width - 10, self.height)
+            size: self.size
 
 
 <MonsterWidget@Label>:
@@ -96,18 +101,21 @@
 
     GridLayout:
         padding: (100, 100)
-        cols: 2
+        rows: 1
         size_hint_y: None
-        height: 200
-        Label:
+        height: 350
+
+        MyImage:
             id: hero_container
-            size_hint_x: None
-            width: 200
+            size_hint_x: 1/8
+
+        Label:
+            size_hint_x: 1/8
+
         GridLayout:
             id: weapon_container
             rows: 1
-            size_hint_y: None
-            height: 200
+            size_hint_x: 6/8
 
     GridLayout:
         rows: 1
@@ -117,9 +125,8 @@
             id: deck_container
             cols: 1
 
-        Label:
+        MyImage:
             id: selected_card
-            font_size: default_font_size - 10
 
         GridLayout:
             id: dungeon_container

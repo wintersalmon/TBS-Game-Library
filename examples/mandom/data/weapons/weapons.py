@@ -30,32 +30,32 @@ class HeroWeapon(Weapon):
 
 class WeaponTorch(Weapon):
     def __init__(self):
-        super(WeaponTorch, self).__init__(WeaponCode.TORCH, 0,
-                                          (MonsterCode.GOBLIN, MonsterCode.SKELETON_WARRIOR, MonsterCode.ORK))
+        super(WeaponTorch, self).__init__(WeaponCode.Torch, 0,
+                                          (MonsterCode.Goblin, MonsterCode.SkeletonWarrior, MonsterCode.Ork))
 
 
 class WeaponHolyGrail(Weapon):
     def __init__(self):
-        super(WeaponHolyGrail, self).__init__(WeaponCode.HOLY_GRAIL, 0,
-                                              (MonsterCode.SKELETON_WARRIOR, MonsterCode.VAMPIRE, MonsterCode.REAPER))
+        super(WeaponHolyGrail, self).__init__(WeaponCode.HolyGrail, 0,
+                                              (MonsterCode.SkeletonWarrior, MonsterCode.Vampire, MonsterCode.Reaper))
 
 
 class WeaponSpear(Weapon):
     def __init__(self):
-        super(WeaponSpear, self).__init__(WeaponCode.SPEAR, 0,
-                                          (MonsterCode.DRAGON,))
+        super(WeaponSpear, self).__init__(WeaponCode.Spear, 0,
+                                          (MonsterCode.Dragon,))
 
 
 class WeaponArmor(Weapon):
     def __init__(self):
-        super(WeaponArmor, self).__init__(WeaponCode.ARMOR, 5)
+        super(WeaponArmor, self).__init__(WeaponCode.Armor, 5)
 
 
 class WeaponShield(Weapon):
     def __init__(self):
-        super(WeaponShield, self).__init__(WeaponCode.SHIELD, 3)
+        super(WeaponShield, self).__init__(WeaponCode.Shield, 3)
 
 
 class WeaponHeroSword(HeroWeapon):
     def __init__(self):
-        super(WeaponHeroSword, self).__init__(WeaponCode.HERO_SWORD, 0)
+        super(WeaponHeroSword, self).__init__(WeaponCode.HeroSword, 0)
