@@ -1,9 +1,13 @@
+import os
+
 from kivy.app import App
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty, BooleanProperty, StringProperty, NumericProperty
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.image import AsyncImage
 from kivy.uix.label import Label
 
+from mandom.config import RES_DIR
 from mandom.data.status import StatusCode
 from mandom.wrapper import MandomWrapper
 
@@ -15,20 +19,20 @@ class PlayerWidget(GridLayout):
     player_life_point = NumericProperty(-1)
     player_victory_point = NumericProperty(-1)
     is_active = BooleanProperty(False)
+    is_current_player = BooleanProperty(False)
 
     def __init__(self, player_name, **kwargs):
         super(PlayerWidget, self).__init__(**kwargs)
         self.player_name = player_name
 
 
-class WeaponWidget(Label):
-    weapon_name = StringProperty('NONE')
+class WeaponWidget(AsyncImage):
     is_active = BooleanProperty(False)
 
     def __init__(self, weapon_code, **kwargs):
-        super(WeaponWidget, self).__init__(**kwargs)
+        super(WeaponWidget, self).__init__(source=os.path.join(RES_DIR, 'weapons', '{}.jpg'.format(weapon_code.name)),
+                                           **kwargs)
         self.weapon_code = weapon_code
-        self.weapon_name = weapon_code.name.title()
 
 
 class MonsterWidget(Label):
@@ -57,7 +61,7 @@ class Mandom(GridLayout):
             self.player_widgets.append(p_widget)
             self.ids.player_container.add_widget(p_widget)
 
-        self.ids.hero_container.text = str(self.game.hero.default_armor)
+        self.ids.hero_container.source = os.path.join(RES_DIR, 'weapons', 'Warrior.jpg')
 
         self.weapons_widgets = list()
         for weapon in self.game.hero.default_weapons:
@@ -92,6 +96,7 @@ class Mandom(GridLayout):
             p_widget.player_life_point = player.life_point
             p_widget.player_victory_point = player.victory_point
             p_widget.is_active = player_position in self.game.player_turn_tracker.players
+            p_widget.is_current_player = player_position == self.game.player_turn_tracker.current_player
 
         for w_widget in self.weapons_widgets:
             weapon = w_widget.weapon_code
@@ -102,7 +107,8 @@ class Mandom(GridLayout):
             if position < len(self.game.deck):
                 m_widget.is_active = True
                 m_widget.is_visible = position == len(self.game.deck) - 1 and self.game.status == StatusCode.TURN
-                m_widget.monster_name = self.game.deck[position].name.title()
+                m_widget.monster_name = self.game.deck[position].name
+
             else:
                 m_widget.is_active = False
 
@@ -111,9 +117,15 @@ class Mandom(GridLayout):
             if position < len(self.game.dungeon):
                 m_widget.is_active = True
                 m_widget.is_visible = self.game.status == StatusCode.CHALLENGE
-                m_widget.monster_name = self.game.dungeon[position].name.title()
+                m_widget.monster_name = self.game.dungeon[position].name
             else:
                 m_widget.is_active = False
+
+        if self.game.status == StatusCode.TURN:
+            monster = self.game.deck.view_top_card()
+            self.ids.selected_card.source = os.path.join(RES_DIR, 'monsters', '{}.jpg'.format(monster.name))
+        else:
+            self.ids.selected_card.source = ''
 
 
 class MandomApp(App):

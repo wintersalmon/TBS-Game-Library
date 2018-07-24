@@ -17,39 +17,39 @@ class Monster(object):
 
 class MonsterGoblin(Monster):
     def __init__(self):
-        super(MonsterGoblin, self).__init__(MonsterCode.GOBLIN, 1)
+        super(MonsterGoblin, self).__init__(MonsterCode.Goblin, 1)
 
 
 class MonsterSkeletonWarrior(Monster):
     def __init__(self):
-        super(MonsterSkeletonWarrior, self).__init__(MonsterCode.SKELETON_WARRIOR, 2)
+        super(MonsterSkeletonWarrior, self).__init__(MonsterCode.SkeletonWarrior, 2)
 
 
 class MonsterOrk(Monster):
     def __init__(self):
-        super(MonsterOrk, self).__init__(MonsterCode.ORK, 3)
+        super(MonsterOrk, self).__init__(MonsterCode.Ork, 3)
 
 
 class MonsterVampire(Monster):
     def __init__(self):
-        super(MonsterVampire, self).__init__(MonsterCode.VAMPIRE, 4)
+        super(MonsterVampire, self).__init__(MonsterCode.Vampire, 4)
 
 
 class MonsterGolam(Monster):
     def __init__(self):
-        super(MonsterGolam, self).__init__(MonsterCode.GOLAM, 5)
+        super(MonsterGolam, self).__init__(MonsterCode.Golam, 5)
 
 
 class MonsterReaper(Monster):
     def __init__(self):
-        super(MonsterReaper, self).__init__(MonsterCode.REAPER, 6)
+        super(MonsterReaper, self).__init__(MonsterCode.Reaper, 6)
 
 
 class MonsterSatan(Monster):
     def __init__(self):
-        super(MonsterSatan, self).__init__(MonsterCode.SATAN, 7)
+        super(MonsterSatan, self).__init__(MonsterCode.Satan, 7)
 
 
 class MonsterDragon(Monster):
     def __init__(self):
-        super(MonsterDragon, self).__init__(MonsterCode.DRAGON, 9)
+        super(MonsterDragon, self).__init__(MonsterCode.Dragon, 9)

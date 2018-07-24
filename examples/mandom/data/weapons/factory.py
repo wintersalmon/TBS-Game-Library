@@ -9,39 +9,39 @@ from mandom.data.weapons.weapons import WeaponTorch
 
 class WeaponFactory(object):
     WEAPONS = {
-        WeaponCode.TORCH: WeaponTorch(),
-        WeaponCode.HOLY_GRAIL: WeaponHolyGrail(),
-        WeaponCode.SPEAR: WeaponSpear(),
-        WeaponCode.ARMOR: WeaponArmor(),
-        WeaponCode.SHIELD: WeaponShield(),
-        WeaponCode.HERO_SWORD: WeaponHeroSword(),
+        WeaponCode.Torch: WeaponTorch(),
+        WeaponCode.HolyGrail: WeaponHolyGrail(),
+        WeaponCode.Spear: WeaponSpear(),
+        WeaponCode.Armor: WeaponArmor(),
+        WeaponCode.Shield: WeaponShield(),
+        WeaponCode.HeroSword: WeaponHeroSword(),
     }
 
     WEAPONS_BY_CODE = {
-        WeaponCode.TORCH: WEAPONS[WeaponCode.TORCH],
-        WeaponCode.HOLY_GRAIL: WEAPONS[WeaponCode.HOLY_GRAIL],
-        WeaponCode.SPEAR: WEAPONS[WeaponCode.SPEAR],
-        WeaponCode.ARMOR: WEAPONS[WeaponCode.ARMOR],
-        WeaponCode.SHIELD: WEAPONS[WeaponCode.SHIELD],
-        WeaponCode.HERO_SWORD: WEAPONS[WeaponCode.HERO_SWORD],
+        WeaponCode.Torch: WEAPONS[WeaponCode.Torch],
+        WeaponCode.HolyGrail: WEAPONS[WeaponCode.HolyGrail],
+        WeaponCode.Spear: WEAPONS[WeaponCode.Spear],
+        WeaponCode.Armor: WEAPONS[WeaponCode.Armor],
+        WeaponCode.Shield: WEAPONS[WeaponCode.Shield],
+        WeaponCode.HeroSword: WEAPONS[WeaponCode.HeroSword],
     }
 
     WEAPONS_BY_NUMBER = {
-        int(WeaponCode.TORCH.value): WEAPONS[WeaponCode.TORCH],
-        int(WeaponCode.HOLY_GRAIL.value): WEAPONS[WeaponCode.HOLY_GRAIL],
-        int(WeaponCode.SPEAR.value): WEAPONS[WeaponCode.SPEAR],
-        int(WeaponCode.ARMOR.value): WEAPONS[WeaponCode.ARMOR],
-        int(WeaponCode.SHIELD.value): WEAPONS[WeaponCode.SHIELD],
-        int(WeaponCode.HERO_SWORD.value): WEAPONS[WeaponCode.HERO_SWORD],
+        int(WeaponCode.Torch.value): WEAPONS[WeaponCode.Torch],
+        int(WeaponCode.HolyGrail.value): WEAPONS[WeaponCode.HolyGrail],
+        int(WeaponCode.Spear.value): WEAPONS[WeaponCode.Spear],
+        int(WeaponCode.Armor.value): WEAPONS[WeaponCode.Armor],
+        int(WeaponCode.Shield.value): WEAPONS[WeaponCode.Shield],
+        int(WeaponCode.HeroSword.value): WEAPONS[WeaponCode.HeroSword],
     }
 
     WEAPONS_BY_STRING = {
-        WeaponCode.TORCH.name.lower(): WEAPONS[WeaponCode.TORCH],
-        WeaponCode.HOLY_GRAIL.name.lower(): WEAPONS[WeaponCode.HOLY_GRAIL],
-        WeaponCode.SPEAR.name.lower(): WEAPONS[WeaponCode.SPEAR],
-        WeaponCode.ARMOR.name.lower(): WEAPONS[WeaponCode.ARMOR],
-        WeaponCode.SHIELD.name.lower(): WEAPONS[WeaponCode.SHIELD],
-        WeaponCode.HERO_SWORD.name.lower(): WEAPONS[WeaponCode.HERO_SWORD],
+        WeaponCode.Torch.name.lower(): WEAPONS[WeaponCode.Torch],
+        WeaponCode.HolyGrail.name.lower(): WEAPONS[WeaponCode.HolyGrail],
+        WeaponCode.Spear.name.lower(): WEAPONS[WeaponCode.Spear],
+        WeaponCode.Armor.name.lower(): WEAPONS[WeaponCode.Armor],
+        WeaponCode.Shield.name.lower(): WEAPONS[WeaponCode.Shield],
+        WeaponCode.HeroSword.name.lower(): WEAPONS[WeaponCode.HeroSword],
     }
 
     @classmethod
@@ -68,7 +68,7 @@ class WeaponFactory(object):
 
 
 if __name__ == '__main__':
-    a = WeaponFactory.get(WeaponCode.TORCH)
+    a = WeaponFactory.get(WeaponCode.Torch)
     b = WeaponFactory.get('torch')
     c = WeaponFactory.get(1)
     print(a, b, c, a == b == c)

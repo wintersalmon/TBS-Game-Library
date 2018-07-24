@@ -9,19 +9,19 @@ class Deck(SerializableMixin):
 
     def __init__(self, cards: Iterable[MonsterCode] = None):
         self._default_cards = [
-            MonsterCode.GOBLIN,
-            MonsterCode.GOBLIN,
-            MonsterCode.SKELETON_WARRIOR,
-            MonsterCode.SKELETON_WARRIOR,
-            MonsterCode.ORK,
-            MonsterCode.ORK,
-            MonsterCode.VAMPIRE,
-            MonsterCode.VAMPIRE,
-            MonsterCode.GOLAM,
-            MonsterCode.GOLAM,
-            MonsterCode.REAPER,
-            MonsterCode.SATAN,
-            MonsterCode.DRAGON,
+            MonsterCode.Goblin,
+            MonsterCode.Goblin,
+            MonsterCode.SkeletonWarrior,
+            MonsterCode.SkeletonWarrior,
+            MonsterCode.Ork,
+            MonsterCode.Ork,
+            MonsterCode.Vampire,
+            MonsterCode.Vampire,
+            MonsterCode.Golam,
+            MonsterCode.Golam,
+            MonsterCode.Reaper,
+            MonsterCode.Satan,
+            MonsterCode.Dragon,
         ]
 
         if cards is None:
