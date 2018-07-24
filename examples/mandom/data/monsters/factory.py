@@ -11,36 +11,36 @@ from mandom.data.monsters.monsters import MonsterVampire
 
 class MonsterFactory(object):
     MONSTERS = {
-        MonsterCode.GOBLIN: MonsterGoblin(),
-        MonsterCode.SKELETON_WARRIOR: MonsterSkeletonWarrior(),
-        MonsterCode.ORK: MonsterOrk(),
-        MonsterCode.VAMPIRE: MonsterVampire(),
-        MonsterCode.GOLAM: MonsterGolam(),
-        MonsterCode.REAPER: MonsterReaper(),
-        MonsterCode.SATAN: MonsterSatan(),
-        MonsterCode.DRAGON: MonsterDragon(),
+        MonsterCode.Goblin: MonsterGoblin(),
+        MonsterCode.SkeletonWarrior: MonsterSkeletonWarrior(),
+        MonsterCode.Ork: MonsterOrk(),
+        MonsterCode.Vampire: MonsterVampire(),
+        MonsterCode.Golam: MonsterGolam(),
+        MonsterCode.Reaper: MonsterReaper(),
+        MonsterCode.Satan: MonsterSatan(),
+        MonsterCode.Dragon: MonsterDragon(),
     }
 
     MONSTERS_BY_NUMBER = {
-        int(MonsterCode.GOBLIN.value): MONSTERS[MonsterCode.GOBLIN],
-        int(MonsterCode.SKELETON_WARRIOR.value): MONSTERS[MonsterCode.SKELETON_WARRIOR],
-        int(MonsterCode.ORK.value): MONSTERS[MonsterCode.ORK],
-        int(MonsterCode.VAMPIRE.value): MONSTERS[MonsterCode.VAMPIRE],
-        int(MonsterCode.GOLAM.value): MONSTERS[MonsterCode.GOLAM],
-        int(MonsterCode.REAPER.value): MONSTERS[MonsterCode.REAPER],
-        int(MonsterCode.SATAN.value): MONSTERS[MonsterCode.SATAN],
-        int(MonsterCode.DRAGON.value): MONSTERS[MonsterCode.DRAGON],
+        int(MonsterCode.Goblin.value): MONSTERS[MonsterCode.Goblin],
+        int(MonsterCode.SkeletonWarrior.value): MONSTERS[MonsterCode.SkeletonWarrior],
+        int(MonsterCode.Ork.value): MONSTERS[MonsterCode.Ork],
+        int(MonsterCode.Vampire.value): MONSTERS[MonsterCode.Vampire],
+        int(MonsterCode.Golam.value): MONSTERS[MonsterCode.Golam],
+        int(MonsterCode.Reaper.value): MONSTERS[MonsterCode.Reaper],
+        int(MonsterCode.Satan.value): MONSTERS[MonsterCode.Satan],
+        int(MonsterCode.Dragon.value): MONSTERS[MonsterCode.Dragon],
     }
 
     MONSTERS_BY_STRING = {
-        MonsterCode.GOBLIN.name.lower(): MONSTERS[MonsterCode.GOBLIN],
-        MonsterCode.SKELETON_WARRIOR.name.lower(): MONSTERS[MonsterCode.SKELETON_WARRIOR],
-        MonsterCode.ORK.name.lower(): MONSTERS[MonsterCode.ORK],
-        MonsterCode.VAMPIRE.name.lower(): MONSTERS[MonsterCode.VAMPIRE],
-        MonsterCode.GOLAM.name.lower(): MONSTERS[MonsterCode.GOLAM],
-        MonsterCode.REAPER.name.lower(): MONSTERS[MonsterCode.REAPER],
-        MonsterCode.SATAN.name.lower(): MONSTERS[MonsterCode.SATAN],
-        MonsterCode.DRAGON.name.lower(): MONSTERS[MonsterCode.DRAGON],
+        MonsterCode.Goblin.name.lower(): MONSTERS[MonsterCode.Goblin],
+        MonsterCode.SkeletonWarrior.name.lower(): MONSTERS[MonsterCode.SkeletonWarrior],
+        MonsterCode.Ork.name.lower(): MONSTERS[MonsterCode.Ork],
+        MonsterCode.Vampire.name.lower(): MONSTERS[MonsterCode.Vampire],
+        MonsterCode.Golam.name.lower(): MONSTERS[MonsterCode.Golam],
+        MonsterCode.Reaper.name.lower(): MONSTERS[MonsterCode.Reaper],
+        MonsterCode.Satan.name.lower(): MONSTERS[MonsterCode.Satan],
+        MonsterCode.Dragon.name.lower(): MONSTERS[MonsterCode.Dragon],
     }
 
     @classmethod
@@ -67,7 +67,7 @@ class MonsterFactory(object):
 
 
 if __name__ == '__main__':
-    a = MonsterFactory.get(MonsterCode.GOBLIN)
+    a = MonsterFactory.get(MonsterCode.Goblin)
     b = MonsterFactory.get('goblin')
     c = MonsterFactory.get(1)
     print(a, b, c, a == b == c)
